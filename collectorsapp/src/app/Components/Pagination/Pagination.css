@@ -1,0 +1,30 @@
+.pagination {
+    display: flex;
+    gap: 0px;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-button {
+    background-color: var(--button);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color:var(--button-hover);
+  }
+  
+  .pagination-button:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  .pagination-button:disabled:hover{
+    background-color: var(--button);
+  }
+  
+  .active-page {
+    font-weight: bold;
+  }
+  

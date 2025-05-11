@@ -1,0 +1,113 @@
+.input-border{
+    border-radius: 6px;
+    border: 0px;
+    border-bottom: 1px solid darkgray;
+    border-right: 1px solid darkgray;
+}
+
+label{
+    display: flex;
+    flex-direction: column;
+}
+.l-d-display{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4vh;
+    font-size: large;
+}
+.error-message{
+    color:rgba(255, 0, 0, 0.69);
+    font-size: 15px;
+}
+
+.card-links{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.display-block{
+    display: block;
+    height: 100vh;
+    overflow: auto;
+}
+.s-b-s{
+    width: 100%;
+    border: 0;
+    min-height: 44px;
+    font-size: large;
+    border-radius: 6px;
+}
+
+.text-center{
+    display: flex;
+    justify-content: center;
+}
+.password-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.toggle-password-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+}
+
+@media (max-width:600px) {
+    .div-center{    
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content:center;    
+        align-items:center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        
+    }
+    .input-width{
+        min-width: 100vw;
+    }
+    .input-height{
+        min-height: 5vh;
+    }
+    .div-border{
+        padding-top: 3vh;
+        padding-bottom: 3vh;
+        background-color: rgba(169, 169, 169, 0.1);
+        border-bottom: 1px solid white;
+    }
+}
+@media (min-width:600px) {
+    .input-width{
+        min-width: 100%;
+    }
+    .input-height{
+        min-height: 5vh;
+    }
+
+    .div-border{
+        padding: 20px;
+        min-width: 400px;
+        border-bottom: 1px solid white;
+        border-right: 1px solid white;
+        background-color: rgba(169, 169, 169, 0.1);
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .div-center{    
+        height: 100vh;
+        display: flex;
+        justify-content:center;    
+        align-items:center;
+        flex-wrap: wrap;
+        flex-direction: column;   
+    }    
+}

@@ -1,0 +1,39 @@
+.toggle-container {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .toggle-switch {
+    width: 40px;
+    height: 20px;
+    border-radius: 999px;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    background-color: #e5e7eb;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggle-switch.theme {
+    background-color: #181818;
+  }
+  
+  .toggle-knob {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: transform 0.3s ease;
+    transform: translateX(0);
+  }
+  
+  .toggle-switch.theme .toggle-knob {
+    transform: translateX(20px);
+  }
+  
+  .toggle-label {
+    margin-left: 8px;
+    font-size: 14px;
+  }

@@ -1,0 +1,28 @@
+{
+  "name": "collectorsapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^7.15.1",
+    "axios": "^1.7.9",
+    "cookie": "^1.0.2",
+    "cookies-next": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "ldrs": "^1.1.6",
+    "next": "15.1.7",
+    "next-auth": "^4.24.11",
+    "next-themes": "^0.4.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-image-crop": "^11.0.7",
+    "react-linkify": "^1.0.0-alpha",
+    "react-toastify": "^11.0.5",
+    "set-cookie-parser": "^2.7.1"
+  }
+}

@@ -1,0 +1,113 @@
+
+.div-flex{
+    display: flex;
+}
+.display-block{
+    display: block;
+    height: 100vh;
+}
+.border-login{
+    border-bottom: 1px solid var(--foreground);
+    border-right: 1px solid var(--foreground);
+    background-color: var(--card);
+    border-radius: 4px;
+    box-shadow: 0 4px 8px var(--card);   
+    min-width: 400px;
+}
+.card-links{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.toggle-password-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    min-width: 0px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    justify-content: end;
+    background-color: transparent;
+}
+.password-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.toggle-password-icon:hover {
+    color: var(--button-hover);
+}
+@media screen and (max-width:480px){
+
+}
+@media screen and (min-width:720px){
+    
+    .div-center{    
+        height: 100vh;
+        display: flex;
+        justify-content:center;    
+        align-items:center;
+    }
+    .input-width{
+        min-width: 400px;
+    }
+    .input-height{
+        min-height: 5vh;
+    }
+    input{
+        border-radius: 6px;
+        font-size: medium;
+    }
+    .text-allign-center{
+        text-align: center;
+    }
+    .padding-border{
+        padding: 10px;
+    }
+    .border-radius{
+        border-radius: 8px;
+    }
+    .padding-top{
+        padding-top: 10px;
+    }
+    .padding-bottom{
+        padding-bottom: 10px;
+    }
+    .text-size{
+        font-size: 20px;
+    }
+    .label-padding-bottom{
+        padding-top: 1vh;
+    }
+    label{
+        display: flex;
+        flex-direction: column;
+    }
+    .l-d-display{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 4vh;
+        font-size: large;
+    }
+    .button{
+        width: 100%;
+        border: 0;
+        height: 4vh;
+        font-size: large;
+        border-radius: 6px;
+    }
+}
+input:hover{
+    border-color: lightgray;
+}
+.input-style{
+    border-radius: 6px;
+    border: 0px;
+    border-bottom: 1px solid darkgray;
+    border-right: 1px solid darkgray;
+}

@@ -1,0 +1,22 @@
+.preferences-style-container>div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: large;
+    margin-top: 10px;
+    background-color: var(--card);
+    padding: 8px;
+    border-radius: 8px;
+}
+.preferences-style-container>div>div:last-child{
+    display: flex;
+    flex-direction: column;
+    gap:2px
+}
+.preferences-style-container>div>div:last-child>div:last-child{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}

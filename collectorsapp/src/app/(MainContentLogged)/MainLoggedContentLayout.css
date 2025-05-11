@@ -1,0 +1,49 @@
+.top-menu-item{
+    width: 100%;
+}
+
+.container{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: auto;
+}
+
+.main-content-layout{
+    width: 100%;
+    height: auto;
+}
+
+@media (min-width:600px) and (hover:none) and (orientation:landscape) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    .top-menu-item {
+        flex: 0 0 auto;
+    }
+    
+    .main-content-layout {
+        flex: 1 1 auto;
+        overflow-y: auto;
+    }
+ }
+
+ @media (max-width:600px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        width: 100vw;
+        height: 100vh;
+    }
+    .main-content-layout {
+        flex: 1 1 auto;
+        overflow-y: auto;
+    }
+    .top-menu-item {
+        flex: 0 0 auto;
+    }
+}

@@ -1,0 +1,13 @@
+.max-width{
+    width: 100%;
+}
+.react-crop-max-width{
+    max-width: 98vw;
+    margin-right: 10px;
+}
+.preview{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-self: start;
+    width: 20px;
+}

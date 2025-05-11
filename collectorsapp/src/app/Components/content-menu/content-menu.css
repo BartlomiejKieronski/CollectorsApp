@@ -1,0 +1,266 @@
+.menu-content {
+  position: relative !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+  background-color: var(--menu);
+  color: var(--text-color);
+  width: 100%;
+  height: 8vh;
+}
+
+.menu-content-start {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  gap: 10px;
+}
+.menu-content-logo{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  gap: 10px;
+}
+@media (min-width:600px) and (hover:hover){
+  .user-submenu {
+    display: none;
+    position: absolute;
+    background-color: var(--open-menu);
+    right: -30px;
+    list-style: none;
+    padding: 10px;
+    min-width: 300px;
+    z-index: 99999;
+    top: 5vh
+  }
+}
+.user-submenu.open {
+  display: block;
+}
+
+.menu-content-end {
+  display: flex;
+  z-index: 99999;
+}
+
+.ul-menu {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+}
+
+.ul-menu li {
+  margin-left: 20px;
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.menu-icon {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--text-color);
+}
+
+.lg-bt {
+  background-color: transparent;
+  border: 0;
+  font-size: 16px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.hamburger-side-menu {
+  display: none;
+  background-color: transparent;
+  border: 0;
+  font-size: 27px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.logo-image {
+  width: 50px;
+  height: 50px;
+}
+
+.ul-flex {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.bt-txt {
+  padding-top: 0.7em;
+}
+
+.user-toggle {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.img-lt {
+  padding-top: 0.3em;
+}
+
+.svg-cl {
+  filter: grayscale(10);
+}
+
+.lg-img {
+  width: 30px;
+  margin-right: 20px;
+}
+
+.user-menu {
+  position: relative;
+
+}
+
+@media (min-width: 600px) and (orientation: landscape) and (hover:none) {
+  .user-submenu {
+    position: static;
+    padding-left: 20px;
+    background-color: #444;
+    right: 0;
+    width: 100%;
+    top: 8vh;
+    padding-top: 1vh;
+    margin-top: 1vh;
+    padding-bottom: 1vh;
+  }
+  
+  .logo-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .menu-content-end {
+    position: absolute;
+    top: 8vh;
+    left: 0;
+    background-color: #333;
+    width: 100%;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+  }
+  
+  .menu-content-end.mobile-menu-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    top: 60px;
+  }
+  
+  .menu-icon {
+    display: block;
+  }
+  
+
+  .ul-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .ul-menu li {
+    margin: 10px 0;
+    width: 100%;
+    list-style: none;
+  }
+  .hamburger-side-menu{
+    display: block;
+  }
+}
+
+
+@media (max-width: 600px)  {
+  .hamburger-side-menu {
+    display: block;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  .menu-content-end {
+    position: absolute;
+    top: 8vh;
+    left: 0;
+    background-color: #333;
+    width: 100%;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+  }
+
+  .menu-content-end.mobile-menu-open {
+    position: absolute;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    top:59px;
+    padding-top: 10px;
+  }
+
+  .ul-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .ul-menu li {
+    margin: 10px 0;
+    width: 100%;
+    list-style: none;
+  }
+
+  .user-submenu {
+    position: relative;
+    padding-left: 20px;
+    background-color: #444;
+    right: 0;
+    width: 100%;
+    padding-top: 1vh;
+    margin-top: 1vh;
+    padding-bottom: 1vh;
+  }
+
+  .ul-flex {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .img-lt {
+    display: none;
+  }
+
+}
+
+
+.user-submenu>li {
+  margin-top: 16px;
+  font-size: 16px;
+
+}

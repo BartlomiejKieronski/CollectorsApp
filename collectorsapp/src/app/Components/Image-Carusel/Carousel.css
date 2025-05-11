@@ -1,0 +1,129 @@
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+    
+}
+.carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  
+}
+.carousel-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.slideInNext {
+  animation: slideInNext 0.5s ease-out;
+}
+@keyframes slideInNext {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+.slideInPrev {
+  animation: slideInPrev 0.5s ease-out;
+}
+@keyframes slideInPrev {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+.slideOutNext {
+  animation: slideOutNext 0.5s ease-out;
+}
+@keyframes slideOutNext {
+  from {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+.slideOutPrev {
+  animation: slideOutPrev 0.5s ease-out;
+}
+@keyframes slideOutPrev {
+  from {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  padding: 25px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  z-index: 2;
+  border-radius: 25px;
+  margin: 10px;
+  opacity: 50%;
+}
+.nav-button:hover{
+  background: rgba(255, 255, 255, 0.836);
+}
+.left-button {
+  left: 10px;
+}
+.right-button {
+  right: 10px;
+}
+.indicators-wrapper {
+  overflow-x: auto;
+  text-align: center; 
+}
+
+.indicators {
+  display: inline-flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.indicator {
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.active {
+  border: 3px solid blue;
+}
+.active {
+  border:3px solid blue;
+}
+
+ 
