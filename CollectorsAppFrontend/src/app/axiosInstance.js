@@ -1,54 +1,98 @@
-
 import { getCookie } from "cookies-next";
 import axios from "axios";
-import { TestNav } from "./lib/testnav";
-let routerRef = null;
-export function setRouter(router) {
-    routerRef = router;
-}
+import { isTokenExpired } from "./lib/jwt-get-time";
 
 const instance = axios.create({
-    baseURL: "https://localhost:44302/",
-    withCredentials: true,
-    origin: "localhost:3000",
+  baseURL: "https://localhost:44302/",
+  withCredentials: true,
+  origin: "localhost:3000",
 })
 
-instance.interceptors.request.use((config) => {
-    var cookie = getCookie("AuthToken");
-    if (cookie === null) {
-        return config;
+let isRefreshing = false;
+let awaitingFetch = [];
+
+function processQueue(error) {
+  requestQueue.forEach(({ resolve, reject, config }) => {
+    if (error) {
+      reject(error);
     } else {
-        config.headers['Authorization'] = "bearer " + getCookie("AuthToken");
-        return config;
+      
+      var token = getCookie('AuthToken');
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+      resolve(instance(config));
     }
+  });
+  requestQueue.length = 0;
+}
+
+instance.interceptors.request.use(async (config) => {
+  if(!config.url){
+    return config;
+  }
+  if(isRefreshing==true){
+    return Promise((resolve,reject)=>{
+      awaitingFetch.push({resolve,reject,config})
+    })
+  }
+  if (config.url.includes("/Reauthenticate") || config.url.includes("/Authentication")) {
+    return config;
+  }
+
+  var authCookie = await getCookie("AuthToken");
+  if (authCookie) {
+    var expired = isTokenExpired(authCookie);
+    if (expired == false) {
+      config.headers['Authorization'] = "bearer " + authCookie;
+    }
+    else {
+      isRefreshing=true;
+      var result = await instance.post("https://localhost:44302/api/Authentication/Reauthenticate");
+
+      if (result.status != 200) {
+        return Promise.reject(result.status);
+      }
+
+      else {
+        isRefreshing=false;
+        var newCookie = await getCookie("AuthToken");
+        config.headers['Authorization'] = "bearer " + newCookie;
+      }
+    }
+  }
+
+  else{
+    isRefreshing=true;
+    var result = await instance.post("https://localhost:44302/api/Authentication/Reauthenticate")
+    if (result.status != 200) {
+      return Promise.reject(result.status);
+    }
+    else {
+      isRefreshing=false
+      var newCookie = await getCookie("AuthToken")
+      config.headers['Authorization'] = "bearer " + newCookie;
+    }
+  }
+
+  return config;
 }, (error) => {
-    return Promise.reject(error);
-})
+  return Promise.reject(error)
+});
 
 instance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
-        if (originalRequest.url.includes("/Reauthenticate")) 
-            {
-                return Promise.reject(error);
-            }
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-            try {
-                await instance.post("https://localhost:44302/api/Authentication/Reauthenticate");
-                return instance(originalRequest)
-            }
-            catch (refreshError) {
-                window.location.href = "/Logout";
-                if (typeof window !== 'undefined') {
-                    
-                }
-                return Promise.reject(refreshError);
-            }
-        }
-        window.location.href = "/Settings";
-        return Promise.reject(error);
-    });
+  (response) => {
+    if (response.config?.url?.includes("/Reauthenticate") && response.request?.status === 200){
+      isRefreshing = false;
+      processQueue(null);      
+    }
+    return response;
+  },
+  async (error) => {
+    if (error.config?.url.includes("/Reauthenticate") && error.response?.status === 401) {
+      processQueue(error.response?.status);
+      window.location.href = "/Logout";
+      return Promise.reject(refreshError);
+    }
+    return Promise.reject(error);
+  });
 
-export default instance;
+  export default instance;
