@@ -64,7 +64,7 @@ namespace CollectorsApp.Controllers
                 return Ok(await _repository.GetImagePathsByItemId(id));
             }
             else{
-                return NotFound();
+                return NoContent();
             }
         }
 
