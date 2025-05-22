@@ -1,5 +1,5 @@
 "use client"
-import "./cssRegister.css"
+import Style from "./cssRegister.module.css"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import instance from "@/app/axiosInstance"
@@ -7,6 +7,7 @@ import Head from "next/head"
 import Image from "next/image"
 import Button from "@/app/Components/Button/Button"
 import Link from "next/link"
+import cn from "classnames"
 
 export default function Register() {
     const [axiosResponse, setAxiosResponse] = useState();
@@ -60,17 +61,17 @@ export default function Register() {
             <Head>
                 <title>Rejestracja</title>
             </Head>
-            <div className="display-block">
-                <div className="div-center">
-                    <div className="div-border">
-                        <div className="l-d-display">
+            <div className={cn(Style.displayBlock)}>
+                <div className={cn(Style.divCenter)}>
+                    <div className={cn(Style.divBorder)}>
+                        <div className={cn(Style.logoDisplay)}>
                             <Image
                                 src="/android-chrome-512x512.png"
                                 alt="Logo"
                                 width={100}
                                 height={100}
                             /></div>
-                        <div className="text-center">
+                        <div className={cn(Style.textCenter)}>
                             <h2>Zarejestruj się</h2>
                         </div>
                         <div>
@@ -78,19 +79,19 @@ export default function Register() {
                                 <br />
                                 <label>
                                     Nazwa użytkownika:
-                                    <input className="input-border input-width input-height" name="registerName" type="text" required />
+                                    <input className={cn(Style.inputBorder, Style.inputWidth, Style.inputHeight)} name="registerName" type="text" required />
                                 </label>
                                 <br />
                                 <label>
                                     Email:
-                                    <input className="input-border input-width input-height" name="registerEmail" type="text" required />
+                                    <input className={cn(Style.inputBorder, Style.inputWidth, Style.inputHeight)} name="registerEmail" type="text" required />
                                 </label>
                                 <br />
                                 <label>
                                     Hasło:
-                                    <div className="password-container">
+                                    <div className={cn(Style.passwordContainer)}>
                                         <input
-                                            className="input-border input-width input-height "
+                                            className={cn(Style.inputBorder, Style.inputWidth, Style.inputHeight)}
                                             name="registerPassword"
                                             type={showPassword ? "text" : "password"}
                                             required
@@ -102,30 +103,30 @@ export default function Register() {
                                             onMouseDown={handleMouseDown}
                                             onMouseUp={handleMouseUp}
                                             onMouseLeave={handleMouseLeave}
-                                            className="toggle-password-icon"
+                                            className={cn(Style.togglePasswordIcon)}
                                         >
                                             {showPassword ? "👁️‍🗨️" : "👁️"}
                                         </button>
                                     </div>
                                 </label>
                                 <br />
-                                <label className="password-label">
+                                <label className={cn(Style.passwordLabel)}>
                                     Powtórz hasło:
-                                    <div className="password-container">
+                                    <div className={cn(Style.passwordContainer)}>
                                         <input
-                                            className="input-border input-width input-height"
+                                            className={cn(Style.inputBorder, Style.inputWidth, Style.inputHeight)}
                                             name="repeatPassword"
                                             type={showRepeatPassword ? "text" : "password"}
                                             required
                                         />
                                         <button
-                                            type="button"
+                                            type={cn(Style.button)}
                                             onTouchStart={handleTouchStartRepeat}
                                             onTouchEnd={handleTouchEndRepeat}
                                             onMouseDown={handleMouseDownRepeat}
                                             onMouseUp={handleMouseUpRepeat}
                                             onMouseLeave={handleMouseLeaveRepeat}
-                                            className="toggle-password-icon"
+                                            className={cn(Style.togglePasswordIcon)}
                                         >
                                             {showRepeatPassword ? "👁️‍🗨️" : "👁️"}
                                         </button>
@@ -134,15 +135,15 @@ export default function Register() {
                                 {error && (
                                     <>
                                         <br />
-                                        <p className="error-message">{error}</p>
+                                        <p className={cn(Style.errorMessage)}>{error}</p>
                                     </>
                                 )}
                                 <br />
                                 {axiosResponse}
-                                <Button classes="s-b-s" type="submit" required={true} disabled={isDisabled} isLoading={isLoading}>Zarejestruj się</Button>
+                                <Button classes={cn(Style.SBS)} type="submit" required={true} disabled={isDisabled} isLoading={isLoading}>Zarejestruj się</Button>
                             </form>
                             <br />
-                            <div className="card-links">
+                            <div className={cn(Style.cardLinks)}>
                                 <div><Link href={"/Login"}>Zaloguj się</Link></div>
                             </div>
                         </div>

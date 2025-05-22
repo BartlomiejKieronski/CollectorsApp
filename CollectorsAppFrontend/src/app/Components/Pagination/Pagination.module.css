@@ -5,26 +5,26 @@
     margin-top: 20px;
   }
   
-  .pagination-button {
+  .paginationButton {
     background-color: var(--button);
     padding: 0.5rem 1rem;
     cursor: pointer;
     overflow: hidden;
   }
   
-  .pagination-button:hover:not(:disabled) {
+  .paginationButton:hover:not(:disabled) {
     background-color:var(--button-hover);
   }
   
-  .pagination-button:disabled {
+  .paginationButton:disabled {
     opacity: 0.5;
     cursor: default;
   }
-  .pagination-button:disabled:hover{
+  .paginationButton:disabled:hover{
     background-color: var(--button);
   }
   
-  .active-page {
+  .activePage {
     font-weight: bold;
   }
   

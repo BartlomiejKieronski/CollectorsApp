@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import "./Carousel.css";
+import Style from "./Carousel.module.css";
 import rightArrow from "@/../public/right_arrow.svg";
 import leftArrow from "@/../public/left_arrow.svg";
+import cn from "classnames";
 
 export default function ImageDisplay({ signedUrlImageData }) {
   const [current, setCurrent] = useState(0);
@@ -28,7 +29,7 @@ export default function ImageDisplay({ signedUrlImageData }) {
 
   useEffect(() => {
     if (!arr) return;
-    const preloadRange = 1; 
+    const preloadRange = 1;
     const toPreload = new Set();
     for (let offset = -preloadRange; offset <= preloadRange; offset++) {
       const index = (current + offset + arr.length) % arr.length;
@@ -77,7 +78,7 @@ export default function ImageDisplay({ signedUrlImageData }) {
   }
 
   useEffect(() => {
-    if (!arr || arr.length<2) return;
+    if (!arr || arr.length < 2) return;
 
     const autoSwitchInterval = setInterval(() => {
       setCurrent((prevCurrent) => {
@@ -92,12 +93,12 @@ export default function ImageDisplay({ signedUrlImageData }) {
     return () => clearInterval(autoSwitchInterval);
   }, [lastInteraction, arr]);
 
-  const handleTouchStart=(e)=> touchStartX.current = e.touches[0].clientX;
+  const handleTouchStart = (e) => touchStartX.current = e.touches[0].clientX;
 
-  const handleTouchMove=(e)=> touchEndX.current = e.touches[0].clientX;
+  const handleTouchMove = (e) => touchEndX.current = e.touches[0].clientX;
 
-  const handleTouchEnd=()=> {
-    if (touchStartX.current === null || touchEndX.current === null || arr.length <2) return;
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null || arr.length < 2) return;
     const distance = touchStartX.current - touchEndX.current;
 
     if (distance > 50) {
@@ -120,24 +121,24 @@ export default function ImageDisplay({ signedUrlImageData }) {
     direction === "next" ? "slideOutNext" : "slideOutPrev";
 
   return (
-    <div className="carousel-container">
+    <div className={cn(Style.carouselContainer)}>
       {arr && (<>
         <div
-          className="carousel"
+          className={cn(Style.carousel)}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
           {Array.isArray(arr) && arr.length > 1 && (
-            <button className="nav-button left-button" onClick={prevImage}>
+            <button className={cn(Style.navButton, Style.leftButton)} onClick={prevImage}>
               <Image src={leftArrow} fill alt="loading" sizes="100%" />
             </button>
           )}
-          <div className="image-wrapper">
-            {prev !== null && Array.isArray(arr) && arr.length>1&&(
+          <div className={cn(Style.imageWrapper)}>
+            {prev !== null && Array.isArray(arr) && arr.length > 1 && (
               <Image
                 key={`prev-${arr[prev].id}`}
-                className={`carousel-image ${prevImageClass}`}
+                className={cn(Style.carouselImage, Style[prevImageClass])}
                 alt="Previous"
                 sizes="100%"
                 src={arr[prev].url}
@@ -146,34 +147,35 @@ export default function ImageDisplay({ signedUrlImageData }) {
             )}
             <Image
               key={`current-${arr[current].id}`}
-              className={`carousel-image ${newImageClass}`}
+              className={cn(Style.carouselImage, Style[newImageClass])}
               alt="Current"
               src={arr[current].url}
               sizes="100%"
               fill />
           </div>
           {Array.isArray(arr) && arr.length > 1 && (
-            <button className="nav-button right-button" onClick={nextImage}>
+            <button className={cn(Style.navButton, Style.rightButton)} onClick={nextImage}>
               <Image src={rightArrow} fill alt="loading" />
             </button>
           )}
-        </div>{Array.isArray(arr) && arr.length>0 &&(<>
-        <hr />
-        <div className="indicators-wrapper">
-          <div className="indicators">
-            {arr.map((x, index) => (
-              <div
-                className={`indicator ${index === current ? "active" : ""}`}
-                key={x.id} onClick={() => jumpTo(index)}>
-                <Image src={x.url} width={80} height={60} alt="loading" sizes="100%" />
-              </div>
-            ))}
+        </div>{Array.isArray(arr) && arr.length > 0 && (<>
+          <hr />
+          <div className={cn(Style.indicatorsWrapper)}>
+            <div className={cn(Style.indicators)}>
+              {arr.map((x, index) => (
+                <div
+                  className={cn(Style.indicator, { [Style.active]: index === current }
+                    // ${index === current ? "active" : ""
+                  )}
+                  key={x.id} onClick={() => jumpTo(index)}>
+                  <Image src={x.url} width={80} height={60} alt="loading" sizes="100%" />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-        <hr />
-      </>)}
+          <hr />
+        </>)}
       </>)}
     </div>
-    
   );
 }

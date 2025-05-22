@@ -1,4 +1,4 @@
-.card-item-layout {
+.cardItemLayout {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -14,7 +14,7 @@
 
 }
 
-.card-container {
+.cardContainer {
     position: relative;
     width: 100%;
 }
@@ -34,11 +34,11 @@
     height: 30px;
 }
 
-p {
+.cardContainer p {
     margin-top: 1rem;
 }
 
-.card-margin {
+.cardMargin {
     position: relative;
     background-color: var(--card);
 }
@@ -73,7 +73,7 @@ p {
 }
 
 @media screen and (min-width:600px) and (hover: hover) {
-    .card-data {
+    .cardData {
         padding-left: 3vh;
     }
 
@@ -89,14 +89,14 @@ p {
     .controllers label{
         display: inline;
     }
-    .card-layout {
+    .cardLayout {
         width: 300px;
         overflow: hidden;
 
         font-size: 16px;
     }
 
-    .card-margin {
+    .cardMargin {
 
         border-top: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
@@ -106,7 +106,7 @@ p {
 
     }
 
-    .card-img {
+    .cardImg {
         position: relative;
         width: 100%;
         aspect-ratio: 16 / 12;
@@ -115,14 +115,14 @@ p {
 }
 
 @media screen and (max-width: 600px) {
-    .card-layout {
+    .cardLayout {
         width: 100%;
         font-size: 16px;
         border: 0px;
         border-radius: 0px;
     }
 
-    .card-img {
+    .cardImg {
         position: relative;
         width: 100%;
         aspect-ratio: 16 / 12;
@@ -130,11 +130,11 @@ p {
 
     }
 
-    .card-container {
+    .cardContainer {
         margin-top: 70px;
     }
 
-    .card-margin {
+    .cardMargin {
         border: 1px solid #ccc;
         border-radius: 4px;
         overflow: hidden;
@@ -159,14 +159,14 @@ p {
 }
 
 @media screen and (min-width:600px) and (hover: none) and (orientation:landscape) {
-    .card-item-layout {
+    .cardItemLayout {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         width: 400px;
     }
 
-    .card-container {
+    .cardContainer {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -176,11 +176,11 @@ p {
     .controllers label{
         display: inline;
     }
-    .card-layout {
+    .cardLayout {
         width: 400px;
     }
 
-    .card-img {
+    .cardImg {
         position: relative;
         width: 100%;
         aspect-ratio: 16 / 12;
@@ -192,7 +192,7 @@ p {
         margin-bottom: 20px;
     }
 
-    .card-margin {
+    .cardMargin {
         border-top: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
         border-radius: 4px;

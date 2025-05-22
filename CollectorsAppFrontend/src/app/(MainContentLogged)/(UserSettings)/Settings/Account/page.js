@@ -1,5 +1,5 @@
 "use client"
-import "./AccountStyle.css"
+import Style from"./AccountStyle.module.css"
 import { useState } from "react"
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
 import { useSession } from "next-auth/react";
@@ -9,6 +9,7 @@ import { deleteCollection, IsPasswordCorrect, DeleteUserAccount } from "@/app/li
 import { toast } from "react-toastify";
 import Button from "@/app/Components/Button/Button";
 import InputPassword from "@/app/Components/PasswordInput/PasswordInput";
+import cn from "classnames" 
 
 export default function Konto() {
     const { data: session, status } = useSession();
@@ -63,8 +64,8 @@ export default function Konto() {
 
     if (status == "authenticated" && areItemsLoading == false) {
         return (
-            <div className="account-content-container">
-                <div className="password-change">
+            <div className={cn(Style.accountContentContainer)}>
+                <div className={cn(Style.passwordChange)}>
                     <div>Zmień hasło:</div>
                     <div>
                         <label>Wprowadź obecne hasło: &nbsp;
@@ -75,12 +76,12 @@ export default function Konto() {
                         </div>
                     </div>
                 </div>
-                <div className="delete-account">
-                    {!isDeleting && <div className="delete-button">
+                <div className={cn(Style.deleteAccount)}>
+                    {!isDeleting && <div className={cn(Style.deleteButton)}>
                         <div>Usuń Konto</div>
                         <div><button onClick={() => setIsDeleting(true)}>Usuń konto</button></div>
                     </div>}
-                    {isDeleting && <div className="delete-button-confirm">
+                    {isDeleting && <div className={cn(Style.deleteButtonConfirm)}>
                         <div>
                             <div>Podaj hasło</div>
                             <div><InputPassword setPassword={handleAccountDelete} /></div>

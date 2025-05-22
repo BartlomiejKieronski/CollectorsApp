@@ -1,7 +1,9 @@
-import { useState } from "react"
-import Image from "next/image"
-import "./Card.css"
-import Link from "next/link"
+import { useState } from "react";
+import Image from "next/image";
+import StyleImage from "./Card.module.css";
+import Link from "next/link";
+import cn from "classnames";
+import Style from "@/app/(MainContentLogged)/(Content)/ViewItems/ItemsView.module.css"
 export default function Card({cardData}){
     const [data,setData] = useState(null);
     
@@ -10,11 +12,11 @@ export default function Card({cardData}){
     },[cardData]);
 
     return(<>{data &&(
-    <div className="card-layout">
-        <div className="card-img">
+    <div className={cn(Style.cardLayout)}>
+        <div className={cn(Style.cardImg)}>
             <Image style={{ objectFit: 'cover' }} sizes="100%" src={data.url} priority={false} fill alt={data.itemName} />
         </div>
-        <div className="card-data">
+        <div className={cn(Style.cardData)}>
             <p>{data.itemName}</p>
             
             <p><Link href={`/Item/${data.id}`}>pokaż szczegóły</Link></p>

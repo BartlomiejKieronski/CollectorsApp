@@ -8,10 +8,10 @@ import ItemInfo from "@/app/Components/AddItem/AddItemInfo";
 import { AddImage, AddItem } from "@/app/lib/utility";
 import { toast } from "react-toastify";
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
-import "./AddItem.css";
+import Style from "./AddItem.module.css";
 import Button from "@/app/Components/Button/Button";
 import Link from "next/link";
-
+import cn from "classnames";
 export default function AddCollectableItem() {
 
     const router = useRouter();
@@ -101,22 +101,22 @@ export default function AddCollectableItem() {
     
     if (status == "authenticated") {
         return (
-            <div className="add-item-margin">
+            <div className={cn(Style.addItemMargin)}>
                 
                 <form onSubmit={postItems}>
-                    <div className="display-flex">
+                    <div className={cn(Style.displayFlex)}>
                         
-                        <div className="img-cropper-position">
-                        <div className="back-to-view-items">{menuItems &&<Link href={`/ViewItems/${ItemCollection}/${menuItems.find(collection=>ItemCollection==collection.name).id}`}>Wróć</Link>}</div>
+                        <div className={cn(Style.imgCropperPosition)}>
+                        <div className={cn(Style.backToViewItems)}>{menuItems &&<Link href={`/ViewItems/${ItemCollection}/${menuItems.find(collection=>ItemCollection==collection.name).id}`}>Wróć</Link>}</div>
                             <ImageCroper onCroppedImageChange={handleCroppedImageChange} />
                         </div>
-                        <div className="add-items-position">
+                        <div className={cn(Style.addItemsPosition)}>
                             <div>{menuItems && (
                                 <ItemInfo onDataChange={handleItemInfoChange} collections={menuItems} selectedCollection={selectedCollection} />
                             )}
                             </div>
-                            <div className="add-items-button">
-                                <Button className="add-item-submit-button" isLoading={isLoading} type="submit">Dodaj</Button>
+                            <div className={cn(Style.addItemsButton)}>
+                                <Button className={cn(Style.addItemSubmitButton)} isLoading={isLoading} type="submit">Dodaj</Button>
                             </div>
                         </div>
                     </div>

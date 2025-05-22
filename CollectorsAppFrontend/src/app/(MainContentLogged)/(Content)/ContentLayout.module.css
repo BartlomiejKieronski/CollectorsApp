@@ -1,15 +1,15 @@
-.content-container {
+.contentContainer {
     display: flex;
     width: 100vw;
     height: 92vh;
     position: relative;
 }
 
-.menu-header {
+.menuHeader {
     display: none;
 }
 
-.Side-Menu {
+.SideMenu {
     padding-top: 8px;
     display: flex;
     flex-direction: column;
@@ -23,19 +23,19 @@
 }
 
 @media (min-width:600px) and (hover:hover) {
-    .Content-Layout-Style {
+    .ContentLayoutStyle {
         padding: 5vh;
         overflow: auto;
         width: 100%;
     }
 }
 
-.menu-toggle-button {
+.menuToggleButton {
     display: none;
 }
 
 @media (min-width:600px) and (hover:none) and (orientation:landscape) {
-    .Side-Menu {
+    .SideMenu {
         position: fixed;
         top: 0;
         left: 0;
@@ -52,40 +52,40 @@
         padding: 1rem;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
     }
-    .content-container{
+    .contentContainer{
         height: 100%;
     }
-    .Side-Menu.open {
+    .SideMenu.open {
         transform: translateX(0);
         padding-left: 20px;
     }
 
-    .menu-header {
+    .menuHeader {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1rem;
     }
 
-    .menu-header h2 {
+    .menuHeader h2 {
         margin: 0;
         font-size: 1.5rem;
     }
 
-    .menu-close-button {
+    .menuCloseButton {
         background: none;
         border: none;
         font-size: 1.5rem;
         cursor: pointer;
     }
 
-    .Content-Layout-Style {
+    .ContentLayoutStyle {
         margin-left: 0;
         overflow: auto;
         width: 100vw;
     }
 
-    .menu-toggle-button {
+    .menuToggleButton {
         display: block;
         position: fixed;
         top: 20px;
@@ -103,7 +103,7 @@
 
 @media (max-width: 600px) {
 
-    .Side-Menu {
+    .SideMenu {
         position: fixed;
         top: 0;
         left: 0;
@@ -121,39 +121,39 @@
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
     }
 
-    .Side-Menu.open {
+    .SideMenu.open {
         transform: translateX(0);
         padding-left: 20px;
     }
 
-    .menu-header {
+    .menuHeader {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1rem;
     }
 
-    .menu-header h2 {
+    .menuHeader h2 {
         margin: 0;
         font-size: 1.5rem;
     }
 
-    .menu-close-button {
+    .menuCloseButton {
         background: none;
         border: none;
         font-size: 1.5rem;
         cursor: pointer;
     }
-    .content-container{
+    .contentContainer{
         display: inline;
     }
     
-    .Content-Layout-Style {
+    .ContentLayoutStyle {
         margin-left: 0;
         overflow: auto;
     }
 
-    .menu-toggle-button {
+    .menuToggleButton {
         display: block;
         position: fixed;
         top: 20px;
@@ -169,10 +169,10 @@
     }
 }
 
-.menu-content {
+.menuContent {
     color: var(--text-color);
 }
 
-.svg-circle-color {
+.svgCircleColor {
     filter: invert(--svg-color)
 }

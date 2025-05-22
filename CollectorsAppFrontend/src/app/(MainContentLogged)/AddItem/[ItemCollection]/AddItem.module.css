@@ -1,71 +1,71 @@
-.add-item-margin {
+.addItemMargin {
     margin-top: 4vh;
     margin-bottom: 4vh;
 }
 
-form {
+.addItemMargin form {
     margin-top: 100px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-.display-flex {
+.displayFlex {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
 }
 
-.img-cropper-position {
+.imgCropperPosition {
     flex: 1;
 }
-.add-item-submit-button{
+.addItemSubmitButton{
     justify-self: end;
     min-width: 200px;
 }
-.add-items-position {
+.addItemsPosition {
     flex: 1;
     justify-content: end;
 }
 
-.add-item-layout {
+.addItemLayout {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.add-item-layout label {
+.addItemLayout label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
-.add-item-layout select {
+.addItemLayout select {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
-.add-item-layout input {
+.addItemLayout input {
     width: 100%;
     padding: 8px;
 
 }
-.add-item-layout select {
+.addItemLayout select {
     width: 100%;
     padding: 8px;
 }
 
-.add-item-layout textarea {
+.addItemLayout textarea {
     width: 100%;
     padding: 8px;
 }
 
-.add-items-button {
+.addItemsButton {
     margin-top: 20px;
     text-align: right;
 }
 
-.add-items-button button {
+.addItemsButton button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -73,7 +73,7 @@ form {
     font-size: 16px;
 }
 
-.img-cropper-position label {
+.imgCropperPosition label {
     display: inline-block;
     padding: 10px 15px;
     background-color: rgba(169, 169, 169, 0.089);
@@ -82,15 +82,15 @@ form {
     cursor: pointer;
 }
 
-.img-cropper-position label:hover {
+.imgCropperPosition label:hover {
     background-color: #0056b3;
 }
 
-.img-cropper-position label input[type="file"] {
+.imgCropperPosition label input[type="file"] {
     display: none;
 }
 
-.img-cropper-position button {
+.imgCropperPosition button {
     margin-top: 10px;
     padding: 8px 15px;
     color: var(--text-color);
@@ -99,61 +99,61 @@ form {
     cursor: pointer;
 }
 
-.scs-clr{
+.scsClr{
     color:#218838;
     text-wrap: wrap;
 }
-img[alt="Cropped"] {
+.addItemMargin img[alt="Cropped"] {
     max-width: 100%;
     height: auto;
     margin-top: 10px;
 }
-.err-clr{
+.errClr{
     color: rgba(255, 0, 0, 0.659);
     text-wrap: wrap;
 }
 
 @media (min-width:600px) and (hover: none) and (orientation:landscape){
-    .display-flex {
+    .displayFlex {
         flex-direction: column;
     }
 
-    .img-cropper-position,
-    .add-items-position {
+    .imgCropperPosition,
+    .addItemsPosition {
         width: 100%;
     }
     
-    label input {
+    .addItemMargin label input {
         width: 100%;
     }
-    .add-item-margin{
+    .addItemMargin{
         overflow: auto;
     }
-    label textarea {
+    .addItemMargin label textarea {
         width: 100%;
     }
 }
 @media screen and (max-width: 600px){
-    .display-flex {
+    .displayFlex {
         flex-direction: column;
     }
 
-    .img-cropper-position,
-    .add-items-position {
+    .imgCropperPosition,
+    .addItemsPosition {
         width: 100%;
     }
 
-    label input {
+    .addItemMargin label input {
         width: 100%;
     }
 
-    label textarea {
+    .addItemMargin label textarea {
         width: 100%;
     }
 
 }
 @media (min-width:600px) and (hover: hover){
-    form {
+    .addItemMargin form {
         border-bottom: 1px solid white;
         border-right: 1px solid white;
         background-color: rgba(169, 169, 169, 0.1);
@@ -161,13 +161,13 @@ img[alt="Cropped"] {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .add-items-position {
+    .addItemsPosition {
         max-width: 50%;
         padding-top: 44px;
         
     }
 
-    .img-cropper-position {
+    .imgCropperPosition {
         max-width: 50%;
     }
 }

@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
-import "./content-menu.css";
+import Style from "./content-menu.module.css";
 import image from "@/../public/image.png";
 import { useMenu } from "@/app/Providers/MobileMenuProvider";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import cn from "classnames";
 export default function MenuContent() {
   const { toggleMenu } = useMenu();
   const path = usePathname();
@@ -55,69 +56,76 @@ export default function MenuContent() {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="menu-content">
-      <div className="menu-content-start">
+    <div className={cn(Style.menuContent)}>
+      <div className={cn(Style.menuContentStart)}>
         {urlContainsItemsView && (
-          <button className="hamburger-side-menu" onClick={toggleMenu}>
+          <button className={cn(Style.hamburgerSideMenu)} onClick={toggleMenu}>
             ☰
           </button>
         )}
-        <div className="menu-content-logo" tabIndex={0}>
+        <div className={cn(Style.menuContentLogo)} tabIndex={0}>
           <Link href={"/ViewItems"}>
-            <div className="menu-content-logo">
+            <div className={cn(Style.menuContentLogo)}>
               <Image
                 src={image}
                 width={50}
                 height={50}
                 alt="App Logo"
-                className="logo-image"
+                className={cn(Style.logoImage)}
               />
-              <div className="app-name" >App Name</div>
+              <div className={cn(Style.appName)} >App Name</div>
             </div>
           </Link>
         </div>
       </div>
       <button
         ref={menuIconRef}
-        className="menu-icon"
+        className={cn(Style.menuIcon)}
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       >
         ☰
       </button>
 
-      <div ref={menuContentEndRef} className={`menu-content-end ${!isMobileMenuOpen ? "" : "mobile-menu-open"}`}>
-        <ul className="ul-menu">
+      <div ref={menuContentEndRef} className={cn(Style.menuContentEnd,{
+        [Style.mobileMenuOpen]: isMobileMenuOpen
+      })
+        //`menu-content-end ${!isMobileMenuOpen ? "" : "mobile-menu-open"}`
+      }>
+        <ul className={cn(Style.ulMenu)}>
           <li tabIndex={0} role="button"><Link href={"/ViewItems"}>Kolekcje</Link></li>
-          <li className="user-menu" tabIndex={0} role="button" onKeyDown={(e) => {
+          <li className={cn(Style.userMenu)} tabIndex={0} role="button" onKeyDown={(e) => {
             if (e.key === "Enter") {
               setIsUserMenuOpen(!isUserMenuOpen);
             }
           }}>
-            <span ref={userToggleRef} className="user-toggle"
+            <span ref={userToggleRef} className={cn(Style.userToggle)}
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
               Użytkownik
             </span>
             <ul
               ref={userSubmenuRef}
-              className={`user-submenu ${isUserMenuOpen ? "open" : ""}`}
-            >
+              className={cn(Style.userSubmenu, { [Style.open]: isUserMenuOpen })
+                //`user-submenu ${isUserMenuOpen ? "open" : ""}`}
+              }>
               <li tabIndex={0} role="button"><Link href={"/Settings/Preferences"}>Preferencje</Link></li>
               <li tabIndex={0} role="button"><Link href={"/Settings/Account"}>Konto</Link></li>
-              <li className="logout-item">
+              <li className={cn(Style.logoutItem)}>
                 <button
-                  className="lg-bt"
+                  className={cn(Style.lgBt)}
                   onClick={() => {
                     signOut({ redirect: false }).then(() => {
                       router.push("/Login");
                     });
                   }}
                 >
-                  <div className="ul-flex fl-gap">
-                    <span className="bt-txt">Wyloguj się</span>
-                    <span className="img-lt">
-                      <img
-                        className="lg-img svg-cl"
+                  <div className={cn(Style.ulFlex, Style.flGap)}>
+                    <span className={cn(Style.btTxt)}>Wyloguj się</span>
+                    <span className={cn(Style.imgLt)}>
+                      <Image
+                        className={cn(Style.lgImg, Style.svgCl, 'icon')}
                         src="/logout.svg"
+                        width={20}
+                        height={20}
                         alt="logout"
                       />
                     </span>
@@ -126,7 +134,6 @@ export default function MenuContent() {
               </li>
             </ul>
           </li>
-
         </ul>
       </div>
     </div>

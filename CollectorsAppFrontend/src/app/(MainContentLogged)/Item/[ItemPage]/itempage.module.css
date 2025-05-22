@@ -1,9 +1,9 @@
-.item-page-wrapper {
+.itemPageWrapper {
     position: relative;
     padding: 20px;
 }
 
-.div-display-page-layout {
+.divDisplayPageLayout {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -11,16 +11,16 @@
     gap: 20px;
 }
 
-.image-carusel-component {
+.imageCaruselComponent {
     flex: 1;
     max-width: 40%;
 }
 
-.item-details-component {
+.itemDetailsComponent {
     min-width: 40vw;
 }
 
-.item-page-content-area>div:first-child {
+.itemPageContentArea>div:first-child {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 10px;
@@ -28,63 +28,63 @@
 
 
 
-.item-page-container {
+.itemPageContainer {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.item-page-data-layout {
+.itemPageDataLayout {
     display: flex;
     padding: 5px 0;
     text-wrap: wrap !important;
 }
-.element-size{
+.elementSize{
     min-width:100px;
 }
-.item-page-data-layout>div:last-child{
+.itemPageData-layout>div:last-child{
     flex-grow: 1;
     min-width: 100px;
 }
-.edit-btn-lt {
+.editBtnLt {
     position: absolute;
     background-color: var(--button);
     border: 0px;
 
 }
 
-.element-size:first-child {
+.elementSize:first-child {
     font-weight: bold;
     margin-right: 10px;
 
 }
 
-.item-page-content-area {
+.itemPageContentArea {
     position: relative;
 }
 
-.item-page-description {
+.itemPageDescription {
     justify-content: center;
     margin-top: 20px;
 }
 
-.item-page-description>div:first-child {
+.itemPageDescription>div:first-child {
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-.text-wrap {
+.textWrap {
     text-wrap: wrap;
     overflow: hidden;
 }
 
-.el-pos {
+.elPos {
     position: relative;
 }
 
 
-.disp-txt {
+.dispTxt {
     position: absolute;
     right: 0;
     width: 18px;
@@ -96,58 +96,58 @@
 }
 
 @media (max-width: 600px) {
-    .div-display-page-layout {
+    .divDisplayPageLayout {
         flex-direction: column;
     }
 
-    .edit-btn-lt {
+    .editBtnLt {
         margin-right: 1vw;
     }
 
-    .element-size:first-child {
+    .elementSize:first-child {
         width: 60%;
     }
 
-    .item-page-data-layout {
+    .itemPageData-layout {
         justify-content: start;
         padding: 5px 0;
     }
 
-    .image-carusel-component,
-    .item-details-component {
+    .imageCaruselComponent,
+    .itemDetailsComponent {
         max-width: 100%;
         width: 100%;
     }
 
-    .image-carusel-component {
+    .imageCaruselComponent {
         flex: none;
     }
-    .edit-btn-lt {
+    .editBtnLt {
         top: -35px;
         right: 0px;
         margin-right: 5vw;
     }
 
-    .item-page-wrapper {
+    .itemPageWrapper {
         margin-top: 50px;
     }
 }
 
 @media (min-width:600px) and (hover:hover) {
-    .element-size:first-child {
+    .elementSize:first-child {
         width: 30vw;
     }
 
-    .item-page-description {
+    .itemPageDescription {
 
         margin-left: 4vh;
     }
 
-    .image-carusel-component {
+    .imageCaruselComponent {
         aspect-ratio: 4/3;
     }
 
-    .description-layout {
+    .descriptionLayout {
         margin-top: 3vh;
         min-width: 50%;
         display: flex;
@@ -155,73 +155,73 @@
 
     }
 
-    .item-details-component {
+    .itemDetailsComponent {
         width: 30vw;
     }
 
-    .item-page-data-layout {
+    .itemPageDataLayout {
         min-width: 300px;
     }
 
-    .item-page-description {
+    .itemPageDescription {
         width: 45%;
     }
 
-    .edit-btn-lt {
+    .editBtnLt {
         top: -35px;
         right: 0px;
         margin-right: 12vw;
     }
 
-    .item-page-wrapper {
+    .itemPageWrapper {
         margin-top: 50px;
     }
 
 }
 
 @media (min-width:600px) and (hover: none) and (orientation:landscape) {
-    .div-display-page-layout {
+    .divDisplayPageLayout {
         flex-direction: column;
     }
 
-    .edit-btn-lt {
+    .editBtnLt {
         top: -35px;
         right: 10px;
         margin-right: 8vw;
     }
 
-    .item-page-wrapper {
+    .itemPageWrapper {
         margin-top: 50px;
     }
 
-    .element-size:first-child {
+    .elementSize:first-child {
         width: 60%;
     }
 
-    .item-page-data-layout {
+    .itemPageDataLayout {
         justify-content: start;
         padding: 5px 0;
     }
 
-    .image-carusel-component,
-    .item-details-component {
+    .imageCaruselComponent,
+    .itemDetailsComponent {
         max-width: 100%;
         width: 100%;
     }
 
-    .image-carusel-component {
+    .imageCaruselComponent {
         flex: none;
     }
 
-    .item-page-description {
+    .itemPageDescription {
         width: 95vw;
     }
 }
 
-.item-page-description a {
+.itemPageDescription a {
     text-decoration: underline;
 }
 
-.item-page-description a:hover {
+.itemPageDescription a:hover {
     color: var(--foreground);
 }

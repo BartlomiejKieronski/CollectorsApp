@@ -1,8 +1,9 @@
 "use client"
-import { useState, useEffect } from "react"
-import "./Preferences.css"
-import ToggleSwitch from "@/app/Components/Switch/Switch"
-import { useTheme } from "next-themes"
+import { useState, useEffect } from "react";
+import Style from "./Preferences.module.css";
+import ToggleSwitch from "@/app/Components/Switch/Switch";
+import { useTheme } from "next-themes";
+import cn from "classnames";
 
 export default function Preferencje() {
     const { theme, setTheme } = useTheme();
@@ -17,7 +18,7 @@ export default function Preferencje() {
     
     return (
 
-        <div className="preferences-style-container">
+        <div className={cn(Style.preferencesStyleContainer)}>
             <div>
                 <div>Motyw:</div>
                 <div>

@@ -40,7 +40,6 @@ html.light {
   --button:#d0d0d0;
   --svg-filter: invert(0%);
   --svg-filter-inactive: invert(50%);
-  
 }
 
 html.dark .icon {
@@ -51,7 +50,7 @@ html.light .icon {
   filter: invert(0%);
 }
 
-html .disabled-icon {
+html .disabledIcon {
   filter: invert(50%);
   cursor:default;
 }

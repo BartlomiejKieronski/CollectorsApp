@@ -1,8 +1,10 @@
 "use client"
-import Tree from "@/app/Components/Tree/TreeNavigation.js"
-import "./ContentLayout.css"
-import { useState } from "react"
-import { useMenu } from "@/app/Providers/MobileMenuProvider"
+import Tree from "@/app/Components/Tree/TreeNavigation.js";
+import Style from "./ContentLayout.module.css";
+import { useState } from "react";
+import { useMenu } from "@/app/Providers/MobileMenuProvider";
+import cn from "classnames";
+
 export default function Content({ children }) {
 
   const [data, setData] = useState();
@@ -12,11 +14,13 @@ export default function Content({ children }) {
   const handleClickAction = (parentId) => setData(parentId);
 
   return (
-    <div className="content-container">
-      <div className={`Side-Menu ${isOpen ? 'open' : 'closed'}`}>
+    <div className={cn(Style.contentContainer)}>
+      <div className={cn(Style.SideMenu, {[Style.open]:isOpen})}
+      //{`Side-Menu ${isOpen ? 'open' : 'closed'}`}
+      >
         <Tree onButtonClick={handleClickAction} onMenuInfo={closeMenu} />
       </div>
-      <div className="Content-Layout-Style">{data}
+      <div className={cn(Style.ContentLayoutStyle)}>{data}
         {children}
       </div>
     </div>

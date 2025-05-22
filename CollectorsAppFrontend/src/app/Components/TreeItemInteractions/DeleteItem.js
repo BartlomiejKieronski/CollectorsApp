@@ -1,12 +1,14 @@
 "use client"
 import Button from "../Button/Button"
+import Style from "../Tree/SideMenuTreeComponent.module.css";
+import cn from "classnames";
 
 export default function DeleteTreeItem({DeleteItem, SelectedParent,isLoading,SetSelectedItem}) {
 
     return (
-        <div className="edit-item-container">
+        <div className={cn(Style.editItemContainer)}>
             <div><p>Czy na pewno chcesz usunąć element?</p></div>
-            <div className="add-item-button">
+            <div className={cn(Style.addItemButton)}>
                 <Button onClick={()=>DeleteItem(SelectedParent.id)} isLoading={isLoading} disabled={isLoading} type={"button"}>Potwierdź</Button>
                 <button onClick={()=>SetSelectedItem(null)}>Anuluj</button>
             </div>

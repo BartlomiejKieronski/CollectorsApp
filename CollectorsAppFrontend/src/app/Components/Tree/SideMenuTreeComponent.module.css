@@ -2,31 +2,31 @@
   font-size: medium;
 }
 
-ul {
+.menuTreeContainer ul {
   list-style: none;
 }
 
-.menu-collections {
+.menuCollections {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.edit-button {
+.editButton {
   align-self: flex-end;
   position: relative;
 }
 
-.edit-svg {
+.editSvg {
   position: relative;
 }
 
-.flex-end {
+.flexEnd {
   align-self: flex-end;
 }
 
-.edit-menu-choice-open {
+.editMenuChoiceOpen {
   position: absolute;
   z-index: 100;
   min-width: 200px;
@@ -43,15 +43,15 @@ ul {
   border-radius: 4px;
 }
 
-.edit-menu-choice-closed {
+.editMenuChoiceClosed {
   display: none;
 }
 
-.edit-svg:hover {
+.editSvg:hover {
   cursor: pointer;
 }
 
-.menu-tree-container {
+.menuTreeContainer {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -60,29 +60,29 @@ ul {
   margin-bottom: 20px;
 }
 
-.add-item-button {
+.addItemButton {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 10px;
 }
 
-li:hover {
+.menuTreeContainer li:hover {
   cursor: pointer;
 }
 
-.flex-label {
+.flexLabel {
   display: flex;
   flex-direction: column;
 }
 
-.select-style,
-.input-style {
+.selectStyle,
+.inputStyle {
   min-height: 4vh;
   width: 100%;
 }
 
-.button-add-node {
+.buttonAddNode {
   display: inline;
   margin-left: 20px;
   min-width: 16px !important;
@@ -94,57 +94,58 @@ li:hover {
   justify-content: flex-end;
 }
 
-.check-color {
+.checkColor {
   color: #BEBDBF;
 }
 
 
-.svg-color-last {
+.svgColorLast {
   margin-right: 5px;
 }
 
-.button-edit-node {
+.buttonEditNode {
   display: inline;
   margin-left: 20px;
   min-width: 16px !important;
   min-height: 16px !important;
   width: 16px !important;
   height: 16px !important;
-  background-color: transparent;
+  background: none;
+  background-color: transparent !important;
   justify-content: flex-end;
   border: none
 }
 
-.b-visibility {
+.bVisibility {
   background-color: transparent;
   border: 0px;
 }
 
-.edit-item-container {
+.editItemContainer {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.edit-item-container p {
+.editItemContainer p {
   text-wrap: wrap;
 }
 
-.edit-item-container input {
+.editItemContainer input {
   min-height: 4vh;
   font-size: 16px;
 }
 
-.menu-tree-container li {
+.menuTreeContainer li {
   -webkit-tap-highlight-color: transparent;
 }
 
-.click-redirect:active {
+.clickRedirect:active {
   background-color: #0070f3;
   opacity: 50%;
 }
 
-.accept-delete-div {
+.acceptDeleteDiv {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -152,13 +153,13 @@ li:hover {
   text-align: center;
 }
 
-.display-button-confirm {
+.displayButtonConfirm {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.pagelayout {
+.pageLayout {
   position: absolute;
   top: 0;
   left: 0;
@@ -171,13 +172,11 @@ li:hover {
   z-index: 1000;
 }
 
-.accept-delete-div
-button,
-p {
+.editItemContainer button,.editItemContainer p {
   margin: 10px;
 }
 
-.accept-delete-div button {
+.menuTreeContainer button {
   margin: 0 8px;
   padding: 8px 16px;
   border: none;
@@ -188,19 +187,19 @@ p {
   transition: background-color 0.3s ease;
 }
 
-.edit-item-container label {
+.editItemContainer label {
   display: flex;
   flex-direction: column;
 }
 
 
 @media (min-width: 768px) {
-  .b-visibility {
+  .bVisibility {
     visibility: hidden;
   }
 }
 
-li {
+.menuTreeContainer li {
   margin-top: 5px;
   font-size: large;
 }

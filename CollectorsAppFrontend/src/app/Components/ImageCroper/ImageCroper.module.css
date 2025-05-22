@@ -1,7 +1,7 @@
-.max-width{
+.maxWidth{
     width: 100%;
 }
-.react-crop-max-width{
+.reactCropMaxWidth{
     max-width: 98vw;
     margin-right: 10px;
 }

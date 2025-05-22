@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import "./EditPage.css";
+import Style from "./EditPage.module.css";
 import EditPictures from "@/app/Components/EditItemData/EditPictures";
 import EditData from "@/app/Components/EditItemData/EditData";
 import {
@@ -18,6 +18,7 @@ import {
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
 import { toast } from "react-toastify";
 import Button from "@/app/Components/Button/Button";
+import cn from "classnames";
 
 export default function EditItem() {
   const { data: session, status } = useSession();
@@ -243,11 +244,11 @@ export default function EditItem() {
   }
 
   return (
-    <div className="edit-item">
+    <div className={cn(Style.editItem)}>
       <form onSubmit={handleSubmit}>
         {error && <p>{error}</p>}
-        <div className="display-flex">
-          <div className="img-cropper-position">
+        <div className={cn(Style.displayFlex)}>
+          <div className={cn(Style.imgCropperPosition)}>
             {itemData && (
               <EditPictures
                 key={keyData}
@@ -262,9 +263,9 @@ export default function EditItem() {
               />
             )}
           </div>
-          <div className="add-items-position">
+          <div className={cn(Style.addItemsPosition)}>
             <div>
-              <div className="delete-button">
+              <div className={cn(Style.deleteButton)}>
                 <Button type={"button"} isLoading={isLoading} disabled={isLoading} onClick={() => DeleteCurrentItem()}>Usuń</Button>
               </div>
               {menuItems && (
@@ -275,8 +276,8 @@ export default function EditItem() {
 
                 />)}
             </div>
-            <div className="add-items-button">
-              <Button className="add-item-submit-button" isLoading={isLoading} disabled={isLoading} type="submit">Aktualizuj</Button>
+            <div className="addItemsButton">
+              <Button className={cn(Style.addItemSubmitButton)} isLoading={isLoading} disabled={isLoading} type="submit">Aktualizuj</Button>
             </div>
           </div>
         </div>

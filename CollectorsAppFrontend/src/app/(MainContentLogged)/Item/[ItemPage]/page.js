@@ -1,16 +1,16 @@
 "use client"
 
-import ImageCarusel from "@/app/Components/Image-Carusel/ImgCarusel.js"
-import ItemDetails from "@/app/Components/ItemDetails/ItemDetails"
-import Linkify from "react-linkify"
-import "./itempage.css"
-import { GetSignedImagesUrls, GetItem, ImagePaths, GetSignedImageUrl } from "@/app/lib/utility"
-import { useEffect, useState } from "react"
-import { useRouter, useParams } from "next/navigation"
-import { useSession } from "next-auth/react"
-import Image from "next/image"
-import Button from "@/app/Components/Button/Button"
-
+import ImageCarusel from "@/app/Components/Image-Carusel/ImgCarusel.js";
+import ItemDetails from "@/app/Components/ItemDetails/ItemDetails";
+import Linkify from "react-linkify";
+import Style from"./itempage.module.css";
+import { GetSignedImagesUrls, GetItem, ImagePaths, GetSignedImageUrl } from "@/app/lib/utility";
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import Button from "@/app/Components/Button/Button";
+import cn from "classnames";
 export default function ItemPage() {
     const { data: session, status } = useSession()
 
@@ -84,22 +84,22 @@ export default function ItemPage() {
     const EditRedirect = () => router.push(`/Item/${ItemPage}/EditPage`);
 
     return (
-        <div className="item-page-wrapper">
+        <div className={cn(Style.itemPageWrapper)}>
             {data && (
                 <>
-                    <Button classes="edit-btn-lt" isLoading={isLoading} onClick={() => { setIsLoading(true); EditRedirect() }}>Edytuj dane</Button>
-                    <div className="div-display-page-layout">
-                        <div className="image-carusel-component">
+                    <Button classes={Style.editBtnLt} isLoading={isLoading} onClick={() => { setIsLoading(true); EditRedirect() }}>Edytuj dane</Button>
+                    <div className={cn(Style.divDisplayPageLayout)}>
+                        <div className={cn(Style.imageCaruselComponent)}>
                             <ImageCarusel signedUrlImageData={signedUrlImageData} />
                         </div>
-                        <div className="item-details-component">
+                        <div className={cn(Style.itemDetailsComponent)}>
                             <ItemDetails data={data} EditRedirect={EditRedirect} />
                         </div>
                     </div>
-                    <div className="description-layout">
-                        <div className="item-page-description">
+                    <div className={cn(Style.descriptionLayout)}>
+                        <div className={cn(Style.itemPageDescription)}>
                             <div>Opis <hr /></div>
-                            <div><Linkify properties={{ className: 'custom-link' }}><p style={{ whiteSpace: 'pre-line', fontSize: "16px" }}>{data.description}</p></Linkify></div>
+                            <div><Linkify properties={{ className: {Style:Style.customLink} }}><p style={{ whiteSpace: 'pre-line', fontSize: "16px" }}>{data.description}</p></Linkify></div>
                         </div>
                     </div>
                 </>)}

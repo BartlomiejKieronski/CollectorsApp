@@ -1,12 +1,15 @@
 import Button from "../Button/Button";
+import Style from "../Tree/SideMenuTreeComponent.module.css";
+import cn from "classnames";
+
 export default function AddTreeItem({ setSelectedParent, selectedParent, menuItems, setNewNodeName, newNodeName, addNode, isLoading = false }) {
 
 return (<>
         <div style={{ marginTop: "10px" }}>
-            <label className="flex-label">
+            <label className={cn(Style.flexLabel)}>
                 Wybrany rodzic:{" "}
                 <select
-                    className="select-style"
+                    className={cn(Style.selectStyle)}
                     value={selectedParent ? selectedParent.id : ""}
                     onChange={(e) => {
                         const id = e.target.value;
@@ -34,12 +37,12 @@ return (<>
         </div>
         <div style={{ marginTop: "10px" }}>
             <input
-                className="input-style"
+                className={cn(Style.inputStyle)}
                 type="text"
                 value={newNodeName}
                 onChange={(e) => setNewNodeName(e.target.value)}
                 placeholder="New node name" />
-            <div className="add-item-button">
+            <div className={cn(Style.addItemButton)}>
                 <Button isLoading={isLoading} type="button"
                     disabled={isLoading}
                     onClick={() => {

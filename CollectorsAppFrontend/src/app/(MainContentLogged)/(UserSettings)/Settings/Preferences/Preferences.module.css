@@ -1,4 +1,4 @@
-.preferences-style-container>div{
+.preferencesStyleContainer>div{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -9,12 +9,12 @@
     padding: 8px;
     border-radius: 8px;
 }
-.preferences-style-container>div>div:last-child{
+.preferencesStyleContainer>div>div:last-child{
     display: flex;
     flex-direction: column;
     gap:2px
 }
-.preferences-style-container>div>div:last-child>div:last-child{
+.preferencesStyleContainer>div>div:last-child>div:last-child{
     display: flex;
     flex-direction: column;
     justify-content: center;

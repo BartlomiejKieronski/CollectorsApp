@@ -5,6 +5,8 @@ import ImageCroper from "@/app/Components/ImageCroper/page.js";
 import { DeleteImage } from "@/app/lib/utility";
 import { toast } from "react-toastify";
 import Button from "../Button/Button";
+import Style from "@/app/(MainContentLogged)/Item/[ItemPage]/[EditPage]/EditPage.module.css";
+import cn from "classnames";
 
 export default function EditPictures({
     onHandleImages,
@@ -53,8 +55,8 @@ export default function EditPictures({
     }
 
     return (
-        <div className="edit-image-display-div">
-            <div className="btn-lt">
+        <div className={cn(Style.editImageDisplayDiv)}>
+            <div className={cn(Style.btnLt)}>
                 <Button type="button" onClick={handleAddImage} isLoading={isLoading}>
                     Dodaj zdjęcie
                 </Button>
@@ -63,20 +65,20 @@ export default function EditPictures({
                 </Button>
             </div>
             {(!images || images.length < 1) ? (
-                <div className="img-cropper-container">
-                    <div className="img-cropper">
+                <div className={cn(Style.imgCropperContainer)}>
+                    <div className={cn(Style.imgCropper)}>
                         <ImageCroper onCroppedImageChange={onCroppedImageChange} />
                     </div>
                 </div>
             ) : (
                 <div>
-                    <div className="small-images">
+                    <div className={cn(Style.smallImages)}>
                         {images.map((img, index) => (
                             <div key={index} onClick={() => ChangeDisplayedImage(index)}>
                                 <img src={img.url} height="100px" alt={`Image ${index}`} />
                             </div>
                         ))}
-                        <div className="icon">
+                        <div className={cn('icon')}>
                             <img
                                 src="/add_circle.svg"
                                 height="100px"
@@ -85,16 +87,16 @@ export default function EditPictures({
                             />
                         </div>
                     </div>
-                    <div className="selected-image">
+                    <div className={cn(Style.selectedImage)}>
                         {image ? (
                             <>
                                 <Image src={image.url} fill alt="Selected" />
-                                <div className="garbage-bin-icon" onClick={deletePicture}>
+                                <div className={cn(Style.garbageBinIcon)} onClick={deletePicture}>
                                     <Image src="/delete-bin.svg" width={30} height={30} alt="Delete" />
                                 </div>
                             </>
                         ) : (
-                            <div className="img-cropper">
+                            <div className={cn(Style.imgCropper)}>
                                 <ImageCroper onCroppedImageChange={onCroppedImageChange} />
                             </div>
                         )}

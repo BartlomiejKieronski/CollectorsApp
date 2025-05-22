@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import "./ResetPassword.css"
+import Style from"./ResetPassword.module.css"
 import instance from "@/app/axiosInstance";
 import { useState } from "react";
 import Button from "@/app/Components/Button/Button";
+import cn from "classnames"
 export default function ResetPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -24,9 +25,9 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="container">
-      <div className="card">
-        <div className="logo">
+    <div className={cn(Style.container)}>
+      <div className={cn(Style.card)}>
+        <div className={cn(Style.logo)}>
           <Image
             src="/android-chrome-512x512.png"
             alt="Logo"
@@ -34,9 +35,9 @@ export default function ResetPassword() {
             height={100}
           />
         </div>
-        <h2 className="title">Resetowanie hasła</h2>
-        <form onSubmit={handleResetPassword} className="form">
-          <label className="label">
+        <h2 className={cn(Style.title)}>Resetowanie hasła</h2>
+        <form onSubmit={handleResetPassword} className={cn(Style.form)}>
+          <label className={cn(Style.label)}>
             Adres E-mail
           
           <input
@@ -45,9 +46,9 @@ export default function ResetPassword() {
             type="email"
             required
             placeholder="Podaj email"
-            className="input"
+            className={cn(Style.input)}
           /></label>
-          <Button classes="button" type="submit" required={true} disabled={isDisabled} isLoading={isLoading}>
+          <Button  type="submit" required={true} disabled={isDisabled} isLoading={isLoading}>
             Resetuj hasło
           </Button>
         </form>

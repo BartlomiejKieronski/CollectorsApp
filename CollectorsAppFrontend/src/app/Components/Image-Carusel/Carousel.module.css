@@ -1,4 +1,4 @@
-.carousel-container {
+.carouselContainer {
   position: relative;
   width: 100%;
   max-width: 600px;
@@ -10,13 +10,13 @@
   overflow: hidden;
 }
 
-.image-wrapper {
+.imageWrapper {
   position: relative;
   width: 100%;
   padding-top: 56.25%;
   
 }
-.carousel-image {
+.carouselImage {
   position: absolute;
   top: 0;
   left: 0;
@@ -80,7 +80,7 @@
     opacity: 0;
   }
 }
-.nav-button {
+.navButton {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -94,16 +94,16 @@
   margin: 10px;
   opacity: 50%;
 }
-.nav-button:hover{
+.navButton:hover{
   background: rgba(255, 255, 255, 0.836);
 }
-.left-button {
+.leftButton {
   left: 10px;
 }
-.right-button {
+.rightButton {
   right: 10px;
 }
-.indicators-wrapper {
+.indicatorsWrapper {
   overflow-x: auto;
   text-align: center; 
 }
@@ -125,5 +125,3 @@
 .active {
   border:3px solid blue;
 }
-
- 

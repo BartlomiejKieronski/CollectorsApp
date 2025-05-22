@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import './Pagination.css';
+import Style from './Pagination.module.css';
 import Image from 'next/image';
+import cn from 'classnames';
+
 export default function Pagination ({ totalItems, itemsPerPage,currentPage,onPageChange }) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -16,52 +18,52 @@ export default function Pagination ({ totalItems, itemsPerPage,currentPage,onPag
   };
 
   return (
-    <div className="pagination">
+    <div className={cn(Style.pagination)}>
       <button
-        className="pagination-button icon"
+        className={cn(Style.paginationButton, 'icon')}
         onClick={() => goToPage(1)}
         disabled={currentPage === 1}
       >
         <Image src={"/first.svg"} alt='First page' width={28} height={28}/>
       </button>
       <button
-        className="pagination-button icon"
+        className={cn(Style.paginationButton, 'icon')}
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
         <Image src={"/previous.svg"} height={28} width={28} alt='Previous page' />
       </button>
       {currentPage!==1 && (<button
-        className="pagination-button"
+        className={cn(Style.paginationButton)}
         onClick={() => goToPage(1)}
         disabled={currentPage === 1}
       >
         1
       </button>)}
       {currentPage>4 && (<button
-        className="pagination-button"
+        className={cn(Style.paginationButton)}
         disabled
       >
         ...
       </button>)}
       {currentPage==4 && (<button
-        className="pagination-button"
+        className={cn(Style.paginationButton)}
         onClick={() => goToPage(2)}
       >
         2
       </button>)}
       {(currentPage!==1 && (currentPage) !==2) && (<button
-        className="pagination-button"
+        className={cn(Style.paginationButton)}
         onClick={() => goToPage(currentPage - 1)}
       >
         {currentPage-1}
       </button>)}
-      <button className="pagination-button active-page" disabled>
+      <button className={cn(Style.paginationButton, Style.activePage)} disabled>
         {currentPage}
       </button>
       {currentPage < totalPages - 1 && (
         <button
-          className="pagination-button"
+          className={cn(Style.paginationButton)}
           onClick={() => goToPage(currentPage + 1)}
         >
           {currentPage + 1}
@@ -69,7 +71,7 @@ export default function Pagination ({ totalItems, itemsPerPage,currentPage,onPag
       )}
       {(totalPages-3)>currentPage && (
         <button
-          className="pagination-button"
+          className={cn(Style.paginationButton)}
           disabled
         >
           ...
@@ -77,7 +79,7 @@ export default function Pagination ({ totalItems, itemsPerPage,currentPage,onPag
       )}
         {(totalPages-1)==currentPage+2 && (
         <button
-          className="pagination-button"
+          className={cn(Style.paginationButton)}
           onClick={() => goToPage(totalPages-1)}
         >
           {totalPages-1}
@@ -85,21 +87,21 @@ export default function Pagination ({ totalItems, itemsPerPage,currentPage,onPag
       )}
       {!(currentPage == totalPages) && (
         <button
-          className="pagination-button"
+          className={cn(Style.paginationButton)}
           onClick={() => goToPage(totalPages)}
         >
           {totalPages}
         </button>
       )}
       <button
-        className="pagination-button icon"
+        className={cn(Style.paginationButton, 'icon')}
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
         <Image src={"/next.svg"} height={28} width={28} alt='Next page'/>
       </button>
       <button
-        className="pagination-button icon"
+        className={cn(Style.paginationButton, 'icon')}
         onClick={() => goToPage(totalPages)}
         disabled={currentPage === totalPages}
       >

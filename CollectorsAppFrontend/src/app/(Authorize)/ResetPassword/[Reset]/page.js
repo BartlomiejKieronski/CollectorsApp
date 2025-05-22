@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import "../ResetPassword.css"
+import Style from "../ResetPassword.module.css";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import jwt from "jsonwebtoken"
 import Button from "@/app/Components/Button/Button";
+import cn from "classnames";
+
 export default function ResetPassword() {
     const params = useParams();
     const router = useRouter();
@@ -24,7 +26,6 @@ export default function ResetPassword() {
     }
     useEffect(() => {
         if (Reset) {
-
             const isValidJWT = (token) => {
                 try {
                     const decoded = jwt.decode(token, { complete: true });
@@ -74,9 +75,9 @@ export default function ResetPassword() {
     };
 
     return (
-        <div className="container">
-            <div className="card">
-                <div className="logo">
+        <div className={cn(Style.container)}>
+            <div className={cn(Style.card)}>
+                <div className={cn(Style.logo)}>
                     <Image
                         src="/android-chrome-512x512.png"
                         alt="Logo"
@@ -84,9 +85,9 @@ export default function ResetPassword() {
                         height={100}
                     />
                 </div>
-                <h2 className="title">Resetowanie hasła</h2>
-                <form onSubmit={handleResetPassword} className="form">
-                    <label className="label">
+                <h2 className={cn(Style.title)}>Resetowanie hasła</h2>
+                <form onSubmit={handleResetPassword} className={cn(Style.form)}>
+                    <label className={cn(Style.label)}>
                         Hasło:
                         <input onChange={handleChange}
                             id="password"
@@ -94,21 +95,21 @@ export default function ResetPassword() {
                             type="password"
                             required
                             placeholder="Wpisz hasło"
-                            className="input"
+                            className={cn(Style.input)}
                         />
                     </label>
-                    <label className="label">
-                        Powtórz hasło:
+                    <label className={cn(Style.label)}>
+                        Powtórz hasło:s
                         <input
                             id="repeatPassword"
                             name="repeatpassword"
                             type="password"
                             required
                             placeholder="Powtórz hasło"
-                            className="input"
+                            className={cn(Style.input)}
                         />
                     </label>
-                    <Button classes="button" type="submit" required={true} disabled={isDisabled} isLoading={isLoading}>
+                    <Button type="submit" required={true} disabled={isDisabled} isLoading={isLoading}>
                         Zresetuj hasło
                     </Button>
                 </form>

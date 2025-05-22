@@ -1,6 +1,6 @@
 "use client";
 
-import "./SideMenuTreeComponent.css";
+import Style from "./SideMenuTreeComponent.module.css";
 import { useEffect, useState, useRef } from "react";
 import Tree from "./Tree";
 import { buildTree } from "./BuildTree";
@@ -12,6 +12,7 @@ import Image from "next/image";
 import EditData from "../TreeItemInteractions/EditItem.js";
 import AddTreeItem from "../TreeItemInteractions/AddItem";
 import DeleteItemConfirm from "../TreeItemInteractions/DeleteItem"
+import cn from "classnames";
 
 export default function TreeView({ onMenuInfo }) {
   const router = useRouter();
@@ -163,12 +164,12 @@ export default function TreeView({ onMenuInfo }) {
     const treeData = buildTree(menuItems)
   
     return (
-      <div className="menu-tree-container">
+      <div className={cn(Style.menuTreeContainer)}>
         <div>
-          <div className="menu-collections">
+          <div className={cn(Style.menuCollections)}>
             <h2>Kolekcje</h2>
-            <button className="b-visibility" onClick={onMenuInfo}>
-              <Image className="close-svg  icon" src="/close.svg" width={44} height={44} alt="close" />
+            <button className={cn(Style.bVisibility)} onClick={onMenuInfo}>
+              <Image className={cn(Style.closeSvg, 'icon')} src="/close.svg" width={44} height={44} alt="close" />
             </button>
           </div>
           <div>
@@ -184,7 +185,7 @@ export default function TreeView({ onMenuInfo }) {
             />
             {isAdding && (
               <button
-                className="button-edit-node icon"
+                className={cn(Style.buttonEditNode, 'icon')}
                 onClick={() => handleSelectParent("null")}
                 style={{ marginLeft: "10px" }}>
                 <Image src={"/add.svg"} height={20} width={20} alt={`add node for root element`} />
@@ -205,7 +206,8 @@ export default function TreeView({ onMenuInfo }) {
           </div>
 
         </div>
-        {(Array.isArray(menuItems)&& menuItems.length>0) &&<div className="edit-button">
+        {(Array.isArray(menuItems)&& menuItems.length>0) &&
+        <div className={cn(Style.editButton)}>
           {(isEditing || isDeleting || isAdding) ? (<div tabIndex={1} role="button"
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -213,17 +215,19 @@ export default function TreeView({ onMenuInfo }) {
               }
             }}
           >
-            <Image src={"/accept.svg"} className="edit-svg icon" onClick={() => { setIsAdding(false); setIsDeleting(false); setIsEditing(false); setIsChoiceActive(false); setSelectedParent(null) }} width={32} height={32} alt="edit" tabIndex={1} />
+            <Image src={"/accept.svg"} className={cn(Style.editSvg, 'icon')} onClick={() => { setIsAdding(false); setIsDeleting(false); setIsEditing(false); setIsChoiceActive(false); setSelectedParent(null) }} width={32} height={32} alt="edit" tabIndex={1} />
           </div>
           ) : (<div tabIndex={1} role="button" onKeyDown={(e) => {
             if (e.key === "Enter") {
               setIsChoiceActive(!isChoiceActive)
             }
           }}>
-            <Image className="edit-svg icon" src={"/edit.svg"} onClick={() => setIsChoiceActive(!isChoiceActive)} width={32} height={32} alt="accept" tabIndex={1} />
+            <Image className={cn(Style.editSvg, 'icon')} src={"/edit.svg"} onClick={() => setIsChoiceActive(!isChoiceActive)} width={32} height={32} alt="accept" tabIndex={1} />
           </div>
           )}
-          <div ref={ref} className={isChoiceActive ? ("edit-menu-choice-open") : ("edit-menu-choice-closed")}>
+          <div ref={ref} className={cn({[Style.editMenuChoiceOpen]: isChoiceActive, [Style.editMenuChoiceClosed]:!isChoiceActive})
+          //  isChoiceActive ? ("edit-menu-choice-open") : ("edit-menu-choice-closed")
+          }>
             <div tabIndex={1}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {

@@ -1,14 +1,14 @@
 "use client"
 import { useSession } from "next-auth/react";
 import { MenuProvider } from "../Providers/MobileMenuProvider";
-import "./MainLoggedContentLayout.css";
+import Style from "./MainLoggedContentLayout.module.css";
 import MenuContent from "../Components/content-menu/content-menu";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MenuItemsProvider } from "../Providers/MenuProvider/MenuProvider";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-
+import cn from "classnames"
 export default function MainContentLogged({ children }) {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -40,11 +40,11 @@ export default function MainContentLogged({ children }) {
             transition={Slide}
         />
         <MenuProvider>
-            <div className="container">
-                <div className="top-menu-item">
+            <div className={cn(Style.container)}>
+                <div className={cn(Style.topMenuItem)}>
                     <MenuContent />
                 </div>
-                <div className="main-content-layout">
+                <div className={cn(Style.mainContentLayout)}>
                     <MenuItemsProvider>
                         {children}
                     </MenuItemsProvider>

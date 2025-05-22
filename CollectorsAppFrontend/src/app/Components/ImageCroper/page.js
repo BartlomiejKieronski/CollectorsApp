@@ -3,7 +3,8 @@
 import { useState, useRef } from "react";
 import "react-image-crop/dist/ReactCrop.css";
 import ReactCrop, { centerCrop, makeAspectCrop } from "react-image-crop";
-import "./ImageCroper.css";
+import Style from "./ImageCroper.module.css";
+import cn from "classnames";
 
 const ASPECT_RATIO = 16 / 12;
 const MIN_DIMENSION = 350;
@@ -121,7 +122,7 @@ export default function ImageCroper({ onCroppedImageChange }) {
         {imgUploadError}
       </div>
       {imgSrc && (
-        <div className="flex flex-col items-center react-crop-max-width">
+        <div className={cn(Style.flex, Style.flexCol, Style.itemsCenter, Style.reactCropMaxWidth)}>
           <ReactCrop
             crop={crop}
             onChange={(newCrop) => setCrop(newCrop)}
@@ -134,19 +135,19 @@ export default function ImageCroper({ onCroppedImageChange }) {
             <img
               src={imgSrc}
               alt="upload"
-              className="max-width"
+              className={cn(Style.maxWidth)}
               onLoad={onImageLoad}
               ref={imgRef}
             />
           </ReactCrop>
           <br />
-          <p className="preview">Podgląd:</p>
+          <p className={cn(Style.preview)}>Podgląd:</p>
         </div>
       )}
       {croppedImage && (
         <img
           src={croppedImage}
-          className="max-width"
+          className={cn(Style.maxWidth)}
           alt="Cropped image preview"
         />
       )}

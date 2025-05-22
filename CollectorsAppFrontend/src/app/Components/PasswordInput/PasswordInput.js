@@ -1,5 +1,7 @@
-import "./PasswordInput.css"
+import Style from "./PasswordInput.module.css";
+import cn from "classnames";
 import { useState } from "react";
+
 export default function InputPassword({ setPassword }) {
     const [showPassword, setShowPassword] = useState();
 
@@ -11,8 +13,8 @@ export default function InputPassword({ setPassword }) {
     const handleMouseLeave = () => setShowPassword(false);
 
     return (
-        <div className="password-container">
-            <input onChange={setPassword} placeholder="Hasło" className="input-width input-height, input-style" name="password" type={showPassword ? "text" : "password"} defaultValue={"666666666"} required />
+        <div className={cn(Style.passwordContainer)}>
+            <input onChange={setPassword} placeholder="Hasło" className={cn(Style.inputWidth, Style.inputHeight, Style.inputStyle )} name="password" type={showPassword ? "text" : "password"} defaultValue={"666666666"} required />
             <button
                 type="button"
                 onTouchStart={handleTouchStart}
@@ -20,7 +22,7 @@ export default function InputPassword({ setPassword }) {
                 onMouseDown={handleMouseDown}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
-                className="toggle-password-icon"
+                className={cn(Style.togglePasswordIcon)}
             >
                 {showPassword ? "👁️‍🗨️" : "👁️"}
             </button>

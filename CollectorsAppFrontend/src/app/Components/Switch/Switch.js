@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import './ToggleSwitch.css';
-
+import Style from './ToggleSwitch.module.css';
+import cn from "classnames";
 export default function ToggleSwitch({ active, setActive }) {
     const [mounted, setMounted] = useState(false);
 
@@ -21,9 +21,13 @@ export default function ToggleSwitch({ active, setActive }) {
     };
 
     return (
-        <div className="toggle-container" onClick={handleToggle}>
-            <div className={`toggle-switch ${active == "dark" ? 'theme' : ''}`}>
-                <div className="toggle-knob" />
+        <div className={cn(Style.toggleContainer)} onClick={handleToggle}>
+            <div className={cn(
+                Style.toggleSwitch,              
+        { [Style.theme]: active === 'dark' }  // only add "theme" when active==="dark"
+      )}>
+                {/* "toggle-switch ${active == "dark" ? 'theme' : ''}}>*/}
+                <div className={cn(Style.toggleKnob)} />
             </div>
         </div>
     );

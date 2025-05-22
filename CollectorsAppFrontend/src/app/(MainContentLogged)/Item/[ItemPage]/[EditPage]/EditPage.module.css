@@ -1,9 +1,9 @@
-.edit-item {
+.editItem {
     margin-top: 4vh;
     margin-bottom: 4vh;
 }
 
-form {
+.editItem form {
     margin-top: 100px;
     max-width: 1200px;
     margin: 0 auto;
@@ -11,25 +11,25 @@ form {
 
 }
 
-.display-flex {
+.displayFlex {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 20px;
 }
 
-.img-cropper-position {
+.imgCropperPosition {
     flex: 1;
 }
 
-.selected-image {
+.selectedImage {
     position: relative;
     display: inline-block;
     width: 100%;
     aspect-ratio: 16 / 9;
 }
 
-.garbage-bin-icon {
+.garbageBinIcon {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -40,16 +40,16 @@ form {
     background-color: rgba(169, 169, 169, 0.5);
 }
 
-.add-item-submit-button {
+.addItemSubmitButton {
     justify-self: end;
     min-width: 200px;
 }
 
-.img-cropper-position label input[type="file"] {
+.imgCropperPosition label input[type="file"] {
     display: none;
 }
 
-.img-cropper-position label {
+.imgCropperPosition label {
     display: inline-block;
     padding: 10px 15px;
     background-color: rgba(169, 169, 169, 0.089);
@@ -58,124 +58,124 @@ form {
     cursor: pointer;
 }
 
-.add-items-position {
+.addItemsPosition {
     flex: 1;
 }
 
-.delete-button {
+.deleteButton {
     justify-self: end;
 }
 
-.delete-button button {
+.deleteButton button {
     width: 100px;
     min-height: 0px;
     height: 40px;
 }
 
-.img-cropper-container {
+.imgCropperContainer {
     margin-top: 20px;
 }
 
-.add-item-layout {
+.addItemLayout {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.add-item-layout>div {
+.addItemLayout>div {
     display: flex;
     flex-direction: column;
 }
 
-.add-item-layout label {
+.addItemLayout label {
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-.btn-lt {
+.btnLt {
     display: flex;
     flex-wrap: nowrap;
     gap: 20px;
 }
 
-.add-item-layout input,
-.add-item-layout textarea,
-.add-item-layout select {
+.addItemLayout input,
+.addItemLayout textarea,
+.addItemLayout select {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 100%;
 }
 
-.add-items-button {
+.addItemsButton {
     margin-top: 20px;
     text-align: right;
 }
 
-.add-items-button button {
+.addItemsButton button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.small-images {
+.smallImages {
     display: flex;
     flex-wrap: nowrap;
     overflow: auto;
     gap: 10px;
 }
 
-.small-images>div {
+.smallImages>div {
     cursor: pointer;
 }
 
-.small-images>div>img {
+.smallImages>div>img {
     border: 2px solid transparent;
     transition: border-color 0.3s;
 }
 
-.small-images>div>img:hover {
+.smallImages>div>img:hover {
     border-color: #007bff;
 }
 
-.selected-image {
+.selectedImage {
     margin-top: 20px;
     text-align: center;
 }
 
 
 @media (min-width:600px) and (hover: none) and (orientation:landscape) {
-    .img-cropper-position {
+    .imgCropperCosition {
 
         width: 100%;
     }
 
-    .add-items-position {
+    .addItemsPosition {
         width: 100%;
     }
 
-    .display-flex {
+    .displayFlex {
         flex-direction: column;
     }
 }
 
 @media (min-width:600px) and (hover: hover) {
 
-    .display-flex {
+    .displayFlex {
         max-width: 1200px;
     }
 
-    .add-items-position {
+    .addItemsPosition {
         max-width: 50%;
     }
 
-    .img-cropper-position {
+    .imgCropperPosition {
 
         max-width: 50%;
     }
 
-    form {
+    .editItem form {
         border-bottom: 1px solid white;
         border-right: 1px solid white;
         background-color: rgba(169, 169, 169, 0.1);
@@ -183,39 +183,39 @@ form {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .add-items-position {
+    .addItemsPosition {
         max-width: 50%;
     }
 
-    .img-cropper-position {
+    .imgCropperPosition {
         max-width: 50%;
     }
 }
 
 @media (max-width: 600px) {
-    .display-flex {
+    .displayFlex {
         flex-direction: column;
     }
 
-    .img-cropper-position,
-    .add-items-position {
+    .imgCropperPosition,
+    .addItemsPosition {
         max-width: 100%;
         width: 100%;
     }
 
-    .add-items-position {
+    .addItemsPosition {
         padding-top: 44px;
     }
 
-    .img-cropper-position {
+    .imgCropperPosition {
         flex: none;
     }
 
-    .img-cropper {
+    .imgCropper {
         max-width: 100vh;
     }
 
-    .small-images {
+    .smallImages {
         max-width: 100vh;
     }
 }

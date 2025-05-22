@@ -1,9 +1,11 @@
-import "./cookies-info.css";
+import "./cookies-info.module.css";
+import cn from "classnames";
+
 export default function CooiesInfo() {
 
     return (
-        <div className="cookie-notice-item-style">
-            <div className="displayed-data">
+        <div className={cn(Style.cookieNoticeItemStyle)}>
+            <div className={cn(Style.displayedData)}>
                 <div>
                     message
                 </div>

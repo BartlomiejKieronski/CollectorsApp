@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
 import Card from "@/app/Components/ItemViewComponents/Card";
 import Pagination from "@/app/Components/Pagination/Pagination";
-import "../ItemsView.css";
+import Style from "../ItemsView.module.css";
+import cn from "classnames";
 import Button from "@/app/Components/Button/Button";
 
 export default function ItemView() {
@@ -137,9 +138,9 @@ export default function ItemView() {
     }
 
     return (
-        <div className="card-container">
+        <div className={cn(Style.cardContainer)}>
             <>
-                <div className="controllers">
+                <div className={cn(Style.controllers)}>
                     <div>
                         <label>
                             Liczba pozycji: &nbsp;
@@ -169,13 +170,13 @@ export default function ItemView() {
                         </div>
                     )}
                 </div>
-                <div className="card-item-layout">
+                <div className={cn(Style.cardItemLayout)}>
                     {pathData ? <>{pathData.map(item => (
-                        <div key={item.id} className="card-margin">
+                        <div key={item.id} className={cn(Style.cardMargin)}>
                             {edit && (
-                                <div className="select">
+                                <div className={cn(Style.select)}>
                                     <input
-                                        type="checkbox"
+                                        type={"checkbox"}
                                         onChange={(e) => handleCheckboxChange(e, item)}
                                         checked={selected.includes(item)}
                                     />
@@ -188,7 +189,7 @@ export default function ItemView() {
             </>
 
             {itemCount > itemsPerPage && (
-                <div className="pagination">
+                <div className={cn(Style.pagination)}>
                     <Pagination
                         totalItems={itemCount}
                         itemsPerPage={itemsPerPage}

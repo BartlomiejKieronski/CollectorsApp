@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import Style from "@/app/(MainContentLogged)/Item/[ItemPage]/[EditPage]/EditPage.module.css";
+import cn from "classnames";
 
 export default function EditData({ onDataChange, itemData, collections }) {
     const [itemDataFields, setItemData] = useState({
@@ -36,7 +38,7 @@ export default function EditData({ onDataChange, itemData, collections }) {
     }
 
     return (
-        <div className="add-item-layout">
+        <div className={cn(Style.addItemLayout)}>
             {itemData && (<>
                 <div>
                     <label>

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-
+import cn from "classnames";
+import Style from "@/app/(MainContentLogged)/AddItem/[ItemCollection]/AddItem.module.css";
 export default function ItemInfo({ onDataChange, collections, selectedCollection }) {
     const [collectionData, setCollectionData] = useState(collections)
     const [value, setValue] = useState(selectedCollection)
@@ -42,7 +43,7 @@ export default function ItemInfo({ onDataChange, collections, selectedCollection
     };
     
     return (
-        <div className="add-item-layout">
+        <div className={cn(Style.addItemLayout)}>
             <div>
                 <label>
                     Nazwa

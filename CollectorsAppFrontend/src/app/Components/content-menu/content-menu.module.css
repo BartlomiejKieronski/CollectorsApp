@@ -1,4 +1,4 @@
-.menu-content {
+.menuContent {
   position: relative !important;
   display: flex;
   align-items: center;
@@ -10,7 +10,7 @@
   height: 8vh;
 }
 
-.menu-content-start {
+.menuContentStart {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -18,7 +18,7 @@
   font-weight: bold;
   gap: 10px;
 }
-.menu-content-logo{
+.menuContentLogo{
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -27,7 +27,7 @@
   gap: 10px;
 }
 @media (min-width:600px) and (hover:hover){
-  .user-submenu {
+  .userSubmenu {
     display: none;
     position: absolute;
     background-color: var(--open-menu);
@@ -39,16 +39,16 @@
     top: 5vh
   }
 }
-.user-submenu.open {
+.userSubmenu.open {
   display: block;
 }
 
-.menu-content-end {
+.menuContentEnd {
   display: flex;
   z-index: 99999;
 }
 
-.ul-menu {
+.ulMenu {
   position: relative;
   list-style: none;
   margin: 0;
@@ -58,18 +58,18 @@
   font-size: 20px;
 }
 
-.ul-menu li {
+.ulMenu li {
   margin-left: 20px;
   cursor: pointer;
   position: relative;
   -webkit-tap-highlight-color: transparent;
 }
 
-.menu-toggle {
+.menuToggle {
   display: none;
 }
 
-.menu-icon {
+.menuIcon {
   display: none;
   font-size: 28px;
   cursor: pointer;
@@ -78,15 +78,19 @@
   color: var(--text-color);
 }
 
-.lg-bt {
-  background-color: transparent;
+.lgBt {
+  background: transparent;
   border: 0;
   font-size: 16px;
   color: var(--text-color);
   cursor: pointer;
 }
+.lgBt:hover{
+  background: transparent;
+  color: var(--foreground);
+}
 
-.hamburger-side-menu {
+.hamburgerSideMenu {
   display: none;
   background-color: transparent;
   border: 0;
@@ -95,46 +99,46 @@
   cursor: pointer;
 }
 
-.logo-image {
+.logoImage {
   width: 50px;
   height: 50px;
 }
 
-.ul-flex {
+.ulFlex {
   display: flex;
   align-items: center;
   gap: 0.5em;
 }
 
-.bt-txt {
+.btTxt {
   padding-top: 0.7em;
 }
 
-.user-toggle {
+.userToggle {
   cursor: pointer;
   display: inline-block;
 }
 
-.img-lt {
-  padding-top: 0.3em;
+.imgLt {
+  margin-top: 2vh;
 }
 
-.svg-cl {
+.svgCl {
   filter: grayscale(10);
 }
 
-.lg-img {
+.lgImg {
   width: 30px;
   margin-right: 20px;
 }
 
-.user-menu {
+.userMenu {
   position: relative;
 
 }
 
 @media (min-width: 600px) and (orientation: landscape) and (hover:none) {
-  .user-submenu {
+  .userSubmenu {
     position: static;
     padding-left: 20px;
     background-color: #444;
@@ -146,12 +150,12 @@
     padding-bottom: 1vh;
   }
   
-  .logo-image {
+  .logoImage {
     width: 40px;
     height: 40px;
   }
   
-  .menu-content-end {
+  .menuContentEnd {
     position: absolute;
     top: 8vh;
     left: 0;
@@ -164,45 +168,45 @@
     transition: all 0.3s ease;
   }
   
-  .menu-content-end.mobile-menu-open {
+  .menuContentEnd.mobileMenuOpen {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
     top: 60px;
   }
   
-  .menu-icon {
+  .menuIcon {
     display: block;
   }
   
 
-  .ul-menu {
+  .ulMenu {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
   }
   
-  .ul-menu li {
+  .ulMenu li {
     margin: 10px 0;
     width: 100%;
     list-style: none;
   }
-  .hamburger-side-menu{
+  .hamburgerSideMenu{
     display: block;
   }
 }
 
 
 @media (max-width: 600px)  {
-  .hamburger-side-menu {
+  .hamburgerSideMenu {
     display: block;
   }
 
-  .menu-icon {
+  .menuIcon {
     display: block;
   }
 
-  .menu-content-end {
+  .menuContentEnd {
     position: absolute;
     top: 8vh;
     left: 0;
@@ -215,7 +219,7 @@
     transition: all 0.3s ease;
   }
 
-  .menu-content-end.mobile-menu-open {
+  .menuContentEnd.mobileMenuOpen {
     position: absolute;
     opacity: 1;
     visibility: visible;
@@ -224,19 +228,19 @@
     padding-top: 10px;
   }
 
-  .ul-menu {
+  .ulMenu {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
   }
 
-  .ul-menu li {
+  .ulMenu li {
     margin: 10px 0;
     width: 100%;
     list-style: none;
   }
 
-  .user-submenu {
+  .userSubmenu {
     position: relative;
     padding-left: 20px;
     background-color: #444;
@@ -247,19 +251,17 @@
     padding-bottom: 1vh;
   }
 
-  .ul-flex {
+  .ulFlex {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .img-lt {
+  .imgLt {
     display: none;
   }
 
 }
-
-
-.user-submenu>li {
+.userSubmenu>li {
   margin-top: 16px;
   font-size: 16px;
 

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import Style from "@/app/(MainContentLogged)/Item/[ItemPage]/itempage.module.css";
+import cn from "classnames";
 export default function ItemDetails({ data,EditRedirect }) {
     const [itemData, setItemData] = useState(data)
 
@@ -7,44 +9,44 @@ export default function ItemDetails({ data,EditRedirect }) {
         setItemData(data)
     },[data])
     
-    return (<div className="item-page-content-area">
+    return (<div className={cn(Style.itemPageContentArea)}>
 
         <div><h2>Informacje</h2></div>
         {itemData&&(
-        <div className="item-page-container">
+        <div className={cn(Style.itemPageContainer)}>
         
-            <div className="item-page-data-layout">
-                <div className="element-size">Nazwa</div>
-                <div className="element-size">{itemData.itemName}</div>
+            <div className={cn(Style.itemPageDataLayout)}>
+                <div className={cn(Style.elementSize)}>Nazwa</div>
+                <div className={cn(Style.elementSize)}>{itemData.itemName}</div>
             </div>
-            <div className="item-page-data-layout">
-                <div className="element-size">Wartość</div>
-                <div className="element-size">{itemData.itemValue}</div>
+            <div className={cn(Style.itemPageDataLayout)}>
+                <div className={cn(Style.elementSize)}>Wartość</div>
+                <div className={cn(Style.elementSize)}>{itemData.itemValue}</div>
             </div>
-            <div className="item-page-data-layout ">
+            <div className={cn(Style.itemPageDataLayout)}>
                 
-                <div className="element-size text-wrap el-pos">Atrybuty kolekcjonerskie (np. Numizmat itp.)</div>
-                <div className="element-size">{itemData.itemNumismat}</div>
+                <div className={cn(Style.elementSize, Style.textWrap, Style.elPos)}>Atrybuty kolekcjonerskie (np. Numizmat itp.)</div>
+                <div className={cn(Style.elementSize)}>{itemData.itemNumismat}</div>
             </div>
-            <div className="item-page-data-layout">
-                <div className="element-size">Kolekcja</div>
-                <div className="element-size">{itemData.collectionId}</div>
+            <div className={cn(Style.itemPageDataLayout)}>
+                <div className={cn(Style.elementSize)}>Kolekcja</div>
+                <div className={cn(Style.elementSize)}>{itemData.collectionId}</div>
             </div>
-            <div className="item-page-data-layout">
-                <div className="element-size">Stan</div>
-                <div className="element-size">{itemData.state}</div>
+            <div className={cn(Style.itemPageDataLayout)}>
+                <div className={cn(Style.elementSize)}>Stan</div>
+                <div className={cn(Style.elementSize)}>{itemData.state}</div>
             </div>
-            <div className="item-page-data-layout">
-                <div className="element-size">Data wydania</div>
-                <div className="element-size">{itemData.itemYear}</div>
+            <div className={cn(Style.itemPageDataLayout)}>
+                <div className={cn(Style.elementSize)}>Data wydania</div>
+                <div className={cn(Style.elementSize)}>{itemData.itemYear}</div>
             </div>
-            <div className="item-page-data-layout">
-                <div className="element-size">Data nabycia</div>
-                <div className="element-size">{itemData.dateOfAquire}</div>
+            <div className={cn(Style.itemPageDataLayout)}>
+                <div className={cn(Style.elementSize)}>Data nabycia</div>
+                <div className={cn(Style.elementSize)}>{itemData.dateOfAquire}</div>
             </div>
-            <div className="item-page-data-layout">
-                <div className="element-size">Data dodania</div>
-                <div className="element-size">{itemData.insertDate}</div>
+            <div className={cn(Style.itemPageDataLayout)}>
+                <div className={cn(Style.elementSize)}>Data dodania</div>
+                <div className={cn(Style.elementSize)}>{itemData.insertDate}</div>
             </div>
         </div>
         )}

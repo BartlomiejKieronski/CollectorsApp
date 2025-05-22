@@ -1,11 +1,11 @@
-.toggle-container {
+.toggleContainer {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
     user-select: none;
   }
   
-  .toggle-switch {
+  .toggleSwitch {
     width: 40px;
     height: 20px;
     border-radius: 999px;
@@ -16,11 +16,11 @@
     transition: background-color 0.3s ease;
   }
   
-  .toggle-switch.theme {
+  .toggleSwitch.theme {
     background-color: #181818;
   }
   
-  .toggle-knob {
+  .toggleKnob {
     width: 16px;
     height: 16px;
     border-radius: 50%;
@@ -29,11 +29,11 @@
     transform: translateX(0);
   }
   
-  .toggle-switch.theme .toggle-knob {
+  .toggleSwitch.theme .toggleKnob {
     transform: translateX(20px);
   }
   
-  .toggle-label {
+  .toggleLabel {
     margin-left: 8px;
     font-size: 14px;
   }
