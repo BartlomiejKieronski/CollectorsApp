@@ -22,8 +22,6 @@ function Tree({
         <li
           key={node.id}
           style={{ paddingTop: 5, marginLeft: `${node.depth * 10}px` }}
-          
-          
         >
           {node.children?.length ? (
             <span tabIndex={1}

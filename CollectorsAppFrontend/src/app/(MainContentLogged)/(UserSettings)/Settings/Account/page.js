@@ -3,7 +3,6 @@ import Style from"./AccountStyle.module.css"
 import { useState } from "react"
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
 import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { deleteCollection, IsPasswordCorrect, DeleteUserAccount } from "@/app/lib/utility";
 import { toast } from "react-toastify";
@@ -11,7 +10,7 @@ import Button from "@/app/Components/Button/Button";
 import InputPassword from "@/app/Components/PasswordInput/PasswordInput";
 import cn from "classnames" 
 
-export default function Konto() {
+export default function AccountSettings() {
     const { data: session, status } = useSession();
     const { menuItems, areItemsLoading } = useMenuItemsProvider();
 
@@ -27,7 +26,7 @@ export default function Konto() {
             await deleteCollection(collection);
         });
         await DeleteAccount(session.user.id)
-        signOut(router.push("/Login"))
+        router.push("/Logout")
     }
 
     const ChangePassword = async () => {

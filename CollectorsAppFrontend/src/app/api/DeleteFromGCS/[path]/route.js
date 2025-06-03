@@ -7,7 +7,7 @@ export async function DELETE(req, { params }) {
     if (req.method !== "DELETE") {
         return Response.json({ error: "Method Not Allowed" });
       }
-    var path = await params.path  
+    const { path } = await params  
     const gcsPath = decodeURIComponent(path)
     if (!gcsPath) {
         return Response.json({ error: "No file path provided" })

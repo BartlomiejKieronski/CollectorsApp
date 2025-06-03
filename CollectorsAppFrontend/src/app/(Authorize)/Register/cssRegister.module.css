@@ -1,36 +1,40 @@
-.inputBorder{
+.inputBorder {
     border-radius: 6px;
     border: 0px;
     border-bottom: 1px solid darkgray;
     border-right: 1px solid darkgray;
 }
 
-.displayBlock label{
+.displayBlock label {
     display: flex;
     flex-direction: column;
 }
-.logoDisplay{
+
+.logoDisplay {
     display: flex;
     justify-content: center;
     margin-bottom: 4vh;
     font-size: large;
 }
-.errorMessage{
-    color:rgba(255, 0, 0, 0.69);
+
+.errorMessage {
+    color: rgba(255, 0, 0, 0.69);
     font-size: 15px;
 }
 
-.cardLinks{
+.cardLinks {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-.displayBlock{
+
+.displayBlock {
     display: block;
-    height: 100vh;
     overflow: auto;
 }
-.SBS{
+
+
+.SBS {
     width: 100%;
     border: 0;
     min-height: 44px;
@@ -38,10 +42,11 @@
     border-radius: 6px;
 }
 
-.textCenter{
+.textCenter {
     display: flex;
     justify-content: center;
 }
+
 .passwordContainer {
     position: relative;
     display: inline-block;
@@ -61,38 +66,43 @@
 }
 
 @media (max-width:600px) {
-    .divCenter{    
+    .divCenter {
+        margin-right:1px ;
         height: 100vh;
         width: 100vw;
         display: flex;
-        justify-content:center;    
-        align-items:center;
+        justify-content: center;
+        align-items: center;
         flex-wrap: wrap;
         flex-direction: column;
-        
+
     }
-    .inputWidth{
+
+    .inputWidth {
         min-width: 100vw;
     }
-    .inputHeight{
+
+    .inputHeight {
         min-height: 5vh;
     }
-    .divBorder{
+
+    .divBorder {
         padding-top: 3vh;
         padding-bottom: 3vh;
         background-color: rgba(169, 169, 169, 0.1);
         border-bottom: 1px solid white;
     }
 }
+
 @media (min-width:600px) {
-    .inputWidth{
+    .inputWidth {
         min-width: 100%;
     }
-    .inputHeight{
+    .inputHeight {
         min-height: 5vh;
     }
 
-    .divBorder{
+    .divBorder {
         padding: 20px;
         min-width: 400px;
         border-bottom: 1px solid white;
@@ -101,13 +111,29 @@
         border-radius: 4px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
+    .displayBlock input {
+        min-height: 34px !important;
+    }
+
     
-    .divCenter{    
+}
+@media (min-width:600px) and (hover: none) and (orientation:landscape){
+    .divCenter {
         height: 100vh;
         display: flex;
-        justify-content:center;    
-        align-items:center;
+        align-items: center;
         flex-wrap: wrap;
-        flex-direction: column;   
-    }    
+        flex-direction: column;
+    }
+}
+@media (min-width:600px) and (hover: hover){
+    .divCenter {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
 }

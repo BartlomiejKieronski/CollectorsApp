@@ -45,13 +45,13 @@ export default function SignInPage({ csrfToken }) {
         redirect: false,
         username,
         password,
-        callbackUrl: "/",
+        callbackUrl: "/ViewItems",
       });
 
       if (result.ok) {
         setLoading(false);
         setIsDisabled(false);
-        router.push("/")
+        router.push("/ViewItems")
       }
       if (result.status === 401) {
         setLoading(false);

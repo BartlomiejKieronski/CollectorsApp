@@ -5,7 +5,7 @@ const EXPIRATION_BUFFER_SECONDS = 10;
 export function getTokenExpirationDate(token) {
 
   if (!token) {
-    throw new Error('A valid JWT token must be provided');
+    return true
   }
 
   const decoded = jwtDecode(token);
@@ -26,12 +26,10 @@ export function isTokenExpired(token) {
     if (!expirationDate) {
       return false;
     }
-
     const bufferedNow = new Date(Date.now() + EXPIRATION_BUFFER_SECONDS * 1000);
 
     return expirationDate < bufferedNow;
   } catch (e) {
-    console.error('Failed to check token expiration:', e);
     return true;
   }
 }

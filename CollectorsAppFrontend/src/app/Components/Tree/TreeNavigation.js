@@ -51,7 +51,7 @@ export default function TreeView({ onMenuInfo }) {
 
     return ref;
   }
-
+/*
   useEffect(() => {
     if (params === "/ViewItems" && Array.isArray(menuItems) && menuItems) {
         const sortedItems = menuItems.filter((item) => item.parentId == 0)
@@ -65,7 +65,7 @@ export default function TreeView({ onMenuInfo }) {
         }
     }
 }, [menuItems])
-
+*/
   const handleClickOutside = () => {
     if (isChoiceActive) {
       setIsChoiceActive(false);

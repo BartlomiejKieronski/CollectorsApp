@@ -33,7 +33,7 @@ export async function AddItem(data) {
 }
 
 export async function CollectionItemCount(collectionId, userId) {
-    return await instance.get(`api/CollectableItems/getData?collection=${collectionId}&userId=${userId}`)
+    return await instance.get(`api/CollectableItems/getData?collection=${collectionId}&userId=${userId}`);
 }
 
 export async function getCollectionData(userId) {
@@ -76,10 +76,9 @@ export async function DeleteImage(image) {
 
     const URI = encodeURIComponent(image.path)
 
-    const responseAPi = await deleteImagePath(image.id);
     const responseGCS = await axios.delete(`/api/DeleteFromGCS/${URI}`);
 
-    return (responseAPi, responseGCS)
+    return (responseGCS)
 }
 
 export async function GetSignedImageUrl(image) {

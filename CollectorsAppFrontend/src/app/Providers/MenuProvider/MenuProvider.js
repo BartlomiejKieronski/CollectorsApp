@@ -73,8 +73,8 @@ export function MenuItemsProvider({ children }) {
     const deleteMenuItem = async (id) => {
         checkAuth();
         try {
-            await deleteCollection(id, session.user.id).then(() => {
-                fetchMenuItems();
+            await deleteCollection(id, session.user.id).then(async() => {
+                await fetchMenuItems();
             })
         } catch (err) {
             setError(err.message);

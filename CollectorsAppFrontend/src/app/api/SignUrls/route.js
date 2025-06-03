@@ -13,7 +13,6 @@ export async function POST(req, res) {
 
     try {
         const body = await req.json();
-        console.log(body)
         const { fileName } = body;
         async function generateV4ReadSignedUrl() {
             const options = {

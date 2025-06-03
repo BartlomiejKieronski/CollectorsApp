@@ -36,7 +36,7 @@ export default function EditPictures({
 
     async function deletePicture() {
         if (image.path === profileCollectablePath) {
-            toast("Najpierw wybierz inne zdjęcie jako domyślne dla kolekcjonerskiej rzeczy.", {autoClose:5000});
+            toast("Nie można usunąć. Zdjęcie to jest ustawione jako domyślne dla tego kolekcjonatu.", {autoClose:5000});
         } else {
             await DeleteImage(image).then((res) =>{
                 fetchUpdatedImages();    

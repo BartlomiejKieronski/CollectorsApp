@@ -1,30 +1,32 @@
-
-.div-flex{
+.divFlex {
     display: flex;
 }
-.displayBlock{
+
+.displayBlock {
     display: block;
     height: 100vh;
 }
-.borderLogin{
+.borderLogin {
     border-bottom: 1px solid var(--foreground);
     border-right: 1px solid var(--foreground);
     background-color: var(--card);
     border-radius: 4px;
-    box-shadow: 0 4px 8px var(--card);   
-    min-width: 400px;
+    box-shadow: 0 4px 8px var(--card);
+    
 }
 
-.displayCenter{
+.displayCenter {
     display: flex;
     justify-content: center;
     margin-bottom: 1em;
 }
-.cardLinks{
+
+.cardLinks {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
+
 .toggleasswordIcon {
     position: absolute;
     right: 10px;
@@ -39,6 +41,7 @@
     justify-content: end;
     background-color: transparent;
 }
+
 .passwordContainer {
     position: relative;
     display: inline-block;
@@ -48,57 +51,79 @@
 .toggleasswordIcon:hover {
     color: var(--button-hover);
 }
-
-@media screen and (min-width:720px){
-    
-    .divCenter{    
-        height: 100vh;
+@media screen and (min-width:600px) and (hover:hover){
+    .divCenter{
+        height: 100%;
         display: flex;
-        justify-content:center;    
-        align-items:center;
+        align-items: center;
     }
-    .inputWidth{
+    
+}
+@media screen and (min-width:600px) {
+    .displayBlock input {
+        min-height: 34px;
+    }
+
+    .divCenter {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .inputWidth {
         min-width: 400px;
     }
-    .inputHeight{
+
+    .inputHeight {
         min-height: 5vh;
     }
-    .displayBlock input{
+
+    .displayBlock input {
         border-radius: 6px;
         font-size: medium;
     }
-    .text-allign-center{
+
+    .text-allign-center {
         text-align: center;
     }
-    .paddingBorder{
+
+    .paddingBorder {
         padding: 10px;
     }
-    .borderRadius{
+
+    .borderRadius {
         border-radius: 8px;
     }
-    .paddingTop{
+
+    .paddingTop {
         padding-top: 10px;
     }
-    .paddingBottom{
+
+    .paddingBottom {
         padding-bottom: 10px;
     }
-    .text-size{
+
+    .text-size {
         font-size: 20px;
     }
-    .label-padding-bottom{
+
+    .label-padding-bottom {
         padding-top: 1vh;
     }
-    .displayBlock label{
+
+    .displayBlock label {
         display: flex;
         flex-direction: column;
     }
-    .logoDisplay{
+
+    .logoDisplay {
         display: flex;
         justify-content: center;
         margin-bottom: 4vh;
         font-size: large;
     }
-    .button{
+
+    .button {
         width: 100%;
         border: 0;
         height: 4vh;
@@ -107,13 +132,37 @@
     }
 }
 
-.displayBlock input:hover{
+.displayBlock input:hover {
     border-color: lightgray;
 }
 
-.inputStyle{
+.inputStyle {
     border-radius: 6px;
     border: 0px;
     border-bottom: 1px solid darkgray;
     border-right: 1px solid darkgray;
+}
+
+@media screen and (max-width:600px) {
+    .divCenter{
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .buttonMargin{
+        margin-top: 10px;
+    }
+    .divCenter button{
+        
+        border-radius: 3px;
+        min-width: 100%;
+    }
+    .displayBlock input {
+        min-height: 36px;
+        width: 100vw;
+    }
+    .logoDisplay{
+        display: flex;
+        justify-content: center;
+    }
 }

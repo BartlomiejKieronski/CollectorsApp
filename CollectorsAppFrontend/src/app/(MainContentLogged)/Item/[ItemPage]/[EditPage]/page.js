@@ -54,7 +54,7 @@ export default function EditItem() {
           GetItem(ItemPage, session.user.id),
           ImagePaths(ItemPage, session.user.id),
         ]);
-        console.log(itemRes.data)
+        
         if (isMounted) {
           const convertedItem = {
             ...itemRes.data,
@@ -135,7 +135,7 @@ export default function EditItem() {
 
   const updateItemInfo = async (dataToUpdate) => {
     setIsLoading(true);
-    console.log(dataToUpdate)
+    
     try {
       const res = await UpdateItem(dataToUpdate.id, dataToUpdate);
       setItemData(dataToUpdate);
@@ -147,7 +147,6 @@ export default function EditItem() {
   };
 
   const updateDefaultItemImage = async (croppedImage) => {
-    console.log(croppedImage)
     setIsLoading(true)
     if (isFormDataUnchanged()) {
       const newData = { ...formData, photoFilePath: croppedImage.path };

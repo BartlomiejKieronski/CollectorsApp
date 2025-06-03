@@ -73,7 +73,6 @@ export default function ItemPage() {
             })
         }
         if (status == "authenticated" && isActive && imageItemData) {
-            console.log(imageItemData)
             signImageUrls();
         }
         return () => {

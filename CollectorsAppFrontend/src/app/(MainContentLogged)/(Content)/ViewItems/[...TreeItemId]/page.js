@@ -141,6 +141,7 @@ export default function ItemView() {
         <div className={cn(Style.cardContainer)}>
             <>
                 <div className={cn(Style.controllers)}>
+            
                     <div>
                         <label>
                             Liczba pozycji: &nbsp;

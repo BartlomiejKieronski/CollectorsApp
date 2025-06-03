@@ -46,7 +46,6 @@ return (<>
                 <Button isLoading={isLoading} type="button"
                     disabled={isLoading}
                     onClick={() => {
-                        //console.log(selectedParent.id + " stest")
                         addNode(
                             selectedParent == "null" ? selectedParent : selectedParent.id,
                             newNodeName

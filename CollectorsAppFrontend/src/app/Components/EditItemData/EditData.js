@@ -27,7 +27,6 @@ export default function EditData({ onDataChange, itemData, collections }) {
     }, [collections,itemData])
 
     const handleChange = (e) => {
-        console.log(itemDataFields)
         const { name, value } = e.target;
         const newData = { ...itemDataFields, [name]: value };
         
