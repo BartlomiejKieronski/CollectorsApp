@@ -15,7 +15,7 @@ export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [isDisabled, setIsDisabled] = useState(false)
+    const [isDisabled, setIsDisabled] = useState(false);
     const router = useRouter();
 
     const handleTouchStart = () => setShowPassword(true);
@@ -41,7 +41,7 @@ export default function Register() {
             setError("Hasło musi mieć co najmniej 8 znaków!")
             setIsLoading(false);
         } else {
-            const result = await instance.post("api/Users", {
+            const result = await instance.post("api/Authentication/Register", {
                 name: e.target.registerName.value,
                 email: e.target.registerEmail.value,
                 password: e.target.registerPassword.value,
@@ -144,7 +144,7 @@ export default function Register() {
                             </form>
                             <br />
                             <div className={cn(Style.cardLinks)}>
-                                <div><Link href={"/Login"}>Zaloguj się</Link></div>
+                                <div><Link href={"/Login"}>Wróć do logowania</Link></div>
                             </div>
                         </div>
                     </div>

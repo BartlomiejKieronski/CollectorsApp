@@ -1,6 +1,6 @@
 import { getCookie } from "cookies-next";
 import axios from "axios";
-import { isTokenExpired } from "./lib/jwt-get-time";
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
 
 const instance = axios.create({
   baseURL: "https://localhost:44302/",
@@ -8,91 +8,28 @@ const instance = axios.create({
   origin: "localhost:3000",
 })
 
-let isRefreshing = false;
-let awaitingFetch = [];
+const refreshAuthLogic = async (failedRequest) => {
+  try {
+    await instance.post('api/Authentication/Reauthenticate');
 
-function processQueue(error) {
-  requestQueue.forEach(({ resolve, reject, config }) => {
-    if (error) {
-      reject(error);
-    } else {
-      
-      var token = getCookie('AuthToken');
-      if (token) config.headers.Authorization = `Bearer ${token}`;
-      resolve(instance(config));
+    const newAccessToken = await getCookie("AuthToken");
+    if (newAccessToken) {
+      failedRequest.response.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
     }
-  });
-  requestQueue.length = 0;
-}
-
-instance.interceptors.request.use(async (config) => {
-  if(!config.url){
-    return config;
+    return Promise.resolve();
+  } catch (error) {
+    return Promise.reject(error);
   }
-  if(isRefreshing==true){
-    return Promise((resolve,reject)=>{
-      awaitingFetch.push({resolve,reject,config})
-    })
+};
+
+createAuthRefreshInterceptor(instance, refreshAuthLogic);
+
+instance.interceptors.request.use((config) => {
+  const token = getCookie('AuthToken');
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
-  if (config.url.includes("/Reauthenticate") || config.url.includes("/Authentication")) {
-    return config;
-  }
-
-  var authCookie = await getCookie("AuthToken");
-  if (authCookie) {
-    var expired = isTokenExpired(authCookie);
-    if (expired == false) {
-      config.headers['Authorization'] = "bearer " + authCookie;
-    }
-    else {
-      isRefreshing=true;
-      var result = await instance.post("https://localhost:44302/api/Authentication/Reauthenticate");
-
-      if (result.status != 200) {
-        return Promise.reject(result.status);
-      }
-
-      else {
-        isRefreshing=false;
-        var newCookie = await getCookie("AuthToken");
-        config.headers['Authorization'] = "bearer " + newCookie;
-      }
-    }
-  }
-
-  else{
-    isRefreshing=true;
-    var result = await instance.post("https://localhost:44302/api/Authentication/Reauthenticate")
-    if (result.status != 200) {
-      return Promise.reject(result.status);
-    }
-    else {
-      isRefreshing=false
-      var newCookie = await getCookie("AuthToken")
-      config.headers['Authorization'] = "bearer " + newCookie;
-    }
-  }
-
   return config;
-}, (error) => {
-  return Promise.reject(error)
 });
 
-instance.interceptors.response.use(
-  (response) => {
-    if (response.config?.url?.includes("/Reauthenticate") && response.request?.status === 200){
-      isRefreshing = false;
-      processQueue(null);      
-    }
-    return response;
-  },
-  async (error) => {
-    if (error.config?.url.includes("/Reauthenticate") && error.response?.status === 401) {
-      processQueue(error.response?.status);
-      window.location.href = "/Logout";
-      return Promise.reject(refreshError);
-    }
-    return Promise.reject(error);
-  });
-
-  export default instance;
+export default instance;
