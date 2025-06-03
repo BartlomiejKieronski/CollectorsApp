@@ -14,7 +14,7 @@ export default function InputPassword({ setPassword }) {
 
     return (
         <div className={cn(Style.passwordContainer)}>
-            <input onChange={setPassword} placeholder="Hasło" className={cn(Style.inputWidth, Style.inputHeight, Style.inputStyle )} name="password" type={showPassword ? "text" : "password"} defaultValue={"666666666"} required />
+            <input onChange={setPassword} placeholder="Hasło" className={cn(Style.inputWidth, Style.inputHeight, Style.inputStyle )} name="password" type={showPassword ? "text" : "password"} required />
             <button
                 type="button"
                 onTouchStart={handleTouchStart}

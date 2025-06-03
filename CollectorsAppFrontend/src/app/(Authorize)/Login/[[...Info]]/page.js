@@ -90,14 +90,14 @@ export default function SignInPage({ csrfToken }) {
                 <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
                 <div>
                   <label> Nazwa użytkownika lub Email: <br />
-                    <input className={cn(Style.inputWidth, Style.inputHeight, Style.inputStyle)} name="username" type="text" defaultValue={"Bartek"} required />
+                    <input className={cn(Style.inputWidth, Style.inputHeight, Style.inputStyle)} name="username" type="text" required />
                   </label>
                 </div>
                 <br />
                 <label >
                   Hasło:<br />
                   <div className={cn(Style.passwordContainer)}>
-                    <input className={cn(Style.inputWidth, Style.inputHeight, Style.inputStyle)} name="password" type={showPassword ? "text" : "password"} defaultValue={"666666666"} required />
+                    <input className={cn(Style.inputWidth, Style.inputHeight, Style.inputStyle)} name="password" type={showPassword ? "text" : "password"} required />
                     <button
                       type="button"
                       onTouchStart={handleTouchStart}
@@ -112,7 +112,7 @@ export default function SignInPage({ csrfToken }) {
                   </div>
                 </label>
                 <br />
-                <div>
+                <div className={cn(Style.buttonMargin)}>
                   <Button classes={cn(Style.button)} type="submit" required={true} disabled={isDisabled} isLoading={loading}>Zaloguj się</Button>
                 </div>
                 <p>{error}</p>
