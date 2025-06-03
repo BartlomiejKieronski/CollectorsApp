@@ -112,6 +112,7 @@ namespace CollectorsApp.Controllers
                 ImagePath path = new ImagePath();
                 path.ItemId = collectableItems.Id;
                 path.Path = collectableItems.PhotoFilePath;
+                path.OwnerId = collectableItems.OwnerId;
                 await _imagePathRepository.PostImagePath(path);
             }
 
@@ -123,10 +124,12 @@ namespace CollectorsApp.Controllers
         public async Task<IActionResult> DeleteCollectableItems(int id)
         {
             var data = await _repository.GetCollectableItem(id);
-            var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, data, "EntityOwner");
-            if (!authorization.Succeeded)
-                return Unauthorized();
-            await _repository.DeleteCollectableItem(id);           
+            if(data != null) { 
+                var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, data, "EntityOwner");
+                if (!authorization.Succeeded)
+                    return Unauthorized();
+                await _repository.DeleteCollectableItem(id);
+            }
             return NoContent();
         }
 

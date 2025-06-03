@@ -2,6 +2,11 @@
 {
     public class CookieService : ICookieService
     {
+        private readonly IConfiguration _configuration;
+        public CookieService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public Task AppendAuthTokenCookie(HttpResponse response, string token, int expieryTime = 5)
         {
             var authCookie = new CookieOptions

@@ -10,10 +10,12 @@ namespace CollectorsApp.Services.Email
     {
         private readonly EmailSettings _emailSettings;
         private readonly IGoogleSecretStorageVault _vault;
-        public EmailSenderService(IOptions<EmailSettings> emailSettings, IGoogleSecretStorageVault vault)
+        private readonly IConfiguration _configuration;
+        public EmailSenderService(IOptions<EmailSettings> emailSettings, IGoogleSecretStorageVault vault, IConfiguration configuration)
         {
             _emailSettings = emailSettings.Value;
             _vault = vault;
+            _configuration = configuration;
         }
 
         public async Task SendEmailAsync(string toEmail, string subject, string htmlMessage)
@@ -30,7 +32,7 @@ namespace CollectorsApp.Services.Email
 
                 if (!string.IsNullOrEmpty(_emailSettings.Username))
                 {
-                    await client.AuthenticateAsync(_emailSettings.Username, await _vault.GetSecretsAsync("EMAIL-DATA"));
+                    await client.AuthenticateAsync(_emailSettings.Username, await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:EMAIL-DATA"]));
                 }
 
                 await client.SendAsync(email);

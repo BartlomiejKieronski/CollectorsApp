@@ -19,7 +19,7 @@ namespace CollectorsApp.Services.Token
         }
         public async Task<string> GenerateJwtToken(LoggedUserInfo userInfo, int expires)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(await _vault.GetSecretsAsync("JWT_KEY")));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:JWT_KEY"])));
             var crudentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -34,7 +34,7 @@ namespace CollectorsApp.Services.Token
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
                 claims,
-                expires: DateTime.UtcNow.AddMinutes(expires),
+                expires: DateTime.UtcNow.AddSeconds(30),
                 signingCredentials: crudentials
                 );
 

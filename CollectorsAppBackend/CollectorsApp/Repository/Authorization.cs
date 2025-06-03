@@ -12,13 +12,14 @@ namespace CollectorsApp.Repository
         private readonly appDatabaseContext _context;
         private readonly IDataHash _dataHash;
         private readonly IAesEncryption _aesEncryption;
-        public Authorization(appDatabaseContext context, IDataHash dataHash, IAesEncryption aesEncryption) 
+        private readonly ILogger<Authorization> _logger;
+        public Authorization(appDatabaseContext context, IDataHash dataHash, IAesEncryption aesEncryption, ILogger<Authorization> loger) 
         {
             _context = context;
             _dataHash = dataHash;
             _aesEncryption = aesEncryption;
+            _logger = loger;
         }
-
         
         public async Task<IEnumerable<RefreshTokenInfo>> GetRefreshTokens(int Id)
         {
@@ -26,7 +27,6 @@ namespace CollectorsApp.Repository
         }
         public async Task<string> AddRefreshTokenAsync(RefreshTokenInfo refreshToken)
         {
-            string place = refreshToken.RefreshToken;
             var hash = await _dataHash.GenerateHmacAsync(refreshToken.RefreshToken);
             refreshToken.RefreshToken = hash;
             _context.RefreshTokens.Add(refreshToken);

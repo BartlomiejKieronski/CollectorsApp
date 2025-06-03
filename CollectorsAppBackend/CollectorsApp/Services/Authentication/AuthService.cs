@@ -19,7 +19,8 @@ namespace CollectorsApp.Services.Authentication
         private readonly IDataHash _dataHash;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserRepository _userRepository;
-        public AuthService(IAuthorizationRepository repo, ITokenService tokenSvc, ICookieService cookieSvc, IDataHash dataHash, IHttpContextAccessor httpContextAccessor,IUserRepository userRepository)
+        private readonly ILogger<AuthService> _logger;
+        public AuthService(IAuthorizationRepository repo, ITokenService tokenSvc, ICookieService cookieSvc, IDataHash dataHash, IHttpContextAccessor httpContextAccessor,IUserRepository userRepository, ILogger<AuthService> logger)
         {
             _repository = repo;
             _tokenService = tokenSvc;
@@ -27,6 +28,7 @@ namespace CollectorsApp.Services.Authentication
             _dataHash = dataHash;
             _httpContextAccessor = httpContextAccessor;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task<LoginResult> LoginAsync(LoginInfo loginInfo, string deviceId)
@@ -105,6 +107,7 @@ namespace CollectorsApp.Services.Authentication
 
         public async Task<ReauthResult> ReauthenticateAsync(string refreshToken, string deviceInfo)
         {
+            _logger.LogInformation(refreshToken, deviceInfo);
             if (string.IsNullOrEmpty(deviceInfo) || string.IsNullOrEmpty(refreshToken))
                 return ReauthResult.Fail("Unauthorized");
 

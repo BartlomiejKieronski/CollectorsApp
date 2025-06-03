@@ -20,6 +20,11 @@ using CollectorsApp.Services.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddEventSourceLogger();
+
 builder.Services.AddCors(
     options => options.AddPolicy(
         name: "CorsPolicy", policy =>
@@ -39,8 +44,8 @@ builder.Services.AddSingleton<IGoogleSecretStorageVault, GoogleSecretStorageVaul
 
 using var serviceProvider = builder.Services.BuildServiceProvider();
 var secretService = serviceProvider.GetRequiredService<IGoogleSecretStorageVault>();
-string conn = await secretService.GetSecretsAsync("DB-STRING");
-string jwtKey = await secretService.GetSecretsAsync("JWT_KEY");
+string conn = await secretService.GetSecretsAsync(builder.Configuration["GoogleSecretStorage:Secrets:DB-STRING"]);
+string jwtKey = await secretService.GetSecretsAsync(builder.Configuration["GoogleSecretStorage:Secrets:JWT_KEY"]);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
@@ -122,6 +127,7 @@ builder.Services.AddRateLimiter(options =>
         });
     });
 });
+
 
 var app = builder.Build();
 

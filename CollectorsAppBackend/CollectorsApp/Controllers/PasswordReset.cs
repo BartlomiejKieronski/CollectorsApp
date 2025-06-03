@@ -4,7 +4,6 @@ using CollectorsApp.Services.Email;
 using CollectorsApp.Services.Encryption;
 using CollectorsApp.Services.Security;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
@@ -41,7 +40,7 @@ namespace CollectorsApp.Controllers
             
             var user = await _userRepository.GetUserByNameOrEmailAsync(new LoginInfo() { name = reset.Email });
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(await _vault.GetSecretsAsync("JWT_KEY")));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:JWT_KEY"])));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]

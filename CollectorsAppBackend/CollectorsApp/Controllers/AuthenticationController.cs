@@ -1,4 +1,5 @@
 ﻿using CollectorsApp.Models;
+using CollectorsApp.Repository.Interfaces;
 using CollectorsApp.Services.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,13 @@ namespace CollectorsApp.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public AuthenticationController(IAuthService authService)
+        private readonly IUserRepository _userRepository;
+        private readonly ILogger<AuthenticationController> _logger;
+        public AuthenticationController(IAuthService authService, IUserRepository userRepository, ILogger<AuthenticationController> logger)
         {
             _authService = authService;
+            _userRepository = userRepository;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -51,22 +56,29 @@ namespace CollectorsApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Reauthenticate()
         {
-            
+            _logger.LogInformation("reauthentication start");
             try
             {
                 
                 var refresh = Request.Cookies["RefreshToken"];
+                _logger.LogInformation("old refresh token" + refresh);
                 var device = Request.Cookies["DeviceInfo"];
-                
+                _logger.LogInformation("device" + device);
+
                 var result = await _authService.ReauthenticateAsync(refresh!, device!);
+                _logger.LogInformation("Succes?" + result.Success);
                 
                 if (!result.Success)
+                {
+                    _logger.LogInformation(result.ErrorMessage);
                     return Unauthorized(new { error = result.ErrorMessage });
-
+                }
+                
                 return Ok();
             }
             catch
             {
+                _logger.LogInformation("catch reauth controller error");
                 return BadRequest("Something went wrong");
             }
         }
@@ -91,6 +103,20 @@ namespace CollectorsApp.Controllers
             {
                 return BadRequest("Something went wrong");
             }
+        }
+        [AllowAnonymous]
+        [Route("Register")]
+        [HttpPost]
+        public async Task<ActionResult> PostUsers(Users users)
+        {
+            var result = await _userRepository.PostUser(users);
+
+            if (result == "user exists")
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace CollectorsApp.Services.Encryption
             {
                 using var aes = Aes.Create();
                 
-                aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync("AES-KEY"));
+                aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]));
                 aes.IV = GenerateIVBytes();
                 aes.Mode = CipherMode.CBC;
                 aes.Padding = PaddingMode.PKCS7;
@@ -54,7 +54,7 @@ namespace CollectorsApp.Services.Encryption
                 var cipherBytes = Convert.FromBase64String(data);
 
                 using var aes = Aes.Create();
-                aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync("AES-KEY"));
+                aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]));
 
                 aes.IV = Convert.FromBase64String(IVKey);
                 aes.Mode = CipherMode.CBC;
