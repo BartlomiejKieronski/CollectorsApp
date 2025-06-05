@@ -8,11 +8,15 @@ namespace CollectorsApp.Services.Security
         private readonly SecretManagerServiceClient _client;
         private readonly IMemoryCache _cache;
         private readonly string _projectId;
-        public GoogleSecretStorageVault(IMemoryCache cache)
+        private readonly IConfiguration _configuration;
+        public GoogleSecretStorageVault(IMemoryCache cache, IConfiguration configuration)
         {
             _client = SecretManagerServiceClient.Create();
             _cache = cache;
-            _projectId = "abiding-splicer-447610-n4";
+            _configuration = configuration ??
+                throw new ArgumentNullException("No value");
+            _projectId = _configuration["GoogleSecretStorage:ProjectId"];
+            
         }
 
         public async Task<string> GetSecretsAsync(string secretName)
