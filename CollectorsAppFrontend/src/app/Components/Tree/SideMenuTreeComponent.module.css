@@ -116,10 +116,7 @@
   border: none
 }
 
-.bVisibility {
-  background-color: transparent;
-  border: 0px;
-}
+
 
 .editItemContainer {
   display: flex;
@@ -172,7 +169,8 @@
   z-index: 1000;
 }
 
-.editItemContainer button,.editItemContainer p {
+.editItemContainer button,
+.editItemContainer p {
   margin: 10px;
 }
 
@@ -192,12 +190,26 @@
   flex-direction: column;
 }
 
-
-@media (min-width: 768px) {
+@media screen and (min-width:600px) and (hover: hover) {
   .bVisibility {
-    visibility: hidden;
+    visibility: hidden ;
   }
 }
+
+@media screen and (min-width: 600px) and (orientation:landscape) and (hover: none){
+  .bVisibility {
+    all: unset !important;
+    background-color: transparent;
+    border: 0px;
+  }
+}
+@media screen and (max-width:600px){
+  .bVisibility {
+  all:unset !important;
+  background-color: transparent;
+  border: 0px;
+}
+} 
 
 .menuTreeContainer li {
   margin-top: 5px;

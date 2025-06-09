@@ -99,7 +99,7 @@ export default function ResetPassword() {
                         />
                     </label>
                     <label className={cn(Style.label)}>
-                        Powtórz hasło:s
+                        Powtórz hasło:
                         <input
                             id="repeatPassword"
                             name="repeatpassword"

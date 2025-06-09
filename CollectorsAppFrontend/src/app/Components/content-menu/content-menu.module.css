@@ -141,7 +141,7 @@
   .userSubmenu {
     position: static;
     padding-left: 20px;
-    background-color: #444;
+    background-color: var(--side-menu);
     right: 0;
     width: 100%;
     top: 8vh;
@@ -173,6 +173,7 @@
     visibility: visible;
     transform: translateY(0);
     top: 60px;
+    background-color: var(--open-menu);
   }
   
   .menuIcon {
@@ -226,6 +227,7 @@
     transform: translateY(0);
     top:59px;
     padding-top: 10px;
+    background-color: var(--open-menu);
   }
 
   .ulMenu {
@@ -243,7 +245,7 @@
   .userSubmenu {
     position: relative;
     padding-left: 20px;
-    background-color: #444;
+    background-color: var(--side-menu);
     right: 0;
     width: 100%;
     padding-top: 1vh;

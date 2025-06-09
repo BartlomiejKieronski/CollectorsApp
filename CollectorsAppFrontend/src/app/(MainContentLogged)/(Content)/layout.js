@@ -1,4 +1,5 @@
 "use client"
+
 import Tree from "@/app/Components/Tree/TreeNavigation.js";
 import Style from "./ContentLayout.module.css";
 import { useState } from "react";

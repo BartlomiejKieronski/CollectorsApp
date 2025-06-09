@@ -51,21 +51,18 @@ export default function TreeView({ onMenuInfo }) {
 
     return ref;
   }
-/*
+
   useEffect(() => {
     if (params === "/ViewItems" && Array.isArray(menuItems) && menuItems) {
         const sortedItems = menuItems.filter((item) => item.parentId == 0)
             .sort((a, b) => a.name.localeCompare(b.name))[0]
-        if (sortedItems) {
-            router.push(`/ViewItems/${sortedItems.name}/${sortedItems.id}`)
-        }
-        else {
+        if (!sortedItems) { 
           EditType("add");
           handleSelectParent("null");
         }
     }
 }, [menuItems])
-*/
+
   const handleClickOutside = () => {
     if (isChoiceActive) {
       setIsChoiceActive(false);

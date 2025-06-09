@@ -105,7 +105,6 @@ export default function MenuContent() {
             <ul
               ref={userSubmenuRef}
               className={cn(Style.userSubmenu, { [Style.open]: isUserMenuOpen })
-                //`user-submenu ${isUserMenuOpen ? "open" : ""}`}
               }>
               <li tabIndex={0} role="button"><Link href={"/Settings/Preferences"}>Preferencje</Link></li>
               <li tabIndex={0} role="button"><Link href={"/Settings/Account"}>Konto</Link></li>
