@@ -5,12 +5,14 @@ import createAuthRefreshInterceptor from 'axios-auth-refresh';
 const instance = axios.create({
   baseURL: "https://localhost:44302/",
   withCredentials: true,
-  origin: "localhost:3000",
+})
+const reauthInstance = axios.create({
+  withCredentials: true,
 })
 
 const refreshAuthLogic = async (failedRequest) => {
   try {
-    await instance.post('api/Authentication/Reauthenticate');
+    await reauthInstance.post('https://localhost:44302/api/Authentication/Reauthenticate');
 
     const newAccessToken = await getCookie("AuthToken");
     if (newAccessToken) {
@@ -22,7 +24,7 @@ const refreshAuthLogic = async (failedRequest) => {
   }
 };
 
-createAuthRefreshInterceptor(instance, refreshAuthLogic);
+createAuthRefreshInterceptor(instance, refreshAuthLogic,{statusCodes:[401]});
 
 instance.interceptors.request.use((config) => {
   const token = getCookie('AuthToken');

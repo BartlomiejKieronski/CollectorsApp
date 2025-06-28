@@ -211,7 +211,7 @@
     position: absolute;
     top: 8vh;
     left: 0;
-    background-color: #333;
+    background-color: var(--card);
     width: 100%;
     padding: 20px;
     opacity: 0;
@@ -261,10 +261,9 @@
   .imgLt {
     display: none;
   }
-
 }
+
 .userSubmenu>li {
   margin-top: 16px;
   font-size: 16px;
-
 }
