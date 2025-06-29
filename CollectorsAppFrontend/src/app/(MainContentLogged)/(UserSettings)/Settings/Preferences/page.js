@@ -17,7 +17,6 @@ export default function Preferencje() {
 
     
     return (
-
         <div className={cn(Style.preferencesStyleContainer)}>
             <div>
                 <div>Motyw:</div>

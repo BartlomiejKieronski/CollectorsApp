@@ -1,22 +1,37 @@
-.preferencesStyleContainer>div{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-size: large;
-    margin-top: 10px;
-    background-color: var(--card);
-    padding: 8px;
-    border-radius: 8px;
+@media screen and (max-width:600px) {
+    .preferencesStyleContainer {
+        min-width: 100%;
+    }
 }
-.preferencesStyleContainer>div>div:last-child{
+
+@media screen and (min-width:600px) and (hover: hover) {
+    
+}
+
+@media screen and (min-width:600px) and (orientation:landscape) and (hover:none) {
+    .preferencesStyleContainer {
+        min-width: 100%;
+    }
+}
+.preferencesStyleContainer>div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        font-size: large;
+        margin-top: 10px;
+        background-color: var(--card);
+        padding: 8px;
+        border-radius: 8px;
+    }
+.preferencesStyleContainer>div>div:last-child>div:last-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+    }
+.preferencesStyleContainer>div>div:last-child {
     display: flex;
     flex-direction: column;
-    gap:2px
-}
-.preferencesStyleContainer>div>div:last-child>div:last-child{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
+    gap: 2px
 }
