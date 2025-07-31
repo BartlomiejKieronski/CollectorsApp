@@ -107,7 +107,7 @@ export default function AddCollectableItem() {
                     <div className={cn(Style.displayFlex)}>
                         
                         <div className={cn(Style.imgCropperPosition)}>
-                        <div className={cn(Style.backToViewItems)}>{menuItems &&<Link href={`/ViewItems/${ItemCollection}/${menuItems.find(collection=>ItemCollection==collection.name).id}`}>Wróć</Link>}</div>
+                        <div className={cn(Style.backToViewItems)}><Button isLoading={isLoading} onClick={()=>router.back()}>Wróć</Button></div>
                             <ImageCroper onCroppedImageChange={handleCroppedImageChange} />
                         </div>
                         <div className={cn(Style.addItemsPosition)}>

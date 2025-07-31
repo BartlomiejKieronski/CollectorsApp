@@ -81,11 +81,12 @@ export default function ItemPage() {
     }, [imageItemData])
 
     const EditRedirect = () => router.push(`/Item/${ItemPage}/EditPage`);
-
+    const GoBackRedirect = () => router.back();
     return (
         <div className={cn(Style.itemPageWrapper)}>
             {data && (
                 <>
+                <Button classes={Style.goBackBtn} isLoading={isLoading} onClick={()=>{setIsLoading(true); GoBackRedirect()}}>Wróć</Button>
                     <Button classes={Style.editBtnLt} isLoading={isLoading} onClick={() => { setIsLoading(true); EditRedirect() }}>Edytuj dane</Button>
                     <div className={cn(Style.divDisplayPageLayout)}>
                         <div className={cn(Style.imageCaruselComponent)}>
