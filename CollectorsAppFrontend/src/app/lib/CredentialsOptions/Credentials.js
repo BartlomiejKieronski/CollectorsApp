@@ -23,15 +23,6 @@ export const authOptions = {
                         headers: {
                             'Cookie': header
                         }});
-                    /*const response = await axios.post("https://localhost:44302/api/Authentication", {
-                        "name": credentials.username,
-                        "password": credentials.password
-                    }, {
-                        headers: {
-                            'Cookie': header
-                        },
-                        withCredentials: true
-                    },)*/
                     if (response.status === 200) {
                         const data = setCookieParser(response.headers["set-cookie"])
                         const cookieStore = await cookies()

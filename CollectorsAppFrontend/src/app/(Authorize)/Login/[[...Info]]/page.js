@@ -23,6 +23,15 @@ export default function SignInPage({ csrfToken }) {
   
   useEffect(()=>{
     console.log(segments)
+    if(segments=="SessionError"){
+      alert("Wystąpił problem z sesją użytkownia. Proszę zalogować się ponownie!");
+    }
+    else if(segments=="Logged-Out"){
+      alert("Wylogowano pomyślnie");
+    }
+    else if(segments!=null){
+      alert(segments)
+    }
   },[segments])
   
   const handleTouchStart = () => setShowPassword(true);

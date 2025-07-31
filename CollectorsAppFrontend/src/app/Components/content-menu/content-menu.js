@@ -85,11 +85,10 @@ export default function MenuContent() {
       >
         ☰
       </button>
-
-      <div ref={menuContentEndRef} className={cn(Style.menuContentEnd,{
-        [Style.mobileMenuOpen]: isMobileMenuOpen
-      })
-        //`menu-content-end ${!isMobileMenuOpen ? "" : "mobile-menu-open"}`
+      <div ref={menuContentEndRef} className={cn(Style.menuContentEnd,
+        {
+          [Style.mobileMenuOpen]: isMobileMenuOpen
+        })
       }>
         <ul className={cn(Style.ulMenu)}>
           <li tabIndex={0} role="button"><Link href={"/ViewItems"}>Kolekcje</Link></li>
@@ -112,9 +111,7 @@ export default function MenuContent() {
                 <button
                   className={cn(Style.lgBt)}
                   onClick={() => {
-                    signOut({ redirect: false }).then(() => {
-                      router.push("/Login");
-                    });
+                    router.push("/Logout/Logged-Out");
                   }}
                 >
                   <div className={cn(Style.ulFlex, Style.flGap)}>

@@ -21,7 +21,7 @@ const refreshAuthLogic = async (failedRequest) => {
     return Promise.resolve();
   } catch (error) {
     if (typeof window !== 'undefined') {
-      window.location.href = '/Logout';
+      window.location.href = '/Logout/SessionError';
     }
     return Promise.reject(error);
   }
