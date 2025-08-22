@@ -31,7 +31,7 @@ export default function ItemView() {
     const params = useParams();
 
     const treeItemId = useMemo(() => params.TreeItemId, [params.TreeItemId]);
-
+    
     useEffect(() => {
         const storedValue = window.localStorage.getItem("display_item_count");
         const initialCount = storedValue ? Number(storedValue) : 10;

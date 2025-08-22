@@ -16,6 +16,7 @@ export default function MainContentLogged({ children }) {
     const router = useRouter();
     const params = useParams();
     const pathname = usePathname();
+
     useEffect(() => {
         if (status === "unauthenticated") {
             const segments = params.LogoutMessage;

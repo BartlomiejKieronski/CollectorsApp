@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState} from "react";
+import { useEffect, useState, useRef} from "react";
 import { useSession, getCsrfToken, signIn } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
 import Style from "./styles.module.css"
@@ -21,8 +21,14 @@ export default function SignInPage({ csrfToken }) {
 
   const segments = params.Info;
   
+  const hasShownAlert = useRef(false);
+  //show alert on message in url
   useEffect(()=>{
-    console.log(segments)
+
+    //ensure only 1 alert box
+    if(hasShownAlert.current) return;
+    hasShownAlert.current = true;
+    
     if(segments=="SessionError"){
       alert("Wystąpił problem z sesją użytkownia. Proszę zalogować się ponownie!");
     }
@@ -32,7 +38,7 @@ export default function SignInPage({ csrfToken }) {
     else if(segments!=null){
       alert(segments)
     }
-  },[segments])
+  },[])
   
   const handleTouchStart = () => setShowPassword(true);
   const handleTouchEnd = () => setShowPassword(false);

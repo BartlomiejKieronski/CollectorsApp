@@ -56,6 +56,7 @@ namespace CollectorsApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Reauthenticate()
         {
+            
             _logger.LogInformation("reauthentication start");
             try
             {

@@ -27,7 +27,7 @@ namespace CollectorsApp.Repository
 
         }
 
-        public async Task<Collections> GetACollection(int id)
+        public async Task<Collections?> GetACollection(int id)
         {
             return await _context.Collections.FindAsync(id);
         }
