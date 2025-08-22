@@ -1,4 +1,6 @@
 ﻿using CollectorsApp.Models;
+using CollectorsApp.Models.Analytics;
+using CollectorsApp.Models.APILogs;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Data
@@ -15,6 +17,8 @@ namespace CollectorsApp.Data
         public DbSet<RefreshTokenInfo> RefreshTokens { get; set; }
         public DbSet<Collections> Collections { get; set; }
         public DbSet<PasswordResetModel> PwdReset { get; set; }
+        public DbSet<AdminComment> AdminComments { get; set; }
+        public DbSet<APILog> APILogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
