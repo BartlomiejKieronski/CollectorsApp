@@ -17,6 +17,8 @@ using CollectorsApp.Services.Token;
 using CollectorsApp.Services.Cookie;
 using CollectorsApp.Services.Authentication;
 using CollectorsApp.Services.Security;
+using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
+using CollectorsApp.Repository.AnalyticsRepositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -105,6 +107,8 @@ builder.Services.AddScoped<IUserAesDecode, UserAesDecode>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAdminCommentsRepository, AdminCommentsRepository>();
+builder.Services.AddScoped<IAPILogRepository, APILogRepository>();
 
 
 /// Rate limiting middleware for logging in
