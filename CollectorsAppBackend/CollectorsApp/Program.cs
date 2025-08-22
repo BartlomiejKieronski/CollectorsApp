@@ -107,7 +107,7 @@ builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 
-/// Rate limiting for logging in
+/// Rate limiting middleware for logging in
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = 429;  
@@ -145,7 +145,7 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
-/// Middleware to extract name from json body for rate limiting on login endpoint
+/// Middleware to extract name from json body for rate limiting on Authentication endpoint
 app.Use(async (ctx, next) =>
 {
     if (ctx.Request.Path == "/api/Authentication"
