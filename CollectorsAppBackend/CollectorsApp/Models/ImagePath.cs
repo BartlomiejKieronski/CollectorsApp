@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using CollectorsApp.Models.Interfaces;
 
@@ -14,5 +15,7 @@ namespace CollectorsApp.Models
         public int ItemId { get; set; }
         [NotNull]
         public int OwnerId {  get; set; }
+        [AllowNull, DefaultValue(false)]
+        public bool IsRemoved { get; set; }
     }
 }

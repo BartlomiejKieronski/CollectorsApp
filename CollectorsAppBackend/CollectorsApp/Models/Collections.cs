@@ -1,5 +1,6 @@
 ﻿using CollectorsApp.Models.Interfaces;
 using ServiceStack.DataAnnotations;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
@@ -18,7 +19,8 @@ namespace CollectorsApp.Models
         [NotNull]
         public int Depth { get; set; }
         [NotNull]
-        public int OwnerId { get; set; } 
-
+        public int OwnerId { get; set; }
+        [AllowNull, DefaultValue(false)]
+        public bool IsRemoved { get; set; }
     }
 }

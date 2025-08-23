@@ -2,13 +2,9 @@
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : ICRUD<Users>
     {
-        Task<IEnumerable<Users>> GetUsers();
-        Task<Users> GetUser(int id);
         Task<string> PostUser(Users user);
-        Task UpdateUser(Users user, int id);
-        Task DeleteUser(int id);
         Task<Users> GetUserByNameOrEmailAsync(LoginInfo user);
     }
 }

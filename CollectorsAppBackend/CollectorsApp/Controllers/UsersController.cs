@@ -21,7 +21,7 @@ namespace CollectorsApp.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
         {
-            return Ok(await _repository.GetUsers());
+            return Ok(await _repository.GetAllAsync());
         }
 
         // GET: api/Users/5
@@ -29,7 +29,7 @@ namespace CollectorsApp.Controllers
         [Authorize]
         public async Task<ActionResult<Users>> GetUsers(int id)
         {
-            var users = await _repository.GetUser(id);
+            var users = await _repository.GetByIdAsync(id);
 
             if (users == null)
             {
@@ -49,7 +49,7 @@ namespace CollectorsApp.Controllers
                 return BadRequest();
             }
 
-            await _repository.UpdateUser(users,id);
+            await _repository.UpdateAsync(users,id);
             return NoContent();
         }
 
@@ -72,7 +72,7 @@ namespace CollectorsApp.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteUsers(int id)
         {
-            await _repository.DeleteUser(id);
+            await _repository.DeleteAsync(id);
             return NoContent();
         }
 

@@ -1,6 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using CollectorsApp.Models.Interfaces;
+using ServiceStack.DataAnnotations;
 
 namespace CollectorsApp.Models
 {
@@ -29,6 +31,8 @@ namespace CollectorsApp.Models
         [AllowNull]
         public string? State { get; set; }
         [AllowNull]
-        public string? Description {  get; set; } 
+        public string? Description {  get; set; }
+        [AllowNull, DefaultValue(false)]
+        public bool IsRemoved { get; set; }
     }
 }

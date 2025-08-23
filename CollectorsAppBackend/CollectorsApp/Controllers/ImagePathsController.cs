@@ -25,7 +25,7 @@ namespace CollectorsApp.Controllers
         [Authorize]
         public async Task<ActionResult<IEnumerable<ImagePath>>> GetImagePaths()
         {
-            var data = await _repository.GetImagePaths();
+            var data = await _repository.GetAllAsync();
             
             if (data == null)
             {
@@ -45,7 +45,7 @@ namespace CollectorsApp.Controllers
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<ImagePath>> GetImagePath(int id)
         {
-            var imagePath = await _repository.GetImagePathByImageId(id);
+            var imagePath = await _repository.GetByIdAsync(id);
 
             if (imagePath == null)
             {
@@ -59,7 +59,7 @@ namespace CollectorsApp.Controllers
         [Authorize(Policy = "ResourceOwner")]
         public async Task<ActionResult<IEnumerable<ImagePath>>> GetImagePathsByItemId(int id,int userId)
         {
-            var validation = await _itemsRepository.GetCollectableItem(id);
+            var validation = await _itemsRepository.GetByIdAsync(id);
             if(validation!=null && validation.OwnerId == userId) { 
                 return Ok(await _repository.GetImagePathsByItemId(id));
             }
@@ -79,7 +79,7 @@ namespace CollectorsApp.Controllers
             var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, imagePath, "EntityOwner");
             if (!authorization.Succeeded)
                 return Unauthorized();
-            await _repository.UpdateImagePath(imagePath,id);
+            await _repository.UpdateAsync(imagePath,id);
             return NoContent();
         }
 
@@ -90,7 +90,7 @@ namespace CollectorsApp.Controllers
             var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, imagePath, "EntityOwner");
             if (!authorization.Succeeded)
                 return Unauthorized();
-            await _repository.PostImagePath(imagePath);
+            await _repository.PostAsync(imagePath);
             return CreatedAtAction("GetImagePath", new { id = imagePath.Id }, imagePath);
         }
 
@@ -99,7 +99,7 @@ namespace CollectorsApp.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteImagePath(int id)
         {
-            var data = await _repository.GetImagePathByImageId(id);
+            var data = await _repository.GetByIdAsync(id);
             
             if (data == null)
                 return NotFound();
@@ -109,7 +109,7 @@ namespace CollectorsApp.Controllers
             if (!authorization.Succeeded)
                 return Unauthorized();
             
-            await _repository.DeleteImagePath(id);
+            await _repository.DeleteAsync(id);
             
             return NoContent();
         }

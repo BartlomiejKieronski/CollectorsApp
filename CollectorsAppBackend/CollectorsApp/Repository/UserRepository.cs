@@ -6,31 +6,17 @@ using CollectorsApp.Services.Encryption;
 
 namespace CollectorsApp.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : CRUDImplementation<Users>, IUserRepository
     {
-        private readonly appDatabaseContext _context;
         private readonly IDataHash _dataHash;
         private readonly IAesEncryption _aesEncryption;
-        public UserRepository(appDatabaseContext context, IDataHash dataHash, IAesEncryption aesEncryption)
+        public UserRepository(appDatabaseContext context, IDataHash dataHash, IAesEncryption aesEncryption) : base(context)
         {
-            _context = context;
             _dataHash = dataHash;
             _aesEncryption = aesEncryption;
         }
-        public async Task DeleteUser(int id)
-        {
-
-            var user = await _context.Users.FindAsync(id);
-            if (user != null)
-            {
-                _context.Remove(user);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                return;
-            }
-        }
+        
+        
         public async Task<string> PostUser(Users user)
         {
             var credentials = await _dataHash.GetCredentialsAsync(user.Password);
@@ -65,22 +51,6 @@ namespace CollectorsApp.Repository
             await _context.SaveChangesAsync();
 
             return "Created successfully";
-        }
-        
-        public async Task<Users> GetUser(int id)
-        {
-            return await _context.Users.FindAsync(id);
-        }
-
-        public async Task<IEnumerable<Users>> GetUsers()
-        {
-            return await _context.Users.ToListAsync();
-        }
-
-        public async Task UpdateUser(Users user, int id)
-        {
-            _context.Entry(user).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
         }
         public async Task<Users> GetUserByNameOrEmailAsync(LoginInfo user)
         {

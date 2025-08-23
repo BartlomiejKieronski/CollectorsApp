@@ -23,7 +23,7 @@ namespace CollectorsApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CollectableItems>>> GetCollectableItems()
         {
-            return Ok(await _repository.GetCollectableItems());
+            return Ok(await _repository.GetAllAsync());
         }
 
         [Authorize]
@@ -38,7 +38,7 @@ namespace CollectorsApp.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CollectableItems>> GetCollectableItems(int id)
         {
-            var collectableItems = await _repository.GetCollectableItem(id);
+            var collectableItems = await _repository.GetByIdAsync(id);
 
             if (collectableItems == null)
             {
@@ -59,7 +59,7 @@ namespace CollectorsApp.Controllers
             var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, collectableItems, "EntityOwner");
             if(!authorization.Succeeded)
                 return Unauthorized();
-            await _repository.UpdateCollectableItem(collectableItems, id);
+            await _repository.UpdateAsync(collectableItems, id);
             return NoContent();
         }
 
@@ -105,7 +105,7 @@ namespace CollectorsApp.Controllers
             var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, collectableItems, "EntityOwner");
             if (!authorization.Succeeded)
                 return Unauthorized();
-            await _repository.PostCollectableItem(collectableItems);
+            await _repository.PostAsync(collectableItems);
 
             if(collectableItems.PhotoFilePath != null)
             {
@@ -113,7 +113,7 @@ namespace CollectorsApp.Controllers
                 path.ItemId = collectableItems.Id;
                 path.Path = collectableItems.PhotoFilePath;
                 path.OwnerId = collectableItems.OwnerId;
-                await _imagePathRepository.PostImagePath(path);
+                await _imagePathRepository.PostAsync(path);
             }
 
             return CreatedAtAction("GetCollectableItems", new { id = collectableItems.Id }, collectableItems);
@@ -123,12 +123,12 @@ namespace CollectorsApp.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCollectableItems(int id)
         {
-            var data = await _repository.GetCollectableItem(id);
+            var data = await _repository.GetByIdAsync(id);
             if(data != null) { 
                 var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, data, "EntityOwner");
                 if (!authorization.Succeeded)
                     return Unauthorized();
-                await _repository.DeleteCollectableItem(id);
+                await _repository.DeleteAsync(id);
             }
             return NoContent();
         }

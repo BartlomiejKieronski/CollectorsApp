@@ -6,45 +6,38 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class PwdReset : IPwdReset
+    public class PwdReset : CRUDImplementation<PasswordResetModel> ,IPwdReset
     {
-        private readonly appDatabaseContext _context;
         private readonly IDataHash _dataHash;
         private readonly IAesEncryption _aes;
         
-        public PwdReset(appDatabaseContext context, IDataHash dataHash, IAesEncryption aes) {
-            _context = context;
+        public PwdReset(appDatabaseContext context, IDataHash dataHash, IAesEncryption aes) : base(context) {
             _dataHash = dataHash;
             _aes = aes;
         }
 
-        public async Task DeletePasswordReset(int id)
+        public override async Task<bool> DeleteAsync(int id)
         {
-            var passwordReset= await _context.PwdReset.FindAsync(id);
+            var passwordReset = await _dbSet.FindAsync(id);
             if (passwordReset != null)
             {
                 _context.Remove(passwordReset);
                 await _context.SaveChangesAsync();
+                return true;
             }
             else
             {
-                return;
+                return false;
             }
         }
-
-        public async Task PostPasswordReset(PasswordResetModel model)
+        
+        public override async Task PostAsync(PasswordResetModel entity)
         {
-            var emailHash = await _dataHash.GenerateHmacAsync(model.Email);
-            var tokenHash = await _dataHash.GenerateHmacAsync(model.Token);
-            model.Email = emailHash;
-            model.Token = tokenHash;
-            await _context.PwdReset.AddAsync(model);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task PutPasswordReset(PasswordResetModel model)
-        {
-            _context.Entry(model).State = EntityState.Modified;
+            var emailHash = await _dataHash.GenerateHmacAsync(entity.Email);
+            var tokenHash = await _dataHash.GenerateHmacAsync(entity.Token);
+            entity.Email = emailHash;
+            entity.Token = tokenHash;
+            await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
 

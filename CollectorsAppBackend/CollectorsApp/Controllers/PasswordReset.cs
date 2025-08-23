@@ -79,7 +79,7 @@ namespace CollectorsApp.Controllers
                 passwordResetModel.Token = urlToken;
                 passwordResetModel.Email = reset.Email;
              
-                await _pwdRepository.PostPasswordReset(passwordResetModel);
+                await _pwdRepository.PostAsync(passwordResetModel);
                 await _emailSender.SendEmailAsync(reset.Email, "Reset hasła", htmlMessage);
                 
                 return Ok();
@@ -111,8 +111,8 @@ namespace CollectorsApp.Controllers
                     var newPassword = await _dataHash.GetCredentialsAsync(password.Password);
                     user.Salt = newPassword.Item1;
                     user.Password = newPassword.Item2;
-                    await _userRepository.UpdateUser(user, user.Id);
-                    await _pwdRepository.DeletePasswordReset(validationData.Id);
+                    await _userRepository.UpdateAsync(user, user.Id);
+                    await _pwdRepository.DeleteAsync(validationData.Id);
                     return Ok("Succes");
                 }
             }

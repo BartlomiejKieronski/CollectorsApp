@@ -5,7 +5,7 @@ using CollectorsApp.Services.Cookie;
 using CollectorsApp.Services.Encryption;
 using CollectorsApp.Services.Token;
 using CollectorsApp.Services.Utility;
-using Google.Apis.Auth.OAuth2;
+using Google.Rpc;
 using Microsoft.IdentityModel.Tokens;
 using System.Transactions;
 

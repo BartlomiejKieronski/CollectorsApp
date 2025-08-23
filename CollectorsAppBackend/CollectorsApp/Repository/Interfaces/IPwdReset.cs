@@ -3,11 +3,8 @@ using ServiceStack;
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface IPwdReset
+    public interface IPwdReset : ICRUD<PasswordResetModel>
     {
-        Task PostPasswordReset(PasswordResetModel model);
-        Task PutPasswordReset(PasswordResetModel model);
-        Task DeletePasswordReset(int id);
         Task<PasswordResetModel> GetPasswordResetModelByEmail(string email);
     }
 }

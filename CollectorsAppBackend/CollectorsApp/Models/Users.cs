@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using ServiceStack.DataAnnotations;
@@ -33,5 +34,9 @@ namespace CollectorsApp.Models
         public bool? Active { get; set; }
         [AllowNull]
         public DateTime AccountCreationDate { get; set; }
+        [AllowNull, DefaultValue(false)]
+        public bool IsSusspended { get; set; }
+        [AllowNull, DefaultValue(false)]
+        public bool IsBanned { get; set; }
     }
 }

@@ -25,14 +25,14 @@ namespace CollectorsApp.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Collections>>> GetCollections()
         {
-            return Ok(await _repository.GetCollections());
+            return Ok(await _repository.GetAllAsync());
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Collections>> GetCollections(int id)
         {
-            var collections = await _repository.GetACollection(id);
+            var collections = await _repository.GetByIdAsync(id);
 
             if (collections == null)
             {
@@ -72,7 +72,7 @@ namespace CollectorsApp.Controllers
             if (!authorization.Succeeded)
                 return Unauthorized();
 
-            await _repository.UpdateCollection(collections,id);
+            await _repository.UpdateAsync(collections,id);
 
             return NoContent();
         }
@@ -99,7 +99,7 @@ namespace CollectorsApp.Controllers
                 return Conflict(problemDetails);
             }
             else { 
-            await _repository.PostCollection(collections);
+            await _repository.PostAsync(collections);
             return CreatedAtAction("GetCollections", new { id = collections.Id }, collections);
             }
 
@@ -109,7 +109,7 @@ namespace CollectorsApp.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteCollections(int id)
         {
-            var data = await _repository.GetACollection(id);
+            var data = await _repository.GetByIdAsync(id);
             
             if(data == null)
                 return NotFound();
@@ -119,7 +119,7 @@ namespace CollectorsApp.Controllers
             if (!authorization.Succeeded)
                 return Unauthorized();
             
-            await _repository.DeleteCollection(id);
+            await _repository.DeleteAsync(id);
             
             return Ok();
         }
@@ -132,12 +132,5 @@ namespace CollectorsApp.Controllers
             return await _repository.GetCollectionsByUserId(userId, name);
         }
 
-        [HttpGet("Test/{secret}")]
-        //[Authorize(Policy = "ResourceOwner")]
-        public async Task<IActionResult> Test(string secret)
-        {
-            var constring = await _vault.GetSecretsAsync(secret);
-            return Ok(constring);//data + " " + userId);
-        }
     }
 }
