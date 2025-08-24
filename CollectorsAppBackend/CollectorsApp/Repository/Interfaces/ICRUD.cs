@@ -7,5 +7,6 @@
         Task<bool> DeleteAsync(int id);
         Task UpdateAsync(T entity, int Id);
         Task PostAsync(T entity);
+        Task<bool> Exists(int id);
     }
 }

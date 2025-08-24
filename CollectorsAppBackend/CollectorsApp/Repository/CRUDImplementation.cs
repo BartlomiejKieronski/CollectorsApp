@@ -1,5 +1,4 @@
 ﻿using CollectorsApp.Data;
-using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,6 +48,12 @@ namespace CollectorsApp.Repository
         {
             _dbSet.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+        }
+
+        public virtual async Task<bool> Exists(int id)
+        {
+            var instance = await _dbSet.FindAsync(id);
+            return instance != null;
         }
     }
 }
