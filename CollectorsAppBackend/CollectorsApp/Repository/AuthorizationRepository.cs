@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class Authorization : IAuthorizationRepository
+    public class AuthorizationRepository : IAuthorizationRepository
 
     {
         private readonly appDatabaseContext _context;
         private readonly IDataHash _dataHash;
         private readonly IAesEncryption _aesEncryption;
-        private readonly ILogger<Authorization> _logger;
-        public Authorization(appDatabaseContext context, IDataHash dataHash, IAesEncryption aesEncryption, ILogger<Authorization> loger) 
+        private readonly ILogger<AuthorizationRepository> _logger;
+        public AuthorizationRepository(appDatabaseContext context, IDataHash dataHash, IAesEncryption aesEncryption, ILogger<AuthorizationRepository> loger) 
         {
             _context = context;
             _dataHash = dataHash;

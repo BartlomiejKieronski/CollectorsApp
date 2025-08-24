@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class PwdReset : CRUDImplementation<PasswordResetModel> ,IPwdReset
+    public class PwdResetRepository : CRUDImplementation<PasswordResetModel> ,IPwdResetRepository
     {
         private readonly IDataHash _dataHash;
         private readonly IAesEncryption _aes;
         
-        public PwdReset(appDatabaseContext context, IDataHash dataHash, IAesEncryption aes) : base(context) {
+        public PwdResetRepository(appDatabaseContext context, IDataHash dataHash, IAesEncryption aes) : base(context) {
             _dataHash = dataHash;
             _aes = aes;
         }

@@ -4,10 +4,10 @@ using System.Security.Claims;
 
 namespace CollectorsApp.Repository
 {
-    public class UserClaims : IUserClaims
+    public class UserClaimsRepository : IUserClaimsRepository
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UserClaims(IHttpContextAccessor httpContextAccessor) 
+        public UserClaimsRepository(IHttpContextAccessor httpContextAccessor) 
         {
             _httpContextAccessor = httpContextAccessor;
         }
