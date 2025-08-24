@@ -18,12 +18,12 @@ namespace CollectorsApp.Controllers
     public class PasswordReset : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPwdReset _pwdRepository;
+        private readonly IPwdResetRepository _pwdRepository;
         private readonly IEmailSenderService _emailSender;
         private readonly IDataHash _dataHash;
         private readonly IConfiguration _configuration;
         private readonly IGoogleSecretStorageVault _vault;
-        public PasswordReset(IUserRepository userRepository, IPwdReset pwdRepository, IEmailSenderService emailSender, IDataHash dataHash, IConfiguration configuration,IGoogleSecretStorageVault vault)
+        public PasswordReset(IUserRepository userRepository, IPwdResetRepository pwdRepository, IEmailSenderService emailSender, IDataHash dataHash, IConfiguration configuration,IGoogleSecretStorageVault vault)
         {
             _userRepository = userRepository;
             _pwdRepository = pwdRepository;
@@ -113,14 +113,14 @@ namespace CollectorsApp.Controllers
                     user.Password = newPassword.Item2;
                     await _userRepository.UpdateAsync(user, user.Id);
                     await _pwdRepository.DeleteAsync(validationData.Id);
-                    return Ok("Succes");
+                    return Ok(new { message = "Succes" });
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { error = ex.Message });
             }
-            return BadRequest("Validation unsuccessful");
+            return BadRequest(new { error = "Validation unsuccessful" });
 
         }
         [AllowAnonymous]
@@ -131,14 +131,14 @@ namespace CollectorsApp.Controllers
         public async Task<IActionResult> IsPasswordCorrect(LoginInfo login)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(new { error = "Invalid model state" });
             
             var data = await _userRepository.GetUserByNameOrEmailAsync(new LoginInfo { name = login.name });
             bool isValid = await _dataHash.RecreateDataAsync(login.password, data.Salt!) == data.Password;
 
             if (isValid == true)
             {
-                return Ok(true);
+                return Ok(new { IsPasswordValid = true });
             }
             return Unauthorized();
         }

@@ -40,14 +40,14 @@ namespace CollectorsApp.Controllers
                 var login = await _authService.LoginAsync(user, readDeviceInfoCookie);
                 
                 if(!login.Success)
-                    return BadRequest(login.ErrorMessage);
+                    return BadRequest(new { error = login.ErrorMessage });
                 
                 return Ok(login.User);
                 
             }
             catch
             {
-                return BadRequest("Something went wrong");
+                return BadRequest(new { error = "Something went wrong" });
             }
         }
 
@@ -80,7 +80,7 @@ namespace CollectorsApp.Controllers
             catch
             {
                 _logger.LogInformation("catch reauth controller error");
-                return BadRequest("Something went wrong");
+                return BadRequest(new { error = "Something went wrong" });
             }
         }
 
@@ -95,14 +95,14 @@ namespace CollectorsApp.Controllers
                 var device = Request.Cookies["DeviceInfo"];
              
                 if (refresh.IsNullOrEmpty()|| device.IsNullOrEmpty())
-                    return BadRequest();
+                    return BadRequest(new { error = "Cookies not found" });
                 
                 await _authService.LogoutAsync(id,refresh, device);
                 return Ok();
             }
             catch
             {
-                return BadRequest("Something went wrong");
+                return BadRequest(new { error = "Something went wrong" });
             }
         }
         [AllowAnonymous]
@@ -114,7 +114,7 @@ namespace CollectorsApp.Controllers
 
             if (result == "user exists")
             {
-                return BadRequest(result);
+                return BadRequest(new { error = result });
             }
 
             return Ok(result);

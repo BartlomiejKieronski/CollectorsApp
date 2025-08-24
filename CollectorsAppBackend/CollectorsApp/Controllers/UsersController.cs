@@ -16,7 +16,6 @@ namespace CollectorsApp.Controllers
             _repository = repository;
         }
 
-        // GET: api/Users
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
@@ -24,7 +23,6 @@ namespace CollectorsApp.Controllers
             return Ok(await _repository.GetAllAsync());
         }
 
-        // GET: api/Users/5
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Users>> GetUsers(int id)
@@ -38,23 +36,19 @@ namespace CollectorsApp.Controllers
             return users;
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutUsers(int id, Users users)
         {
             if (id != users.Id)
             {
-                return BadRequest();
+                return BadRequest(new { error = "Item id does not match" });
             }
 
             await _repository.UpdateAsync(users,id);
             return NoContent();
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult> PostUsers(Users users)
         {
@@ -62,19 +56,18 @@ namespace CollectorsApp.Controllers
 
             if (result == "user exists")
             {
-                return BadRequest(result);
+                return BadRequest(new { error = result });
             }
 
             return Ok(result);
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles ="admin")]
         public async Task<IActionResult> DeleteUsers(int id)
         {
             await _repository.DeleteAsync(id);
             return NoContent();
         }
-
     }
 }

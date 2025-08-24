@@ -54,7 +54,7 @@ namespace CollectorsApp.Controllers
         {
             if (id != collectableItems.Id)
             {
-                return BadRequest();
+                return BadRequest(new { error = "Item id does not match" });
             }
             var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, collectableItems, "EntityOwner");
             if(!authorization.Succeeded)

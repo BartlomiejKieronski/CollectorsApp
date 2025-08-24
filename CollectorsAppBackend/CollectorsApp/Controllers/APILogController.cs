@@ -1,9 +1,7 @@
-﻿using CollectorsApp.Models.Analytics;
-using CollectorsApp.Models.APILogs;
+﻿using CollectorsApp.Models.APILogs;
 using CollectorsApp.Models.Filters;
 using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollectorsApp.Controllers
@@ -58,7 +56,7 @@ namespace CollectorsApp.Controllers
             bool isSuccesful = await _repository.DeleteAsync(id);
             if (isSuccesful)
                 return NoContent();
-            return BadRequest();
+            return NotFound();
         }
     }
 }

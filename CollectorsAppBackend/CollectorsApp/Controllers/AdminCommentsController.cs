@@ -59,7 +59,7 @@ namespace CollectorsApp.Controllers
             bool isSuccesful = await _repository.DeleteAsync( id);
             if(isSuccesful)
                 return NoContent();
-            return BadRequest();
+            return NotFound();
         }
     }
 }

@@ -64,7 +64,7 @@ namespace CollectorsApp.Controllers
         public async Task<IActionResult> PutCollections(int id, Collections collections)
         {
             if (id != collections.Id)
-                return BadRequest();
+                return BadRequest(new { error = "Item id does not match" });
             
 
             var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, collections, "EntityOwner");

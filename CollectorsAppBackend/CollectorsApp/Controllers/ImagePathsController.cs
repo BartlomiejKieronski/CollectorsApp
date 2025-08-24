@@ -74,7 +74,7 @@ namespace CollectorsApp.Controllers
         {
             if (id != imagePath.Id)
             {
-                return BadRequest();
+                return BadRequest(new { error = "Item id does not match" });
             }
             var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, imagePath, "EntityOwner");
             if (!authorization.Succeeded)
