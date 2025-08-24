@@ -16,22 +16,69 @@ namespace CollectorsApp.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "AdminComments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    EventLogId = table.Column<int>(type: "int", nullable: false),
+                    TargetType = table.Column<string>(type: "longtext", nullable: false),
+                    CommentText = table.Column<string>(type: "longtext", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminComments", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "APILogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    Controller = table.Column<string>(type: "longtext", nullable: true),
+                    Action = table.Column<string>(type: "longtext", nullable: true),
+                    StatusCode = table.Column<int>(type: "int", nullable: false),
+                    IsSuccess = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: true),
+                    Description = table.Column<string>(type: "longtext", nullable: true),
+                    ErrorMessage = table.Column<string>(type: "longtext", nullable: true),
+                    RequestPath = table.Column<string>(type: "longtext", nullable: true),
+                    HttpMethod = table.Column<string>(type: "longtext", nullable: true),
+                    IpAddress = table.Column<string>(type: "longtext", nullable: true),
+                    IpIV = table.Column<string>(type: "longtext", nullable: true),
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    DurationMs = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_APILogs", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false),
-                    HashedName = table.Column<string>(type: "longtext", nullable: false),
-                    NameIVKey = table.Column<string>(type: "longtext", nullable: false),
+                    HashedName = table.Column<string>(type: "longtext", nullable: true),
+                    NameIVKey = table.Column<string>(type: "longtext", nullable: true),
                     Email = table.Column<string>(type: "longtext", nullable: false),
-                    HashedEmail = table.Column<string>(type: "longtext", nullable: false),
-                    EmailIVKey = table.Column<string>(type: "longtext", nullable: false),
+                    HashedEmail = table.Column<string>(type: "longtext", nullable: true),
+                    EmailIVKey = table.Column<string>(type: "longtext", nullable: true),
                     Password = table.Column<string>(type: "longtext", nullable: false),
                     Salt = table.Column<string>(type: "longtext", nullable: true),
                     Role = table.Column<string>(type: "longtext", nullable: true),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: true),
-                    AccountCreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    AccountCreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsSusspended = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsBanned = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,7 +96,8 @@ namespace CollectorsApp.Migrations
                     ParentId = table.Column<int>(type: "int", nullable: false),
                     ParentName = table.Column<string>(type: "longtext", nullable: false),
                     Depth = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false)
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,13 +142,61 @@ namespace CollectorsApp.Migrations
                     RefreshToken = table.Column<string>(type: "longtext", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false),
                     DateOfIssue = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    IssuerDeviceInfo = table.Column<string>(type: "longtext", nullable: false)
+                    IssuerDeviceInfo = table.Column<string>(type: "longtext", nullable: false),
+                    IsValid = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RefreshTokens_Users_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserConsents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ConsentType = table.Column<string>(type: "longtext", nullable: false),
+                    IsGranted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserConsents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserConsents_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserPreferences",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    Layout = table.Column<string>(type: "longtext", nullable: false),
+                    Theme = table.Column<string>(type: "longtext", nullable: false),
+                    ItemsPerPage = table.Column<int>(type: "int", nullable: false),
+                    Pagination = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPreferences", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPreferences_Users_OwnerId",
                         column: x => x.OwnerId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -124,7 +220,8 @@ namespace CollectorsApp.Migrations
                     DateOfAquire = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CollectionId = table.Column<int>(type: "int", nullable: false),
                     State = table.Column<string>(type: "longtext", nullable: true),
-                    Description = table.Column<string>(type: "longtext", nullable: true)
+                    Description = table.Column<string>(type: "longtext", nullable: true),
+                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -152,7 +249,8 @@ namespace CollectorsApp.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Path = table.Column<string>(type: "longtext", nullable: false),
                     ItemId = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false)
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -206,11 +304,27 @@ namespace CollectorsApp.Migrations
                 name: "IX_RefreshTokens_OwnerId",
                 table: "RefreshTokens",
                 column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserConsents_UserId",
+                table: "UserConsents",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPreferences_OwnerId",
+                table: "UserPreferences",
+                column: "OwnerId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AdminComments");
+
+            migrationBuilder.DropTable(
+                name: "APILogs");
+
             migrationBuilder.DropTable(
                 name: "ImagePaths");
 
@@ -219,6 +333,12 @@ namespace CollectorsApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
+                name: "UserConsents");
+
+            migrationBuilder.DropTable(
+                name: "UserPreferences");
 
             migrationBuilder.DropTable(
                 name: "CollectableItems");

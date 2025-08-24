@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorsApp.Migrations
 {
     [DbContext(typeof(appDatabaseContext))]
-    [Migration("20250427162958_Initial")]
+    [Migration("20250824155136_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,6 +21,87 @@ namespace CollectorsApp.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("CollectorsApp.Models.APILogs.APILog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Action")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Controller")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("DurationMs")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("HttpMethod")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("IpIV")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsSuccess")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("RequestPath")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("StatusCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("APILogs");
+                });
+
+            modelBuilder.Entity("CollectorsApp.Models.Analytics.AdminComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CommentText")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("EventLogId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdminComments");
+                });
 
             modelBuilder.Entity("CollectorsApp.Models.CollectableItems", b =>
                 {
@@ -39,6 +120,9 @@ namespace CollectorsApp.Migrations
 
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
@@ -80,6 +164,9 @@ namespace CollectorsApp.Migrations
                     b.Property<int>("Depth")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -106,6 +193,9 @@ namespace CollectorsApp.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -159,6 +249,9 @@ namespace CollectorsApp.Migrations
                     b.Property<DateTime>("DateOfIssue")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("IssuerDeviceInfo")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -175,6 +268,62 @@ namespace CollectorsApp.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("CollectorsApp.Models.UserConsent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConsentType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsGranted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserConsents");
+                });
+
+            modelBuilder.Entity("CollectorsApp.Models.UserPreferences", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemsPerPage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Layout")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Pagination")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Theme")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("UserPreferences");
                 });
 
             modelBuilder.Entity("CollectorsApp.Models.Users", b =>
@@ -194,23 +343,25 @@ namespace CollectorsApp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("EmailIVKey")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("HashedEmail")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("HashedName")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsSusspended")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("NameIVKey")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Password")
@@ -277,6 +428,24 @@ namespace CollectorsApp.Migrations
                 });
 
             modelBuilder.Entity("CollectorsApp.Models.RefreshTokenInfo", b =>
+                {
+                    b.HasOne("CollectorsApp.Models.Users", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CollectorsApp.Models.UserConsent", b =>
+                {
+                    b.HasOne("CollectorsApp.Models.Users", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CollectorsApp.Models.UserPreferences", b =>
                 {
                     b.HasOne("CollectorsApp.Models.Users", null)
                         .WithMany()
