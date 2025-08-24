@@ -17,8 +17,10 @@ namespace CollectorsApp.Data
         public DbSet<RefreshTokenInfo> RefreshTokens { get; set; }
         public DbSet<Collections> Collections { get; set; }
         public DbSet<PasswordResetModel> PwdReset { get; set; }
+        public DbSet<UserPreferences> UserPreferences { get; set; }
         public DbSet<AdminComment> AdminComments { get; set; }
         public DbSet<APILog> APILogs { get; set; }
+        public DbSet<UserConsent> UserConsents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -65,7 +67,16 @@ namespace CollectorsApp.Data
                 .WithMany()
                 .HasForeignKey(id => id.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
-
+            modelBuilder.Entity<UserPreferences>()
+                .HasOne<Users>()
+                .WithMany()
+                .HasForeignKey(id => id.OwnerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<UserConsent>()
+                .HasOne<Users>()
+                .WithMany()
+                .HasForeignKey(id => id.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

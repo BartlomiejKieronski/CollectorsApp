@@ -98,18 +98,19 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICollectableItemsRepository, CollectableItemsRepository>();
 builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
 builder.Services.AddScoped<IImagePathRepository, ImagePathRepository>();
-builder.Services.AddScoped<IAuthorizationRepository, Authorization>();
-builder.Services.AddScoped<IPwdReset, PwdReset>();
+builder.Services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
+builder.Services.AddScoped<IPwdResetRepository, PwdResetRepository>();
 builder.Services.AddScoped<IDataHash, DataHash>();
 builder.Services.AddScoped<IAesEncryption, AesEncryption>();
-builder.Services.AddScoped<IUserClaims, UserClaims>();
+builder.Services.AddScoped<IUserClaimsRepository, UserClaimsRepository>();
 builder.Services.AddScoped<IUserAesDecode, UserAesDecode>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAdminCommentsRepository, AdminCommentsRepository>();
 builder.Services.AddScoped<IAPILogRepository, APILogRepository>();
-
+builder.Services.AddScoped<IUserPreferencesRepository,UserPreferencesRepository>();
+builder.Services.AddScoped<IUserConsentRepository, UserConsentRepository>();
 
 /// Rate limiting middleware for logging in
 builder.Services.AddRateLimiter(options =>
