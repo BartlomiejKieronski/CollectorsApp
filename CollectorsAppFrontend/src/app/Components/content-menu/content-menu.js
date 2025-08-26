@@ -8,7 +8,9 @@ import { signOut } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import cn from "classnames";
+
 export default function MenuContent() {
+
   const { toggleMenu } = useMenu();
   const path = usePathname();
   const router = useRouter();

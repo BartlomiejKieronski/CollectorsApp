@@ -16,9 +16,7 @@ export default function Content({ children }) {
 
   return (
     <div className={cn(Style.contentContainer)}>
-      <div className={cn(Style.SideMenu, {[Style.open]:isOpen})}
-      //{`Side-Menu ${isOpen ? 'open' : 'closed'}`}
-      >
+      <div className={cn(Style.SideMenu, {[Style.open]:isOpen})}>
         <Tree onButtonClick={handleClickAction} onMenuInfo={closeMenu} />
       </div>
       <div className={cn(Style.ContentLayoutStyle)}>{data}

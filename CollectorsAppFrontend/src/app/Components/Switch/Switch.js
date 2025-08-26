@@ -23,10 +23,8 @@ export default function ToggleSwitch({ active, setActive }) {
     return (
         <div className={cn(Style.toggleContainer)} onClick={handleToggle}>
             <div className={cn(
-                Style.toggleSwitch,              
-        { [Style.theme]: active === 'dark' }  // only add "theme" when active==="dark"
-      )}>
-                {/* "toggle-switch ${active == "dark" ? 'theme' : ''}}>*/}
+                Style.toggleSwitch,
+                { [Style.theme]: active === 'dark' })}>
                 <div className={cn(Style.toggleKnob)} />
             </div>
         </div>

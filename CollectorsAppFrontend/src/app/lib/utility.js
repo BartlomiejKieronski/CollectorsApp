@@ -2,37 +2,37 @@
 import axios from "axios";
 import instance from "../axiosInstance";
 
-export async function GetItem(itemId, userId) {
+export async function getItem(itemId, userId) {
     return await instance.get(`api/CollectableItems/GetCollectableItemsByUserIdAndItemId/${itemId}/${userId}`);
 }
 
-export async function GetItems(userId, collectionId) {
+export async function getItems(userId, collectionId) {
     return await instance.get(`api/CollectableItems/GetCollectableItemsByUserIdAndCollectionId/${userId}/${collectionId}`);
 }
 
-export async function GetPaginatedItems(page, userId, collectionId, numberOfItems) {
+export async function getPaginatedItems(page, userId, collectionId, numberOfItems) {
     return await instance.get(`api/CollectableItems/${page}/${userId}/${collectionId}/${numberOfItems}`)
 }
 
-export async function DeleteItem(itemId, userId) {
-    const response = await ImagePaths(itemId, userId);
+export async function deleteItem(itemId, userId) {
+    const response = await imagePaths(itemId, userId);
     if (response.data.length > 0) {
         response.data.forEach(async (item) => {
-            await DeleteImage(item, userId);
+            await deleteImage(item, userId);
         })
     }
     return await instance.delete(`api/CollectableItems/${itemId}`);
 }
 
-export async function UpdateItem(itemId, data) {
+export async function updateItem(itemId, data) {
     return await instance.put(`api/CollectableItems/${itemId}`, data);
 }
 
-export async function AddItem(data) {
+export async function addItem(data) {
     return await instance.post(`api/CollectableItems`, data)
 }
 
-export async function CollectionItemCount(collectionId, userId) {
+export async function collectionItemCount(collectionId, userId) {
     return await instance.get(`api/CollectableItems/getData?collection=${collectionId}&userId=${userId}`);
 }
 
@@ -49,14 +49,14 @@ export async function updateCollection(id, data) {
 }
 
 export async function deleteCollection(collectionId, userId) {
-    var collectionData = await GetItems(userId, collectionId);
+    var collectionData = await getItems(userId, collectionId);
     if (collectionData.data.length > 0) {
-        await DeleteMultipleItems(collectionData.data, userId);
+        await deleteMultipleItems(collectionData.data, userId);
     }
     return await instance.delete(`api/Collections/${collectionId}`)
 }
 
-export async function AddImage(formData, fileName) {
+export async function addImage(formData, fileName) {
     const croppedImage = formData;
     if (!croppedImage) return;
 
@@ -72,7 +72,7 @@ export async function AddImage(formData, fileName) {
     }
 }
 
-export async function DeleteImage(image) {
+export async function deleteImage(image) {
 
     const URI = encodeURIComponent(image.path)
 
@@ -81,8 +81,8 @@ export async function DeleteImage(image) {
     return (responseGCS)
 }
 
-export async function GetSignedImageUrl(image) {
-    if (!image) return "No file";
+export async function getSignedImageUrl(image) {
+    if (!image) return {error: "No file"};
     try {
         const response = await axios.post("/api/SignUrls", {
             fileName: image
@@ -105,44 +105,44 @@ export async function updateImagePath(imagePathId, data) {
     return await instance.update(`api/ImagePaths/${imagePathId}`, data);
 }
 
-export async function ImagePaths(itemId, userId) {
+export async function imagePaths(itemId, userId) {
     return await instance.get(`api/ImagePaths/GetImagePathsByItemId/${itemId}/${userId}`);
 }
 
-export async function GetSignedImagesUrls(items) {
+export async function getSignedImagesUrls(items) {
     if (!Array.isArray(items) || items.length === 0) {
-        return ("No items provided");
+        return ({error: "No items provided"});
     }
     try {
         const response = await axios.post("/api/HandleArrayUrlSigning", items);
         return response.data;
     } catch (error) {
-        return ("Failed to fetch signed URLs");
+        return ({error: "Failed to fetch signed URLs"});
     }
 }
 
-export async function GetSignedItemImagesUrls(items) {
+export async function getSignedItemImagesUrls(items) {
     if (!Array.isArray(items) || items.length === 0) {
-        return ("No items provided");
+        return ({error: "No items provided"});
     }
     try {
         const response = await axios.post("/api/HandleItemArrayUrlSigning", items);
         return response.data;
     } catch (error) {
-        return ("Failed to fetch signed URLs");
+        return ({error: "Failed to fetch signed URLs"});
     }
 }
 
-export async function DeleteMultipleItems(items, userId) {
+export async function deleteMultipleItems(items, userId) {
     items.forEach(async (element) => {
-        await DeleteItem(element.id, userId)
+        await deleteItem(element.id, userId)
     });
 }
 
-export async function IsPasswordCorrect(data){
+export async function isPasswordCorrect(data){
     return await instance.post(`api/Authentication/IsPasswordCorrect`,data)
 }
  
-export async function DeleteUserAccount(id){
+export async function deleteUserAccount(id){
     return await instance.delete(`api/Users/${id}`);
 }

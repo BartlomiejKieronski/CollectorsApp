@@ -6,13 +6,13 @@ import Style from "./EditPage.module.css";
 import EditPictures from "@/app/Components/EditItemData/EditPictures";
 import EditData from "@/app/Components/EditItemData/EditData";
 import {
-  UpdateItem,
-  AddImage,
-  GetItem,
-  ImagePaths,
-  GetSignedImagesUrls,
+  updateItem,
+  addImage,
+  getItem,
+  imagePaths,
+  getSignedImagesUrls,
   addImagePath,
-  DeleteItem
+  deleteItem
 } from "@/app/lib/utility";
 
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
@@ -51,8 +51,8 @@ export default function EditItem() {
     const fetchData = async () => {
       try {
         const [itemRes, imagesRes] = await Promise.all([
-          GetItem(ItemPage, session.user.id),
-          ImagePaths(ItemPage, session.user.id),
+          getItem(ItemPage, session.user.id),
+          imagePaths(ItemPage, session.user.id),
         ]);
         
         if (isMounted) {
@@ -83,7 +83,6 @@ export default function EditItem() {
   useEffect(() => {
     let isActive = true;
 
-
     if (status === "authenticated" && (imageData || keyData !== 0)) {
       refreshImagePaths();
     }
@@ -96,7 +95,7 @@ export default function EditItem() {
   const refreshImagePaths = async () => {
     try {
       setIsLoading(true);
-      const res = await ImagePaths(ItemPage, session.user.id);
+      const res = await imagePaths(ItemPage, session.user.id);
 
       setImagePath(res.data);
       setIsLoading(false);
@@ -109,7 +108,7 @@ export default function EditItem() {
     let isActive = true;
     const fetchSignedUrls = async () => {
       try {
-        const res = await GetSignedImagesUrls(imagePath);
+        const res = await getSignedImagesUrls(imagePath);
         if (isActive) {
           setSignedUrls(res.responseData);
         }
@@ -137,7 +136,7 @@ export default function EditItem() {
     setIsLoading(true);
     
     try {
-      const res = await UpdateItem(dataToUpdate.id, dataToUpdate);
+      const res = await updateItem(dataToUpdate.id, dataToUpdate);
       setItemData(dataToUpdate);
       toast("Zaaktualizowano pomyślnie", { autoClose: 3000 });
     } catch (err) {
@@ -184,7 +183,7 @@ export default function EditItem() {
   const uploadImage = async (fileName, imageDataUpload) => {
     setIsLoading(true);
     try {
-      const result = await AddImage(imageData, fileName);
+      const result = await addImage(imageData, fileName);
       if (result.message === "File uploaded successfully") {
         await uploadData(imageDataUpload);
       }
@@ -230,9 +229,9 @@ export default function EditItem() {
     }
   };
 
-  const DeleteCurrentItem = async() => {
+  const deleteCurrentItem = async() => {
     setIsLoading(true)
-    await DeleteItem(itemData.id,session.user.id);
+    await deleteItem(itemData.id,session.user.id);
     var collectionName = menuItems.find(x=>x.id==itemData.collectionId)
     setIsLoading(false)
     router.push(`/ViewItems/${collectionName.name}/${itemData.collectionId}`)
@@ -265,7 +264,7 @@ export default function EditItem() {
           <div className={cn(Style.addItemsPosition)}>
             <div>
               <div className={cn(Style.deleteButton)}>
-                <Button type={"button"} isLoading={isLoading} disabled={isLoading} onClick={() => DeleteCurrentItem()}>Usuń</Button>
+                <Button type={"button"} isLoading={isLoading} disabled={isLoading} onClick={() => deleteCurrentItem()}>Usuń</Button>
               </div>
               {menuItems && (
                 <EditData

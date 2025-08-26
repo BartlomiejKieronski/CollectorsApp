@@ -4,7 +4,7 @@ import ImageCarusel from "@/app/Components/Image-Carusel/ImgCarusel.js";
 import ItemDetails from "@/app/Components/ItemDetails/ItemDetails";
 import Linkify from "react-linkify";
 import Style from"./itempage.module.css";
-import { GetSignedImagesUrls, GetItem, ImagePaths, GetSignedImageUrl } from "@/app/lib/utility";
+import { getSignedImagesUrls, getItem, imagePaths, getSignedImageUrl } from "@/app/lib/utility";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -36,8 +36,8 @@ export default function ItemPage() {
         let isActive = true;
         const getItemData = async () => {
             const [itemRes, imagesRes] = await Promise.all([
-                GetItem(ItemPage, session.user.id),
-                ImagePaths(ItemPage, session.user.id),
+                getItem(ItemPage, session.user.id),
+                imagePaths(ItemPage, session.user.id),
             ]);
             if (isActive) {
                 const convertedItem = {
@@ -63,7 +63,7 @@ export default function ItemPage() {
     useEffect(() => {
         let isActive = true;
         const signImageUrls = async () => {
-            await GetSignedImagesUrls(imageItemData).then(res => {
+            await getSignedImagesUrls(imageItemData).then(res => {
                 if (Array.isArray(res.responseData) && res.responseData.length > 0) {
                     setSignedUrlImageData(res.responseData);
                 }
@@ -80,8 +80,8 @@ export default function ItemPage() {
         }
     }, [imageItemData])
 
-    const EditRedirect = () => router.push(`/Item/${ItemPage}/EditPage`);
-    const GoBackRedirect = () => router.back();
+    const editRedirect = () => router.push(`/Item/${ItemPage}/EditPage`);
+    const goBackRedirect = () => router.back();
     return (
         <div className={cn(Style.itemPageWrapper)}>
             {data && (

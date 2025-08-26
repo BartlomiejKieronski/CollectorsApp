@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import ImageCroper from "@/app/Components/ImageCroper/page.js";
-import { DeleteImage } from "@/app/lib/utility";
+import { deleteImage } from "@/app/lib/utility";
 import { toast } from "react-toastify";
 import Button from "../Button/Button";
 import Style from "@/app/(MainContentLogged)/Item/[ItemPage]/[EditPage]/EditPage.module.css";
@@ -24,9 +24,9 @@ export default function EditPictures({
         setImages(imageData);
     }, [imageData]);
 
-    const ChangeDisplayedImage=(index)=> setImage(images[index]);
+    const changeDisplayedImage=(index)=> setImage(images[index]);
 
-    function UpdateDefaultImage() {
+    function updateDefaultImage() {
         if (!image) {
             toast("Wybierz zdjęcie, które powinno być nowym profilowym dla wybranej rzeczy kolekcjonerskiej",{autoClose:5000});
         } else {
@@ -38,7 +38,7 @@ export default function EditPictures({
         if (image.path === profileCollectablePath) {
             toast("Nie można usunąć. Zdjęcie to jest ustawione jako domyślne dla tego kolekcjonatu.", {autoClose:5000});
         } else {
-            await DeleteImage(image).then((res) =>{
+            await deleteImage(image).then((res) =>{
                 fetchUpdatedImages();    
                 toast("Zdjęcie usuniete pomyślnie", { autoClose: 3000 });
                 setImage(null)
@@ -60,7 +60,7 @@ export default function EditPictures({
                 <Button type="button" onClick={handleAddImage} isLoading={isLoading}>
                     Dodaj zdjęcie
                 </Button>
-                <Button type="button" isLoading={isLoading} onClick={UpdateDefaultImage}>
+                <Button type="button" isLoading={isLoading} onClick={updateDefaultImage}>
                     Zaaktualizuj domyślne zdjęcie
                 </Button>
             </div>
@@ -74,7 +74,7 @@ export default function EditPictures({
                 <div>
                     <div className={cn(Style.smallImages)}>
                         {images.map((img, index) => (
-                            <div key={index} onClick={() => ChangeDisplayedImage(index)}>
+                            <div key={index} onClick={() => changeDisplayedImage(index)}>
                                 <img src={img.url} height="100px" alt={`Image ${index}`} />
                             </div>
                         ))}

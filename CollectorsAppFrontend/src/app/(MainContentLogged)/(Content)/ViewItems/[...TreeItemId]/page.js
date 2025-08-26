@@ -1,6 +1,6 @@
 "use client"
 
-import { GetSignedItemImagesUrls, GetPaginatedItems, CollectionItemCount, DeleteMultipleItems } from "@/app/lib/utility";
+import { getSignedItemImagesUrls, getPaginatedItems, collectionItemCount, deleteMultipleItems } from "@/app/lib/utility";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -65,8 +65,8 @@ export default function ItemView() {
     async function fetchData() {
         try {
             const [itemRes, itemCt] = await Promise.all([
-                GetPaginatedItems(page, session.user.id, treeItemId[1], itemsPerPage),
-                CollectionItemCount(treeItemId[1], session.user.id)
+                getPaginatedItems(page, session.user.id, treeItemId[1], itemsPerPage),
+                collectionItemCount(treeItemId[1], session.user.id)
             ]);
 
             const collection = menuItems.find(item => item.id == treeItemId[1]);
@@ -87,7 +87,7 @@ export default function ItemView() {
     useEffect(() => {
         let isActive = true;
         if (itemData) {
-            GetSignedItemImagesUrls(itemData).then(res => {
+            getSignedItemImagesUrls(itemData).then(res => {
                 if (isActive) {
                     setPathData(res.responseData);
                 }
@@ -124,14 +124,14 @@ export default function ItemView() {
         window.localStorage.setItem("display_item_count", value);
     };
 
-    const DeleteItems = async () => {
+    const deleteItems = async () => {
         setIsLoading(true);
-        await DeleteMultipleItems(selected, session.user?.id);
+        await deleteMultipleItems(selected, session.user?.id);
         router.refresh();
         setIsLoading(false);
     }
 
-    const AddButtonRedirect = async() => {
+    const addButtonRedirect = async() => {
         setIsLoading(true);
         router.push(`/AddItem/${treeItemId[0]}`);
         setIsLoading(false);
@@ -158,14 +158,14 @@ export default function ItemView() {
                         </button>
                     </div>
                     {!edit && <div>
-                        <Button isLoading={isLoading} disabled={isLoading} onClick={async() =>await AddButtonRedirect()}>Dodaj</Button>
+                        <Button isLoading={isLoading} disabled={isLoading} onClick={async() =>await addButtonRedirect()}>Dodaj</Button>
                     </div>}
                     {selected.length > 0 && (
                         <div>
                             <Button
                                 isLoading={isLoading}
                                 disabled={isLoading}
-                                onClick={() => DeleteItems()}>
+                                onClick={() => deleteItems()}>
                                 Usuń
                             </Button>
                         </div>
@@ -185,7 +185,7 @@ export default function ItemView() {
                             )}
                             <Card cardData={item} />
                         </div>
-                    ))}</> : <>{pathData && pathData == 0 && <Button isLoading={isLoading} onClick={() => AddButtonRedirect()}>Dodaj Element</Button>}</>}
+                    ))}</> : <>{pathData && pathData == 0 && <Button isLoading={isLoading} onClick={async() =>await addButtonRedirect()}>Dodaj Element</Button>}</>}
                 </div>
             </>
 

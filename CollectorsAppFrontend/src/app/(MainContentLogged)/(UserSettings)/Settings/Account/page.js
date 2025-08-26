@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { deleteCollection, IsPasswordCorrect, DeleteUserAccount } from "@/app/lib/utility";
+import { deleteCollection, isPasswordCorrect, deleteUserAccount } from "@/app/lib/utility";
 import { toast } from "react-toastify";
 import Button from "@/app/Components/Button/Button";
 import InputPassword from "@/app/Components/PasswordInput/PasswordInput";
@@ -21,36 +21,36 @@ export default function AccountSettings() {
 
     const router = useRouter();
 
-    const DeleteAccount = async () => {
+    const deleteAccount = async () => {
         menuItems.forEach(async (collection) => {
             await deleteCollection(collection);
         });
-        await DeleteAccount(session.user.id)
+        await deleteUserAccount(session.user.id)
         router.push("/Logout")
     }
 
-    const ChangePassword = async () => {
+    const changePassword = async () => {
         await instance.post("api/Authentication/PwdReset", { email: user.session.email }).then(res => {
             toast(`Link do zmiany hasła został wysłany na adres email przypisany do tego konta : ${session.user.email}`, { autoClose: false })
         })
     }
 
-    const CheckPassword = async (type, password) => {
+    const checkPassword = async (type, password) => {
         setIsLoading(true);
         if (password == null) {
             setIsLoading(false)
             toast("Najpierw wprowadź hasło")
             return;
         }
-        var result = await IsPasswordCorrect({
+        var result = await isPasswordCorrect({
             "name": session.user.email,
             "password": password
         });
         if (type == "change" && result.data == true) {
-            await ChangePassword();
+            await changePassword();
         }
         else if (type == "delete" && result.data == true) {
-            await DeleteAccount();
+            await deleteAccount();
         }
         else {
             toast("Błędne hasło", { autoClosefalse });
@@ -71,7 +71,7 @@ export default function AccountSettings() {
                             <div><InputPassword setPassword={handlePasswordChange} /></div>
                         </label>
                         <div>
-                            <Button isLoading={isLoading} disabled={isLoading} type="button" onClick={() => CheckPassword("change", passwordForChange)}>Zmień hasło</Button>
+                            <Button isLoading={isLoading} disabled={isLoading} type="button" onClick={() => checkPassword("change", passwordForChange)}>Zmień hasło</Button>
                         </div>
                     </div>
                 </div>
@@ -87,7 +87,7 @@ export default function AccountSettings() {
                         </div>
                         <div>
                             <button onClick={() => setIsDeleting(false)}>Anuluj</button>
-                            <Button isLoading={isLoading} disabled={isLoading} type="button" onClick={() => CheckPassword("delete", passwordForDelete)}>Usuń</Button>
+                            <Button isLoading={isLoading} disabled={isLoading} type="button" onClick={() => checkPassword("delete", passwordForDelete)}>Usuń</Button>
                         </div>
                     </div>}
                 </div>

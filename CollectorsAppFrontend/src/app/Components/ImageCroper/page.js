@@ -129,7 +129,6 @@ export default function ImageCroper({ onCroppedImageChange }) {
             onComplete={(c) => handleCrop(c)}
             keepSelection
             aspect={ASPECT_RATIO}
-            // Use the displayed minimum width so the crop adjusts correctly
             minWidth={minCropWidth}
           >
             <img

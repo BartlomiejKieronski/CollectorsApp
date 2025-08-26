@@ -164,9 +164,7 @@ export default function ImageDisplay({ signedUrlImageData }) {
             <div className={cn(Style.indicators)}>
               {arr.map((x, index) => (
                 <div
-                  className={cn(Style.indicator, { [Style.active]: index === current }
-                    // ${index === current ? "active" : ""
-                  )}
+                  className={cn(Style.indicator, { [Style.active]: index === current })}
                   key={x.id} onClick={() => jumpTo(index)}>
                   <Image src={x.url} width={80} height={60} alt="loading" sizes="100%" />
                 </div>
