@@ -5,7 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import ImageCroper from "@/app/Components/ImageCroper/page";
 import ItemInfo from "@/app/Components/AddItem/AddItemInfo";
-import { AddImage, AddItem } from "@/app/lib/utility";
+import { addImage, addItem } from "@/app/lib/itemUtils";
 import { toast } from "react-toastify";
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
 import Style from "./AddItem.module.css";
@@ -55,7 +55,7 @@ export default function AddCollectableItem() {
 
     const uploadImage = async (fileName, newData) => {
         var toastImageUpload = toast("Dodawanie zdjęcia", { autoClose: false })
-        var i = await AddImage(imageData, fileName);
+        var i = await addImage(imageData, fileName);
         if (i.message == "File uploaded successfully") {
             await uploadData(newData);
             toast.update(toastImageUpload, "Zdjęcie dodane pomyślnie", { autoClose: 3000 });
@@ -68,7 +68,7 @@ export default function AddCollectableItem() {
 
     const uploadData = async (newData) => {
         var ItemAdd = toast("Dodawanie pozycji", {autoClose:false})
-        await AddItem(newData).then(res => {
+        await addItem(newData).then(res => {
             if (res.status == 201) {
                 toast.update(ItemAdd, "Pozycja dodana pomyślnie", {autoClose:3000})
                 window.location.reload()

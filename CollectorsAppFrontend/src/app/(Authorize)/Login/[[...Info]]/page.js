@@ -149,7 +149,7 @@ export default function SignInPage({ csrfToken }) {
   }
 }
 
-export async function getServerSidePropsname(context) {
+export async function getCsrfServerSideProps(context) {
   const csrfToken = await getCsrfToken(context);
   return {
     props: { csrfToken },

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Style from './ToggleSwitch.module.css';
 import cn from "classnames";
+
 export default function ToggleSwitch({ active, setActive }) {
     const [mounted, setMounted] = useState(false);
 

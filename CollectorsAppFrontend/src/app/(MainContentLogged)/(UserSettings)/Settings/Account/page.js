@@ -4,7 +4,8 @@ import { useState } from "react"
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { deleteCollection, isPasswordCorrect, deleteUserAccount } from "@/app/lib/utility";
+import { isPasswordCorrect, deleteUserAccount } from "@/app/lib/authUtils";
+import { deleteCollection } from "@/app/lib/collectionsUtils";
 import { toast } from "react-toastify";
 import Button from "@/app/Components/Button/Button";
 import InputPassword from "@/app/Components/PasswordInput/PasswordInput";

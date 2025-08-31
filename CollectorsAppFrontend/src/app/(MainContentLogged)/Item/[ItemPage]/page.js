@@ -4,13 +4,15 @@ import ImageCarusel from "@/app/Components/Image-Carusel/ImgCarusel.js";
 import ItemDetails from "@/app/Components/ItemDetails/ItemDetails";
 import Linkify from "react-linkify";
 import Style from"./itempage.module.css";
-import { getSignedImagesUrls, getItem, imagePaths, getSignedImageUrl } from "@/app/lib/utility";
+import { getSignedImagesUrls, imagePaths } from "@/app/lib/imageUtils";
+import { getItem } from "@/app/lib/itemUtils";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Button from "@/app/Components/Button/Button";
 import cn from "classnames";
+
 export default function ItemPage() {
     const { data: session, status } = useSession()
 
@@ -86,14 +88,14 @@ export default function ItemPage() {
         <div className={cn(Style.itemPageWrapper)}>
             {data && (
                 <>
-                <Button classes={Style.goBackBtn} isLoading={isLoading} onClick={()=>{setIsLoading(true); GoBackRedirect()}}>Wróć</Button>
-                    <Button classes={Style.editBtnLt} isLoading={isLoading} onClick={() => { setIsLoading(true); EditRedirect() }}>Edytuj dane</Button>
+                <Button classes={Style.goBackBtn} isLoading={isLoading} onClick={()=>{setIsLoading(true); goBackRedirect()}}>Wróć</Button>
+                    <Button classes={Style.editBtnLt} isLoading={isLoading} onClick={() => { setIsLoading(true); editRedirect() }}>Edytuj dane</Button>
                     <div className={cn(Style.divDisplayPageLayout)}>
                         <div className={cn(Style.imageCaruselComponent)}>
                             <ImageCarusel signedUrlImageData={signedUrlImageData} />
                         </div>
                         <div className={cn(Style.itemDetailsComponent)}>
-                            <ItemDetails data={data} EditRedirect={EditRedirect} />
+                            <ItemDetails data={data} EditRedirect={editRedirect} />
                         </div>
                     </div>
                     <div className={cn(Style.descriptionLayout)}>

@@ -1,6 +1,7 @@
 "use client"
 
-import { getSignedItemImagesUrls, getPaginatedItems, collectionItemCount, deleteMultipleItems } from "@/app/lib/utility";
+import { getSignedItemImagesUrls } from "@/app/lib/imageUtils";
+import { getPaginatedItems, collectionItemCount, deleteMultipleItems} from "@/app/lib/itemUtils";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";

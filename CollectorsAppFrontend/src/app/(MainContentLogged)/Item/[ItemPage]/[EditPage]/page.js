@@ -5,16 +5,8 @@ import { useSession } from "next-auth/react";
 import Style from "./EditPage.module.css";
 import EditPictures from "@/app/Components/EditItemData/EditPictures";
 import EditData from "@/app/Components/EditItemData/EditData";
-import {
-  updateItem,
-  addImage,
-  getItem,
-  imagePaths,
-  getSignedImagesUrls,
-  addImagePath,
-  deleteItem
-} from "@/app/lib/utility";
-
+import { addImage, imagePaths, getSignedImagesUrls, addImagePath } from "@/app/lib/imageUtils";
+import { updateItem, getItem, deleteItem} from "@/app/lib/itemUtils";
 import { useMenuItemsProvider } from "@/app/Providers/MenuProvider/MenuProvider";
 import { toast } from "react-toastify";
 import Button from "@/app/Components/Button/Button";

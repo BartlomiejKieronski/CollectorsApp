@@ -16,8 +16,6 @@ export default function ItemView() {
                 router.push(`/ViewItems/${sortedItems.name}/${sortedItems.id}`)
             }
             else {
-                EditType("add");
-                handleSelectParent("null");
             }
         }
     }, [menuItems])

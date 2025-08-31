@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import ImageCroper from "@/app/Components/ImageCroper/page.js";
-import { deleteImage } from "@/app/lib/utility";
+import { deleteImage } from "@/app/lib/imageUtils";
 import { toast } from "react-toastify";
 import Button from "../Button/Button";
 import Style from "@/app/(MainContentLogged)/Item/[ItemPage]/[EditPage]/EditPage.module.css";

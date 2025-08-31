@@ -3,7 +3,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import instance from '@/app/axiosInstance';
-import { updateCollection, deleteCollection } from "@/app/lib/utility"
+import { updateCollection, deleteCollection } from "@/app/lib/collectionsUtils"
+
 const MenuContext = createContext();
 
 export function useMenuItemsProvider() {
