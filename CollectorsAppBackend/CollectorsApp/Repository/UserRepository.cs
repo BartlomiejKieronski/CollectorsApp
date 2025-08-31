@@ -37,7 +37,8 @@ namespace CollectorsApp.Repository
             user.Active = true;
             user.Role = "user";
             user.AccountCreationDate = DateTime.Now;
-            
+            user.IsBanned = false;
+            user.IsSusspended = false;
             var dbCheck = await _context.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.HashedName== user.HashedName|| x.HashedEmail== user.HashedEmail);
