@@ -32,6 +32,7 @@ namespace CollectorsApp.Controllers
             _configuration = configuration;
             _vault = vault;
         }
+
         [AllowAnonymous]
         [Route("PwdReset")]
         [HttpPost]
@@ -61,7 +62,8 @@ namespace CollectorsApp.Controllers
                 var urlToken = new JwtSecurityTokenHandler().WriteToken(token);
                 string link = $"http://localhost:3000/ResetPassword/{urlToken}";
             
-                string htmlMessage = $@"
+                string htmlMessage = 
+                    $@"
                         <html>
                             <body>
                                 <div>
@@ -71,7 +73,8 @@ namespace CollectorsApp.Controllers
                                     <p>Jeśli nie zażądałeś tego emaila, możesz zignorować ten emial.</p>
                                 </div>
                             </body>
-                        </html>";
+                        </html>
+                    ";
 
                 PasswordReset passwordResetModel = new PasswordReset();
                 
@@ -141,6 +144,7 @@ namespace CollectorsApp.Controllers
                 return Ok(new { IsPasswordValid = true });
             }
             return Unauthorized();
+            
         }
     }
 }

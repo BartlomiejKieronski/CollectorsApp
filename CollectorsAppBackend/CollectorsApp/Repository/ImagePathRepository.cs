@@ -1,11 +1,12 @@
 ﻿using CollectorsApp.Data;
+using CollectorsApp.Filters;
 using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class ImagePathRepository : GenericRepository<ImagePath>, IImagePathRepository
+    public class ImagePathRepository : QueryRepository<ImagePath, ImagePathFilter>, IImagePathRepository
     {
         public ImagePathRepository(appDatabaseContext context) :base(context) 
         {

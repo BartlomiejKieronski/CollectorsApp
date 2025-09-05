@@ -1,8 +1,9 @@
-﻿using CollectorsApp.Models;
+﻿using CollectorsApp.Filters;
+using CollectorsApp.Models;
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface IUserConsentRepository : IGenericRepository<UserConsent>
+    public interface IUserConsentRepository : IQueryRepository<UserConsent, UserConsentFilter>, IGenericRepository<UserConsent>
     {
         Task<IEnumerable<UserConsent>> GetByUserIdAsync(int userId);
     }

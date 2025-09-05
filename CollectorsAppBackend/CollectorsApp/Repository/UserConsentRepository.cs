@@ -1,11 +1,12 @@
 ﻿using CollectorsApp.Data;
+using CollectorsApp.Filters;
 using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class UserConsentRepository : CRUDImplementation<UserConsent>, IUserConsentRepository
+    public class UserConsentRepository : QueryRepository<UserConsent,UserConsentFilter>, IUserConsentRepository
     {
         public UserConsentRepository(appDatabaseContext context) : base(context)
         {

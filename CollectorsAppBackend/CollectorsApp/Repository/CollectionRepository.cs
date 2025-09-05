@@ -1,11 +1,12 @@
 ﻿using CollectorsApp.Data;
+using CollectorsApp.Filters;
 using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class CollectionRepository : GenericRepository<Collections>, ICollectionRepository
+    public class CollectionRepository : QueryRepository<Collections, CollectionFilters>, ICollectionRepository
     {
         public CollectionRepository(appDatabaseContext context) : base(context)
         {

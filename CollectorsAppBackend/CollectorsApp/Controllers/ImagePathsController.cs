@@ -2,6 +2,7 @@
 using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using CollectorsApp.Filters;
 
 namespace CollectorsApp.Controllers
 {
@@ -11,14 +12,21 @@ namespace CollectorsApp.Controllers
     public class ImagePathsController : ControllerBase
     {
         private readonly IImagePathRepository _repository;
-        private readonly ICollectableItemsRepository _itemsRepository;
+        private readonly ICollectableItemRepository _itemsRepository;
         private readonly IAuthorizationService _authorizationService;
-        public ImagePathsController(IImagePathRepository repository, ICollectableItemsRepository itemsRepository, IAuthorizationService authorizationService)
+        public ImagePathsController(IImagePathRepository repository, ICollectableItemRepository itemsRepository, IAuthorizationService authorizationService)
         {
 
             _repository = repository;
             _itemsRepository = itemsRepository;
             _authorizationService = authorizationService;
+        }
+
+        [HttpGet("query")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<ImagePath>>> QueryImagePaths([FromQuery] ImagePathFilter entity)
+        {
+            return Ok(await _repository.QueryEntity(entity));
         }
 
         [HttpGet]

@@ -3,6 +3,7 @@ using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using CollectorsApp.Services.Security;
+using CollectorsApp.Filters;
 
 namespace CollectorsApp.Controllers
 {
@@ -26,6 +27,13 @@ namespace CollectorsApp.Controllers
         public async Task<ActionResult<IEnumerable<Collections>>> GetCollections()
         {
             return Ok(await _repository.GetAllAsync());
+        }
+
+        [Authorize]
+        [HttpGet("query")]
+        public async Task<ActionResult<IEnumerable<Collections>>> QueryCollections([FromQuery] CollectionFilters entity)
+        {
+            return Ok(await _repository.QueryEntity(entity));
         }
 
         [Authorize(Roles = "admin")]

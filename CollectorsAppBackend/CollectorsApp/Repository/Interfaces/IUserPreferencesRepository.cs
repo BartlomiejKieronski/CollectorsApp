@@ -1,8 +1,9 @@
-﻿using CollectorsApp.Models;
+﻿using CollectorsApp.Filters;
+using CollectorsApp.Models;
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface IUserPreferencesRepository : ICRUD<UserPreferences>
+    public interface IUserPreferencesRepository : IQueryRepository<UserPreferences, UserPreferencesFilter>, IGenericRepository<UserPreferences>
     {
 
     }

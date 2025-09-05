@@ -1,5 +1,7 @@
-﻿using CollectorsApp.Models;
+﻿using CollectorsApp.Filters;
+using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +16,21 @@ namespace CollectorsApp.Controllers
         {
             _repository = repository;
         }
+
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<UserPreferences>>> GetAll()
         {
             return Ok(await _repository.GetAllAsync());
         }
+
+        [Authorize]
+        [HttpGet("query")]
+        public async Task<ActionResult<IEnumerable<UserPreferences>>> Query([FromQuery] UserPreferencesFilter entity)
+        {
+            return Ok(await _repository.QueryEntity(entity));
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<UserPreferences>> GetById(int id)
         {

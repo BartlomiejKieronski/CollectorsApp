@@ -5,7 +5,7 @@ using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfac
 
 namespace CollectorsApp.Repository.AnalyticsRepositories
 {
-    public class APILogRepository : QuerryRepository<APILog, APILogFilter>, IAPILogRepository
+    public class APILogRepository : QueryRepository<APILog, APILogFilter>
     {
         public APILogRepository(appDatabaseContext context) : base(context)
         {

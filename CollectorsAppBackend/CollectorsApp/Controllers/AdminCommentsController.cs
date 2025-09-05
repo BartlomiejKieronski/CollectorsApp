@@ -11,9 +11,9 @@ namespace CollectorsApp.Controllers
     [ApiController]
     public class AdminCommentsController : Controller
     {
-        private readonly IAdminCommentsRepository _repository;
+        private readonly IAdminCommentRepository _repository;
         
-        public AdminCommentsController(IAdminCommentsRepository repository)
+        public AdminCommentsController(IAdminCommentRepository repository)
         {
             _repository = repository;
         }

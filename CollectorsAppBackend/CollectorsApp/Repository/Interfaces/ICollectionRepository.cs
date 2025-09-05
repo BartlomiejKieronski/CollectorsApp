@@ -1,8 +1,9 @@
-﻿using CollectorsApp.Models;
+﻿using CollectorsApp.Filters;
+using CollectorsApp.Models;
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface ICollectionRepository : IGenericRepository<Collections>
+    public interface ICollectionRepository : IQueryRepository<Collections, CollectionFilters>, IGenericRepository<Collections>
     {
         Task<IEnumerable<Collections>> GetCollectionsByUserId(int userId);
         Task<IEnumerable<Collections>> GetCollectionsByUserId(int userId, string name);

@@ -1,4 +1,5 @@
-﻿using CollectorsApp.Models;
+﻿using CollectorsApp.Filters;
+using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +23,14 @@ namespace CollectorsApp.Controllers
         {
             return Ok(await _repository.GetAllAsync());
         }
+
+        [HttpGet("query")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<UserConsent>>> Query([FromQuery] UserConsentFilter entity)
+        {
+            return Ok(await _repository.QueryEntity(entity));
+        }
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<UserConsent>> GetById(int id)

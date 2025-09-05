@@ -2,6 +2,7 @@
 using CollectorsApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using CollectorsApp.Repository.Interfaces;
+using CollectorsApp.Filters;
 
 namespace CollectorsApp.Controllers
 {
@@ -9,10 +10,10 @@ namespace CollectorsApp.Controllers
     [ApiController]
     public class CollectableItemsController : ControllerBase
     {
-        private readonly ICollectableItemsRepository _repository;
+        private readonly ICollectableItemRepository _repository;
         private readonly IImagePathRepository _imagePathRepository;
         private readonly IAuthorizationService _authorizationService;
-        public CollectableItemsController(ICollectableItemsRepository repository, IImagePathRepository imagePathRepository, IAuthorizationService authorizationService)
+        public CollectableItemsController(ICollectableItemRepository repository, IImagePathRepository imagePathRepository, IAuthorizationService authorizationService)
         {
             _repository = repository;
             _imagePathRepository = imagePathRepository;
@@ -24,6 +25,13 @@ namespace CollectorsApp.Controllers
         public async Task<ActionResult<IEnumerable<CollectableItems>>> GetCollectableItems()
         {
             return Ok(await _repository.GetAllAsync());
+        }
+
+        [Authorize]
+        [HttpGet("query")]
+        public async Task<ActionResult<IEnumerable<CollectableItems>>> QueryCollection([FromQuery] CollectableItemsFilter filter)
+        {
+            return Ok(await _repository.QueryEntity(filter));
         }
 
         [Authorize]

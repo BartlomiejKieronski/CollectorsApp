@@ -1,10 +1,11 @@
 ﻿//using CollectorsApp.Filters;
+using CollectorsApp.Filters;
 using CollectorsApp.Models;
 using ServiceStack;
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface ICollectableItemRepository : ICRUD<CollectableItems>
+    public interface ICollectableItemRepository : IQueryRepository<CollectableItems, CollectableItemsFilter>, IGenericRepository<CollectableItems>
     {
         
         Task<IEnumerable<CollectableItems>> GetCollectableItemsByUserId(int userId);

@@ -7,9 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CollectorsApp.Repository.AnalyticsRepositories
 {
-    public class AdminCommentsRepository : QuerryRepository<AdminComment, AdminCommentFilter>, IAdminCommentsRepository
+    public class AdminCommentRepository : QueryRepository<AdminComment, AdminCommentFilter>, IAdminCommentRepository
     {
-        public AdminCommentsRepository(appDatabaseContext context) : base(context) 
+        public AdminCommentRepository(appDatabaseContext context) : base(context) 
         {
         }
 
