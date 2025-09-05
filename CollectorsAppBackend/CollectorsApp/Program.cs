@@ -19,6 +19,7 @@ using CollectorsApp.Services.Authentication;
 using CollectorsApp.Services.Security;
 using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
 using CollectorsApp.Repository.AnalyticsRepositories;
+using CollectorsApp.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +50,7 @@ var secretService = serviceProvider.GetRequiredService<IGoogleSecretStorageVault
 string conn = await secretService.GetSecretsAsync(builder.Configuration["GoogleSecretStorage:Secrets:DB-STRING"]);
 string jwtKey = await secretService.GetSecretsAsync(builder.Configuration["GoogleSecretStorage:Secrets:JWT_KEY"]);
 
+//authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -65,6 +67,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddEndpointsApiExplorer();
+
+// Authorization handlers
 builder.Services.AddAuthorization(options => { 
     
     options.AddPolicy("ResourceOwner",
@@ -90,27 +94,30 @@ builder.Services.AddDbContext<appDatabaseContext>(
 builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection("EmailSettings"));
 
-builder.Services.AddTransient<IEmailSenderService, EmailSenderService>();
-
 builder.Services.AddSwaggerGen();
 
+//repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ICollectableItemsRepository, CollectableItemsRepository>();
+builder.Services.AddScoped<ICollectableItemRepository, CollectableItemRepository>();
 builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
 builder.Services.AddScoped<IImagePathRepository, ImagePathRepository>();
 builder.Services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
 builder.Services.AddScoped<IPwdResetRepository, PwdResetRepository>();
+builder.Services.AddScoped<IUserClaimsRepository, UserClaimsRepository>();
+builder.Services.AddScoped<IAdminCommentRepository, AdminCommentRepository>();
+builder.Services.AddScoped<IAPILogRepository, APILogRepository>();
+builder.Services.AddScoped<IUserPreferencesRepository,UserPreferencesRepository>();
+builder.Services.AddScoped<IUserConsentRepository, UserConsentRepository>();
+
+//services
+builder.Services.AddTransient<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IDataHash, DataHash>();
 builder.Services.AddScoped<IAesEncryption, AesEncryption>();
-builder.Services.AddScoped<IUserClaimsRepository, UserClaimsRepository>();
 builder.Services.AddScoped<IUserAesDecode, UserAesDecode>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IAdminCommentsRepository, AdminCommentsRepository>();
-builder.Services.AddScoped<IAPILogRepository, APILogRepository>();
-builder.Services.AddScoped<IUserPreferencesRepository,UserPreferencesRepository>();
-builder.Services.AddScoped<IUserConsentRepository, UserConsentRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 /// Rate limiting middleware for logging in
 builder.Services.AddRateLimiter(options =>
@@ -130,13 +137,13 @@ builder.Services.AddRateLimiter(options =>
             SegmentsPerWindow = 5,
             QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
             QueueLimit = 0
-
         });
     });
 });
 
 
 var app = builder.Build();
+
 
 app.UseForwardedHeaders();
 if (app.Environment.IsDevelopment())
@@ -151,28 +158,28 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 /// Middleware to extract name from json body for rate limiting on Authentication endpoint
-app.Use(async (ctx, next) =>
+app.Use(async (context, next) =>
 {
-    if (ctx.Request.Path == "/api/Authentication"
-        && ctx.Request.Method == "POST"
-        && ctx.Request.ContentType?.Contains("application/json") == true)
+    if (context.Request.Path == "/api/Authentication"
+        && context.Request.Method == "POST"
+        && context.Request.ContentType?.Contains("application/json") == true)
     {
-        ctx.Request.EnableBuffering();
-        using var reader = new StreamReader(ctx.Request.Body, leaveOpen: true);
+        context.Request.EnableBuffering();
+        using var reader = new StreamReader(context.Request.Body, leaveOpen: true);
         var body = await reader.ReadToEndAsync();
-        ctx.Request.Body.Position = 0;
+        context.Request.Body.Position = 0;
 
         try
         {
             using var doc = JsonDocument.Parse(body);
             if (doc.RootElement.TryGetProperty("name", out var nameProp))
             {
-                ctx.Items["username"] = nameProp.GetString()!;
+                context.Items["username"] = nameProp.GetString()!;
             }
         }
         catch (JsonException)
         {
-
+            
         }
     }
     await next();

@@ -1,6 +1,7 @@
 ﻿using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using CollectorsApp.Services.Authentication;
+using CollectorsApp.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -14,13 +15,13 @@ namespace CollectorsApp.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly IUserRepository _userRepository;
         private readonly ILogger<AuthenticationController> _logger;
-        public AuthenticationController(IAuthService authService, IUserRepository userRepository, ILogger<AuthenticationController> logger)
+        private readonly IUserService _userService;
+        public AuthenticationController(IAuthService authService, IUserRepository userRepository, ILogger<AuthenticationController> logger, IUserService userService)
         {
             _authService = authService;
-            _userRepository = userRepository;
             _logger = logger;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -110,14 +111,14 @@ namespace CollectorsApp.Controllers
         [HttpPost]
         public async Task<ActionResult> PostUsers(Users users)
         {
-            var result = await _userRepository.PostUser(users);
+            var result = await _userService.RegisterUserAsync(users);
 
             if (result == "user exists")
             {
                 return BadRequest(new { error = result });
             }
 
-            return Ok(result);
+            return Ok(new { Message = result });
         }
     }
 }

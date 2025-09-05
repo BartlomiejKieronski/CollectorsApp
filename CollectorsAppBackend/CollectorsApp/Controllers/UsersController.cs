@@ -2,6 +2,7 @@
 using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using CollectorsApp.Services.User;
 
 namespace CollectorsApp.Controllers
 {
@@ -10,10 +11,11 @@ namespace CollectorsApp.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _repository;
-        
-        public UsersController(IUserRepository repository)
+        private readonly IUserService _userService;
+        public UsersController(IUserRepository repository, IUserService userService)
         {
             _repository = repository;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -52,14 +54,14 @@ namespace CollectorsApp.Controllers
         [HttpPost]
         public async Task<ActionResult> PostUsers(Users users)
         {
-            var result = await _repository.PostUser(users);
+            var result = await _userService.RegisterUserAsync(users);
 
             if (result == "user exists")
             {
                 return BadRequest(new { error = result });
             }
 
-            return Ok(result);
+            return Ok(new { Message = result });
         }
 
         [HttpDelete("{id}")]

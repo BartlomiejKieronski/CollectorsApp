@@ -19,26 +19,7 @@ namespace CollectorsApp.Repository
         
         public async Task<string> PostUser(Users user)
         {
-            var credentials = await _dataHash.GetCredentialsAsync(user.Password);
-            var hashName = await _dataHash.GenerateHmacAsync(user.Name);
-            var hashEmail = await _dataHash.GenerateHmacAsync(user.Email);
-            var encryptedName = await _aesEncryption.AesEncrypt(user.Name);
-            var encryptedEmail = await _aesEncryption.AesEncrypt(user.Email);   
 
-            user.Email = encryptedEmail.Item1;
-            user.EmailIVKey = encryptedEmail.Item2;
-            user.HashedEmail = hashEmail;
-            user.Name = encryptedName.Item1;
-            user.NameIVKey = encryptedName.Item2;
-            user.HashedName = hashName;
-            user.Salt = credentials.Item1;
-            user.Password = credentials.Item2;
-            
-            user.Active = true;
-            user.Role = "user";
-            user.AccountCreationDate = DateTime.Now;
-            user.IsBanned = false;
-            user.IsSusspended = false;
             var dbCheck = await _context.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.HashedName== user.HashedName|| x.HashedEmail== user.HashedEmail);
