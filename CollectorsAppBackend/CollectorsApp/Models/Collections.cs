@@ -6,10 +6,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CollectorsApp.Models
 {
-    public class Collections : IOwner
+    public class Collections : BaseModel
     {
-        [Key, AutoIncrement]
-        public int Id { get; set; }
         [NotNull]
         public string Name { get; set; }
         [NotNull]
@@ -18,8 +16,6 @@ namespace CollectorsApp.Models
         public string ParentName { get; set; }
         [NotNull]
         public int Depth { get; set; }
-        [NotNull]
-        public int OwnerId { get; set; }
         [AllowNull, DefaultValue(false)]
         public bool IsRemoved { get; set; }
     }

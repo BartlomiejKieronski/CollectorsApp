@@ -6,10 +6,8 @@ using ServiceStack.DataAnnotations;
 
 namespace CollectorsApp.Models
 {
-    public class CollectableItems : IOwner
+    public class CollectableItems : BaseModel
     {
-        [Key, NotNull]
-        public int Id { get; set; }
         [NotNull]
         public string ItemName { get; set; }
         [AllowNull]
@@ -20,10 +18,6 @@ namespace CollectorsApp.Models
         public string? ItemValue { get; set; }
         [AllowNull]
         public string? PhotoFilePath { get; set; }
-        [NotNull]
-        public int OwnerId { get; set; } 
-        [NotNull]
-        public DateTime InsertDate { get; set; }
         [AllowNull]
         public DateTime? DateOfAquire { get; set; }
         [NotNull]

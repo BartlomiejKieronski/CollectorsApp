@@ -5,14 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CollectorsApp.Models
 {
-    public class RefreshTokenInfo : IOwner
+    public class RefreshTokenInfo : BaseModel
     {
-        [Key, NotNull, AutoIncrement]
-        public int Id { get; set; }
         [AllowNull]
         public string RefreshToken { get; set; }
-        [AllowNull]
-        public int OwnerId { get; set; }
+        
         [AllowNull, DataType(DataType.DateTime)]
         public DateTime DateOfIssue { get; set; }
         [AllowNull]

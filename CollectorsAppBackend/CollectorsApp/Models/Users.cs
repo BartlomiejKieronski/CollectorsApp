@@ -38,5 +38,15 @@ namespace CollectorsApp.Models
         public bool IsSusspended { get; set; }
         [AllowNull, DefaultValue(false)]
         public bool IsBanned { get; set; }
+        [AllowNull]
+        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
+        [AllowNull]
+        public DateTime LastLogin { get; set; }
+        [AllowNull]
+        public DateTime LastLogout { get; set; }
+        [AllowNull]
+        public DateTime LastUpdated { get; set; }
+        [AllowNull]
+        public DateTime Deleted { get; set; }
     }
 }

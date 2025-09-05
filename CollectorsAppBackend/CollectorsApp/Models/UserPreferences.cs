@@ -5,18 +5,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CollectorsApp.Models
 {
-    public class UserPreferences : IOwner
+    public class UserPreferences : BaseModel
     {
-        [NotNull, AutoIncrement]
-        public int Id { get; set; }
-        [NotNull]
-        public int OwnerId {  get; set; }
-        [NotNull, DefaultValue("Classical")]
-        public string Layout { get; set; }
-        public string Theme { get; set; }
+        [NotNull, DefaultValue("Clasic")]
+        public string? Layout { get; set; } = "Clasic";
+        [NotNull, DefaultValue("Dark")]
+        public string? Theme { get; set; } = "Dark";
         [AllowNull, DefaultValue(10)]
-        public int ItemsPerPage { get; set; }
+        public int? ItemsPerPage { get; set; } = 10;
         [AllowNull, DefaultValue(true)]
-        public bool Pagination { get; set; }
+        public bool? Pagination { get; set; } = true;
     }
 }

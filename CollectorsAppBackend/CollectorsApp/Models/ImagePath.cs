@@ -5,16 +5,12 @@ using CollectorsApp.Models.Interfaces;
 
 namespace CollectorsApp.Models
 {
-    public class ImagePath : IOwner
+    public class ImagePath : BaseModel
     {
-        [Key, NotNull]
-        public int Id { get; set; }
         [NotNull]
         public string Path { get; set; }
         [NotNull]
         public int ItemId { get; set; }
-        [NotNull]
-        public int OwnerId {  get; set; }
         [AllowNull, DefaultValue(false)]
         public bool IsRemoved { get; set; }
     }

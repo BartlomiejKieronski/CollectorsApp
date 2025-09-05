@@ -14,9 +14,9 @@ namespace CollectorsApp.Models.APILogs
         [AllowNull]
         public string? Action { get; set; }
         [AllowNull]
-        public int StatusCode { get; set; }
+        public int? StatusCode { get; set; }
         [AllowNull]
-        public bool IsSuccess { get; set; }
+        public bool? IsSuccess { get; set; }
         [AllowNull]
         public string? Title { get; set; }
         [AllowNull]
