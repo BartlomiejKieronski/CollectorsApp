@@ -20,6 +20,7 @@ using CollectorsApp.Services.Security;
 using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
 using CollectorsApp.Repository.AnalyticsRepositories;
 using CollectorsApp.Services.User;
+using CollectorsApp.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -154,6 +155,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("CorsPolicy");
 
+//app.UseMiddleware<ControllerLoggingMiddleware>();
+app.UseControllerLoggingMiddleware();
 app.UseAuthentication();
 app.UseAuthorization();
 

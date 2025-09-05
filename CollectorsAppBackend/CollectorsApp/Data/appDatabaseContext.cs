@@ -75,7 +75,7 @@ namespace CollectorsApp.Data
             modelBuilder.Entity<UserConsent>()
                 .HasOne<Users>()
                 .WithMany()
-                .HasForeignKey(id => id.UserId)
+                .HasForeignKey(id => id.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
