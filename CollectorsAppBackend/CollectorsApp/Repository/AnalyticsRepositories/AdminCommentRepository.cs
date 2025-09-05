@@ -1,6 +1,6 @@
 ﻿using CollectorsApp.Data;
+using CollectorsApp.Filters;
 using CollectorsApp.Models.Analytics;
-using CollectorsApp.Models.Filters;
 using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

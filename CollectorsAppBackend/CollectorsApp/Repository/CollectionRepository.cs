@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class CollectionRepository : CRUDImplementation<Collections>, ICollectionRepository
+    public class CollectionRepository : GenericRepository<Collections>, ICollectionRepository
     {
         public CollectionRepository(appDatabaseContext context) : base(context)
         {

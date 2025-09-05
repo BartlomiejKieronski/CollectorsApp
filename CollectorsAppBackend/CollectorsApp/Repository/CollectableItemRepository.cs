@@ -1,11 +1,12 @@
 ﻿using CollectorsApp.Data;
+using CollectorsApp.Filters;
 using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class CollectableItemsRepository : CRUDImplementation<CollectableItems>, ICollectableItemsRepository
+    public class CollectableItemsRepository : QuerryRepository<CollectableItems, CollectableItemsFilter>, ICollectableItemsRepository
     {
         public CollectableItemsRepository(appDatabaseContext context) : base(context) {
             

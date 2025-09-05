@@ -1,5 +1,5 @@
-﻿using CollectorsApp.Models.APILogs;
-using CollectorsApp.Models.Filters;
+﻿using CollectorsApp.Filters;
+using CollectorsApp.Models.APILogs;
 using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

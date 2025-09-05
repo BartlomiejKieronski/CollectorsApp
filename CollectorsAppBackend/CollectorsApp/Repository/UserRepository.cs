@@ -6,7 +6,7 @@ using CollectorsApp.Services.Encryption;
 
 namespace CollectorsApp.Repository
 {
-    public class UserRepository : CRUDImplementation<Users>, IUserRepository
+    public class UserRepository : GenericRepository<Users>, IUserRepository
     {
         private readonly IDataHash _dataHash;
         private readonly IAesEncryption _aesEncryption;
@@ -53,6 +53,7 @@ namespace CollectorsApp.Repository
 
             return "Created successfully";
         }
+
         public async Task<Users> GetUserByNameOrEmailAsync(LoginInfo user)
         {
             var hashedData = await _dataHash.GenerateHmacAsync(user.name);

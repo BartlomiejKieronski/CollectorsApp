@@ -2,7 +2,7 @@
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface ICollectionRepository : ICRUD<Collections>
+    public interface ICollectionRepository : IGenericRepository<Collections>
     {
         Task<IEnumerable<Collections>> GetCollectionsByUserId(int userId);
         Task<IEnumerable<Collections>> GetCollectionsByUserId(int userId, string name);

@@ -2,7 +2,7 @@
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface IImagePathRepository :ICRUD<ImagePath>
+    public interface IImagePathRepository :IGenericRepository<ImagePath>
     {
         
         Task<IEnumerable<ImagePath>> GetImagePathsByItemId(int itemId);

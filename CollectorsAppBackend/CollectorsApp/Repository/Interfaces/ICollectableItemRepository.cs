@@ -4,7 +4,7 @@ using ServiceStack;
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface ICollectableItemsRepository : ICRUD<CollectableItems>
+    public interface ICollectableItemRepository : ICRUD<CollectableItems>
     {
         
         Task<IEnumerable<CollectableItems>> GetCollectableItemsByUserId(int userId);

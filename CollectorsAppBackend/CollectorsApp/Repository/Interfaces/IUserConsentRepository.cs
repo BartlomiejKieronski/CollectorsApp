@@ -2,8 +2,8 @@
 
 namespace CollectorsApp.Repository.Interfaces
 {
-    public interface IUserConsentRepository : ICRUD<UserConsent>
+    public interface IUserConsentRepository : IGenericRepository<UserConsent>
     {
-
+        Task<IEnumerable<UserConsent>> GetByUserIdAsync(int userId);
     }
 }

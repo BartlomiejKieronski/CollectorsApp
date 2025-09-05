@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class PwdResetRepository : CRUDImplementation<PasswordResetModel> ,IPwdResetRepository
+    public class PwdResetRepository : CRUDImplementation<PasswordReset> ,IPwdResetRepository
     {
         private readonly IDataHash _dataHash;
         private readonly IAesEncryption _aes;
@@ -31,7 +31,7 @@ namespace CollectorsApp.Repository
             }
         }
         
-        public override async Task PostAsync(PasswordResetModel entity)
+        public override async Task PostAsync(PasswordReset entity)
         {
             var emailHash = await _dataHash.GenerateHmacAsync(entity.Email);
             var tokenHash = await _dataHash.GenerateHmacAsync(entity.Token);
@@ -41,7 +41,7 @@ namespace CollectorsApp.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<PasswordResetModel> GetPasswordResetModelByEmail(string email)
+        public async Task<PasswordReset> GetPasswordResetModelByEmail(string email)
         {
             var emailHash = await _dataHash.GenerateHmacAsync(email);
 

@@ -1,5 +1,5 @@
-﻿using CollectorsApp.Models.APILogs;
-using CollectorsApp.Models.Filters;
+﻿using CollectorsApp.Filters;
+using CollectorsApp.Models.APILogs;
 using CollectorsApp.Repository.Interfaces;
 
 namespace CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces

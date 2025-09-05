@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class ImagePathRepository : CRUDImplementation<ImagePath>, IImagePathRepository
+    public class ImagePathRepository : GenericRepository<ImagePath>, IImagePathRepository
     {
         public ImagePathRepository(appDatabaseContext context) :base(context) 
         {

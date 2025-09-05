@@ -1,6 +1,6 @@
 ﻿using CollectorsApp.Data;
+using CollectorsApp.Filters;
 using CollectorsApp.Models.APILogs;
-using CollectorsApp.Models.Filters;
 using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
 
 namespace CollectorsApp.Repository.AnalyticsRepositories
@@ -12,9 +12,6 @@ namespace CollectorsApp.Repository.AnalyticsRepositories
 
         }
 
-        public override async Task<IEnumerable<APILog>> QueryEntity(APILogFilter entity)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
