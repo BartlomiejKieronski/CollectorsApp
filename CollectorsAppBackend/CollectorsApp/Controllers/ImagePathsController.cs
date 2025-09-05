@@ -91,7 +91,7 @@ namespace CollectorsApp.Controllers
             if (!authorization.Succeeded)
                 return Unauthorized();
             await _repository.PostAsync(imagePath);
-            return CreatedAtAction("GetImagePath", new { id = imagePath.Id }, imagePath);
+            return CreatedAtAction("GetImagePath", new { id = imagePath }, imagePath);
         }
 
         // DELETE: api/ImagePaths/5

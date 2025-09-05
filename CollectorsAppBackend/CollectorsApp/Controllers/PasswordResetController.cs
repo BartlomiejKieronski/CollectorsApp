@@ -15,7 +15,7 @@ namespace CollectorsApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PasswordReset : ControllerBase
+    public class PasswordResetController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
         private readonly IPwdResetRepository _pwdRepository;
@@ -23,7 +23,7 @@ namespace CollectorsApp.Controllers
         private readonly IDataHash _dataHash;
         private readonly IConfiguration _configuration;
         private readonly IGoogleSecretStorageVault _vault;
-        public PasswordReset(IUserRepository userRepository, IPwdResetRepository pwdRepository, IEmailSenderService emailSender, IDataHash dataHash, IConfiguration configuration,IGoogleSecretStorageVault vault)
+        public PasswordResetController(IUserRepository userRepository, IPwdResetRepository pwdRepository, IEmailSenderService emailSender, IDataHash dataHash, IConfiguration configuration,IGoogleSecretStorageVault vault)
         {
             _userRepository = userRepository;
             _pwdRepository = pwdRepository;
@@ -35,7 +35,7 @@ namespace CollectorsApp.Controllers
         [AllowAnonymous]
         [Route("PwdReset")]
         [HttpPost]
-        public async Task<ActionResult> ResetPwd(PwdResetModel reset)
+        public async Task<ActionResult> ResetPwd(PwdReset reset)
         {
             
             var user = await _userRepository.GetUserByNameOrEmailAsync(new LoginInfo() { name = reset.Email });
@@ -72,8 +72,8 @@ namespace CollectorsApp.Controllers
                                 </div>
                             </body>
                         </html>";
-                
-                PasswordResetModel passwordResetModel = new PasswordResetModel();
+
+                PasswordReset passwordResetModel = new PasswordReset();
                 
                 passwordResetModel.OwnerId = user.Id;
                 passwordResetModel.Token = urlToken;
