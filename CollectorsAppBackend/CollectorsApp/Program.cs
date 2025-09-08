@@ -11,8 +11,6 @@ using CollectorsApp.Repository.Interfaces;
 using CollectorsApp.Services.Encryption;
 using CollectorsApp.Services.Email;
 using CollectorsApp.Services.Utility;
-using System.Threading.RateLimiting;
-using System.Text.Json;
 using CollectorsApp.Services.Token;
 using CollectorsApp.Services.Cookie;
 using CollectorsApp.Services.Authentication;
@@ -121,27 +119,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 /// Rate limiting middleware for logging in
-builder.Services.AddRateLimiter(options =>
-{
-    options.RejectionStatusCode = 429;  
-
-    options.AddPolicy("LoginPolicy", context =>
-    {
-        var username = context.Items["username"] as string ?? "anon";
-        var ip = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
-
-        var key = $"{username}|{ip}";
-        return RateLimitPartition.GetSlidingWindowLimiter(key, _ => new SlidingWindowRateLimiterOptions
-        {
-            PermitLimit = 10,
-            Window = TimeSpan.FromMinutes(5),
-            SegmentsPerWindow = 5,
-            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-            QueueLimit = 0
-        });
-    });
-});
-
+builder.Services.AddLoginRateLimiter();
 
 var app = builder.Build();
 
@@ -155,38 +133,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("CorsPolicy");
 
-//app.UseMiddleware<ControllerLoggingMiddleware>();
+// Request logging middleware for controllers
 app.UseControllerLoggingMiddleware();
 app.UseAuthentication();
 app.UseAuthorization();
 
 /// Middleware to extract name from json body for rate limiting on Authentication endpoint
-app.Use(async (context, next) =>
-{
-    if (context.Request.Path == "/api/Authentication"
-        && context.Request.Method == "POST"
-        && context.Request.ContentType?.Contains("application/json") == true)
-    {
-        context.Request.EnableBuffering();
-        using var reader = new StreamReader(context.Request.Body, leaveOpen: true);
-        var body = await reader.ReadToEndAsync();
-        context.Request.Body.Position = 0;
-
-        try
-        {
-            using var doc = JsonDocument.Parse(body);
-            if (doc.RootElement.TryGetProperty("name", out var nameProp))
-            {
-                context.Items["username"] = nameProp.GetString()!;
-            }
-        }
-        catch (JsonException)
-        {
-            
-        }
-    }
-    await next();
-});
+app.UseLoginUsernameExtraction();
 
 app.UseRateLimiter();
 
