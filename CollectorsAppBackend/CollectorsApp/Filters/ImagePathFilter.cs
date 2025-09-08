@@ -3,10 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CollectorsApp.Filters
 {
-    public class ImagePathFilter :BaseFilters
+    public class ImagePathFilter :BaseFilter
     {
         public string Path { get; set; }
         public int ItemId { get; set; }
         public bool IsRemoved { get; set; }
+        public int OwnerId { get; set; }
     }
 }

@@ -3,9 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace CollectorsApp.Filters
 {
-    public class CollectableItemsFilter : BaseFilters
+    public class CollectableItemsFilter : BaseFilter
     {
-        public int Id { get; set; }
         public string ItemName { get; set; }
         public DateTime? ItemYear { get; set; }
         public string? ItemNumismat { get; set; }

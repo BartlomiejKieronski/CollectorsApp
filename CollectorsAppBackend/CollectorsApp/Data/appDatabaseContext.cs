@@ -16,7 +16,7 @@ namespace CollectorsApp.Data
         public DbSet<ImagePath> ImagePaths { get; set; }
         public DbSet<RefreshTokenInfo> RefreshTokens { get; set; }
         public DbSet<Collections> Collections { get; set; }
-        public DbSet<PasswordResetModel> PwdReset { get; set; }
+        public DbSet<PasswordReset> PwdReset { get; set; }
         public DbSet<UserPreferences> UserPreferences { get; set; }
         public DbSet<AdminComment> AdminComments { get; set; }
         public DbSet<APILog> APILogs { get; set; }
@@ -62,16 +62,18 @@ namespace CollectorsApp.Data
                 .HasForeignKey(id => id.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
             
-            modelBuilder.Entity<PasswordResetModel>()
+            modelBuilder.Entity<PasswordReset>()
                 .HasOne<Users>()
                 .WithMany()
                 .HasForeignKey(id => id.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<UserPreferences>()
                 .HasOne<Users>()
                 .WithMany()
                 .HasForeignKey(id => id.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
             modelBuilder.Entity<UserConsent>()
                 .HasOne<Users>()
                 .WithMany()

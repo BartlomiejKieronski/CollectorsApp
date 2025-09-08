@@ -1,8 +1,5 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using CollectorsApp.Models.Interfaces;
-using ServiceStack.DataAnnotations;
 
 namespace CollectorsApp.Models
 {

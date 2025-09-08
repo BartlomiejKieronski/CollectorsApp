@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace CollectorsApp.Models
 {
-    public class PasswordResetModel : IOwner
+    public class PasswordReset : IOwner
     {
         [Key, AutoIncrement]
         public int Id { get; set; }

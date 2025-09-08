@@ -1,8 +1,7 @@
 ﻿namespace CollectorsApp.Filters
 {
-    public class AdminCommentFilter : BaseFilters
+    public class AdminCommentFilter : BaseFilter
     {
-        public int? Id { get; set; }
         public string? CommentText { get; set; }
         public int? AdminId { get; set; }
         public int? EventLogId { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace CollectorsApp.Models
 {
-    public class PwdResetModel
+    public class PwdReset
     {
         public string Email { get; set; }
         

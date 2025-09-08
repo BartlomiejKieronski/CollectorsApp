@@ -1,6 +1,6 @@
 ﻿namespace CollectorsApp.Filters
 {
-    public class BaseFilters
+    public class BaseFilter
     {
         public int? Id { get; set; }
         public DateTime? TimeStamp { get; set; }

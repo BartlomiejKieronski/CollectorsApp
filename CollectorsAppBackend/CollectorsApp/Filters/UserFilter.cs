@@ -14,7 +14,7 @@ namespace CollectorsApp.Filters
         public DateTime AccountCreationDate { get; set; }
         public bool IsSusspended { get; set; }
         public bool IsBanned { get; set; }
-        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
+        public DateTime TimeStamp { get; set; } 
         public DateTime LastLogin { get; set; }
         public DateTime LastLogout { get; set; }
         public DateTime LastUpdated { get; set; }
