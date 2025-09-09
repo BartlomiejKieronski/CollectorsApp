@@ -10,5 +10,7 @@
         public int? Page { get; set; }
         public string? OrderBy { get; set; }
         public bool? SortDescending { get; set; }
+        public string? SearchText { get; set; }
+        public string? Keywords { get; set; }
     }
 }
