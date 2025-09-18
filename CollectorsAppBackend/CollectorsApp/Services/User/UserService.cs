@@ -54,7 +54,7 @@ namespace CollectorsApp.Services.User
              
                 var IPConsent = new UserConsent() { OwnerId = Convert.ToInt32(succes), IsGranted=false,ConsentType = "IPAdress"};
                 var Id = new UserConsent() { OwnerId = Convert.ToInt32(succes), IsGranted = false, ConsentType = "PersonalIdentifyingData" };
-                var Id = new UserConsent() { OwnerId = Convert.ToInt32(succes), IsGranted = false, ConsentType = "DeviceID" };
+                var DeviceId = new UserConsent() { OwnerId = Convert.ToInt32(succes), IsGranted = false, ConsentType = "DeviceID" };
                 var Analytics = new UserConsent() { OwnerId = Convert.ToInt32(succes), IsGranted = false, ConsentType = "Analytics" };
                 var ErrorReporting = new UserConsent() { OwnerId = Convert.ToInt32(succes), IsGranted = false, ConsentType = "ErrorReporting" };
                 var Cookies = new UserConsent() { OwnerId = Convert.ToInt32(succes), IsGranted = false, ConsentType = "Cookies" };
@@ -64,6 +64,7 @@ namespace CollectorsApp.Services.User
                 await _userConsentRepository.PostAsync(Analytics);
                 await _userConsentRepository.PostAsync(ErrorReporting);
                 await _userConsentRepository.PostAsync(Cookies);
+                await _userConsentRepository.PostAsync(DeviceId);
 
                 var preferences = new UserPreferences() { OwnerId = Convert.ToInt32(succes), Theme = "dark", ItemsPerPage = 20, Layout = "Clasic", Pagination = true };
 
