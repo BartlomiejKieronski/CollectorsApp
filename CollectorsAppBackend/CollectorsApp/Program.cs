@@ -84,6 +84,12 @@ builder.Services.AddScoped<IAuthorizationHandler, EntityOwnerHandler>();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 
+// AutoMapper with defined mapping profile
+builder.Services.AddAutoMapper(e =>
+{
+    e.AddProfile<MappingProfile>();
+});
+
 builder.Services.AddDbContext<appDatabaseContext>(
     options => 
     { 
