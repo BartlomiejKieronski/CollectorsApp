@@ -1,12 +1,16 @@
-﻿using CollectorsApp.Filters;
+﻿using AutoMapper;
+using CollectorsApp.Filters;
 using CollectorsApp.Models.Analytics;
+using CollectorsApp.Models.DTO.AdminComments;
 using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms.Mapping;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CollectorsApp.Controllers
 {
     [AllowAnonymous]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminCommentsController : Controller
@@ -14,42 +18,53 @@ namespace CollectorsApp.Controllers
         private readonly IAdminCommentRepository _repository;
         
         public AdminCommentsController(IAdminCommentRepository repository)
+        private readonly IMapper _mapper;
+        public AdminCommentsController(IAdminCommentRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet]
         [Route("query")]
-        public async Task<ActionResult<IEnumerable<AdminComment>>> QueryComments([FromQuery] AdminCommentFilter entity)
+        public async Task<ActionResult<IEnumerable<AdminCommentResponse>>> QueryComments([FromQuery] AdminCommentFilter entity)
         {
-            return Ok(await _repository.QueryEntity(entity));
+            var items = await _repository.QueryEntity(entity);
+            var dto = _mapper.Map<IEnumerable<AdminCommentResponse>>(items);
+            return Ok(dto);
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AdminComment>>> GetAll()
         {
-            return Ok(await _repository.GetAllAsync());
+            var items = await _repository.GetAllAsync();
+            var dto=_mapper.Map<IEnumerable<AdminCommentResponse>>(items);
+            return Ok(dto);
         }
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<AdminComment>> GetComment(int id)
+        public async Task<ActionResult<AdminCommentResponse>> GetComment(int id)
         {
-            return Ok(await _repository.GetByIdAsync(id));
+            var items = await _repository.GetByIdAsync(id);
+            var dto = _mapper.Map<AdminCommentResponse>(items);
+            return Ok(dto);
         }
         [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<ActionResult> PostComment(AdminComment comment)
+        public async Task<ActionResult> PostComment(AdminCommentCreateRequest comment)
         {
-            await _repository.PostAsync(comment);
+            var dto = _mapper.Map<AdminComment>(comment);
+            await _repository.PostAsync(dto);
             return  CreatedAtAction("Created Succesfully", comment);
         }
         [Authorize(Roles = "admin")]
         [HttpPut("{id}")]
-        public async Task<ActionResult> PutComment(int id, AdminComment comment)
+        public async Task<ActionResult> PutComment(int id, AdminCommentCreateRequest comment)
         {
-            await _repository.UpdateAsync(comment,id);
+            var dto = _mapper.Map<AdminComment>(comment);
+            await _repository.UpdateAsync(dto,id);
             return NoContent();
         }
         [Authorize(Roles = "admin")]

@@ -1,9 +1,11 @@
-﻿using CollectorsApp.Filters;
+﻿using AutoMapper;
+using CollectorsApp.Filters;
 using CollectorsApp.Models;
+using CollectorsApp.Models.DTO.UserPreferences;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CollectorsApp.Controllers
 {
@@ -12,47 +14,83 @@ namespace CollectorsApp.Controllers
     public class UserPreferencesController : ControllerBase
     {
         private readonly IUserPreferencesRepository _repository;
-        public UserPreferencesController(IUserPreferencesRepository repository)
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IMapper _mapper;
+
+        public UserPreferencesController(IUserPreferencesRepository repository, IAuthorizationService authorizationService, IMapper mapper)
         {
             _repository = repository;
+            _authorizationService = authorizationService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<IEnumerable<UserPreferences>>> GetAll()
+        [Authorize(Roles ="admin")]
+        public async Task<ActionResult<IEnumerable<UserPreferencesResponse>>> GetAll()
         {
-            return Ok(await _repository.GetAllAsync());
+            var items = await _repository.GetAllAsync();
+            var dto = _mapper.Map<IEnumerable<UserPreferencesResponse>>(items);
+            return Ok(dto);
         }
 
         [Authorize]
         [HttpGet("query")]
-        public async Task<ActionResult<IEnumerable<UserPreferences>>> Query([FromQuery] UserPreferencesFilter entity)
+        public async Task<ActionResult<IEnumerable<UserPreferencesResponse>>> Query([FromQuery] UserPreferencesFilter entity)
         {
-            return Ok(await _repository.QueryEntity(entity));
+            if (User.IsInRole("Admin"))
+            {
+                var items = await _repository.QueryEntity(entity);
+                var dto = _mapper.Map<IEnumerable<UserPreferencesResponse>>(items);
+                return Ok(dto);
+            }
+
+            if (Request.Query.ContainsKey("OwnerId"))
+            {
+                var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, entity, "EntityOwner");
+                if (!authorization.Succeeded)
+                    return Unauthorized(new { error = "User credentials do not match" });
+
+                var items = await _repository.QueryEntity(entity);
+                var dto = _mapper.Map<IEnumerable<UserPreferencesResponse>>(items);
+                return Ok(dto);
+            }
+
+            var callerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(callerId))
+                return Unauthorized();
+
+            entity.OwnerId = int.Parse(callerId);
+            var result = await _repository.QueryEntity(entity);
+            var mapped = _mapper.Map<IEnumerable<UserPreferencesResponse>>(result);
+            return Ok(mapped);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserPreferences>> GetById(int id)
+        [Authorize] 
+        public async Task<ActionResult<UserPreferencesResponse>> GetById(int id)
         {
-            return Ok(await _repository.GetByIdAsync(id));
+            var item = await _repository.GetByIdAsync(id);
+            var dto = _mapper.Map<UserPreferencesResponse>(item);
+            return Ok(dto);
         }
         [HttpPost]
-        public async Task<ActionResult> Post(UserPreferences entity)
+        [Authorize]
+        public async Task<ActionResult<UserPreferencesResponse>> Post(UserPreferences entity)
         {
             await _repository.PostAsync(entity);
-            return CreatedAtAction("Created Succesfully", entity);
+            var dto = _mapper.Map<UserPreferencesResponse>(entity);
+            return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, UserPreferences entity)
+        [Authorize]
+        public async Task<ActionResult> Put(int id, UserPreferencesUpdateRequest entity)
         {
-            if (id != entity.Id)
-            {
-                return BadRequest(new { error = "Item id does not match" });
-            }
-            await _repository.UpdateAsync(entity, id);
+            var model = _mapper.Map<UserPreferences>(entity);
+            await _repository.UpdateAsync(model, id);
             return NoContent();
         }
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             bool isSuccesful = await _repository.DeleteAsync(id);

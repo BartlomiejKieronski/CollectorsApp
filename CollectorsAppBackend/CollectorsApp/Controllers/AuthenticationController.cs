@@ -1,11 +1,12 @@
-﻿using CollectorsApp.Models;
+﻿using AutoMapper;
+using CollectorsApp.Models;
+using CollectorsApp.Models.DTO.Auth;
 using CollectorsApp.Repository.Interfaces;
 using CollectorsApp.Services.Authentication;
 using CollectorsApp.Services.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CollectorsApp.Controllers
 {
@@ -15,19 +16,20 @@ namespace CollectorsApp.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly ILogger<AuthenticationController> _logger;
         private readonly IUserService _userService;
-        public AuthenticationController(IAuthService authService, IUserRepository userRepository, ILogger<AuthenticationController> logger, IUserService userService)
+        private readonly IMapper _mapper;
+
+        public AuthenticationController(IAuthService authService, IUserRepository userRepository, IUserService userService, IMapper mapper)
         {
             _authService = authService;
-            _logger = logger;
             _userService = userService;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
         [HttpPost]
         [EnableRateLimiting("LoginPolicy")]
-        public async Task<IActionResult> Login(LoginInfo user)
+        public async Task<IActionResult> Login(LoginRequest user)
         {
             try
             { 
@@ -57,22 +59,16 @@ namespace CollectorsApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Reauthenticate()
         {
-            
-            _logger.LogInformation("reauthentication start");
             try
-            {
-                
+            {    
                 var refresh = Request.Cookies["RefreshToken"];
-                _logger.LogInformation("old refresh token" + refresh);
+                
                 var device = Request.Cookies["DeviceInfo"];
-                _logger.LogInformation("device" + device);
-
+                
                 var result = await _authService.ReauthenticateAsync(refresh!, device!);
-                _logger.LogInformation("Succes?" + result.Success);
                 
                 if (!result.Success)
                 {
-                    _logger.LogInformation(result.ErrorMessage);
                     return Unauthorized(new { error = result.ErrorMessage });
                 }
                 
@@ -80,7 +76,6 @@ namespace CollectorsApp.Controllers
             }
             catch
             {
-                _logger.LogInformation("catch reauth controller error");
                 return BadRequest(new { error = "Something went wrong" });
             }
         }
@@ -95,7 +90,7 @@ namespace CollectorsApp.Controllers
                 var refresh = Request.Cookies["RefreshToken"];
                 var device = Request.Cookies["DeviceInfo"];
              
-                if (refresh.IsNullOrEmpty()|| device.IsNullOrEmpty())
+                if (string.IsNullOrEmpty(refresh) || string.IsNullOrEmpty(device))
                     return BadRequest(new { error = "Cookies not found" });
                 
                 await _authService.LogoutAsync(id,refresh, device);
@@ -109,16 +104,30 @@ namespace CollectorsApp.Controllers
         [AllowAnonymous]
         [Route("Register")]
         [HttpPost]
-        public async Task<ActionResult> PostUsers(Users users)
+        public async Task<ActionResult> PostUsers(RegisterRequest users)
         {
-            var result = await _userService.RegisterUserAsync(users);
-
-            if (result == "user exists")
+            if (!ModelState.IsValid)
             {
-                return BadRequest(new { error = result });
+                return BadRequest(new { error = "Invalid model state" });
             }
 
-            return Ok(new { Message = result });
+            try
+            {
+                var dto = _mapper.Map<Users>(users);
+                var result = await _userService.RegisterUserAsync(dto);
+
+                if (result == "user exists")
+                {
+                    return BadRequest(new { error = result });
+                }
+
+                return Ok(new { Message = result });
+            }
+            catch (Exception ex)
+            {
+                // Return 400 with error for easier debugging; middleware will log this as well
+                return BadRequest(new { error = ex.Message });
+            }
         }
     }
 }

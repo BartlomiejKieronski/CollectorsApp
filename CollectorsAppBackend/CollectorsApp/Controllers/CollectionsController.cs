@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CollectorsApp.Models;
-using CollectorsApp.Repository.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using CollectorsApp.Services.Security;
+﻿using AutoMapper;
 using CollectorsApp.Filters;
+using CollectorsApp.Models;
+using CollectorsApp.Models.DTO.Collections;
+using CollectorsApp.Repository.Interfaces;
+using CollectorsApp.Services.Security;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CollectorsApp.Controllers
 {
@@ -15,30 +18,59 @@ namespace CollectorsApp.Controllers
         private readonly ICollectionRepository _repository;
         private readonly IAuthorizationService _authorizationService;
         private readonly IGoogleSecretStorageVault _vault;
-        public CollectionsController(ICollectionRepository repository, IAuthorizationService authorizationService, IGoogleSecretStorageVault vault)
+        private readonly IMapper _mapper;
+        public CollectionsController(ICollectionRepository repository, IAuthorizationService authorizationService, IGoogleSecretStorageVault vault, IMapper mapper)
         {
             _repository = repository;
             _authorizationService = authorizationService;
             _vault = vault;
+            _mapper = mapper;
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Collections>>> GetCollections()
+        public async Task<ActionResult<IEnumerable<CollectionResponse>>> GetCollections()
         {
-            return Ok(await _repository.GetAllAsync());
+            var items = await _repository.GetAllAsync();
+            var dto = _mapper.Map<IEnumerable<CollectionResponse>>(items);
+            return Ok(dto);
         }
 
         [Authorize]
         [HttpGet("query")]
-        public async Task<ActionResult<IEnumerable<Collections>>> QueryCollections([FromQuery] CollectionFilters entity)
+
+        public async Task<ActionResult<IEnumerable<CollectionResponse>>> QueryCollections([FromQuery] CollectionFilters entity)
         {
-            return Ok(await _repository.QueryEntity(entity));
+            if (User.IsInRole("Admin"))
+            {
+                var items = await _repository.QueryEntity(entity);
+                var dto = _mapper.Map<IEnumerable<CollectionResponse>>(items);
+                return Ok(dto);
+            }
+
+            if (Request.Query.ContainsKey("OwnerId"))
+            {
+                var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, entity, "EntityOwner");
+                if (!authorization.Succeeded)
+                    return Unauthorized(new { error = "User credentials do not match" });
+                var items = await _repository.QueryEntity(entity);
+                var dto = _mapper.Map<IEnumerable<CollectionResponse>>(items);
+                return Ok(dto);
+            }
+
+            var callerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(callerId))
+                return Unauthorized();
+
+            entity.OwnerId = int.Parse(callerId);
+            var list = await _repository.QueryEntity(entity);
+            var dtObject = _mapper.Map<IEnumerable<CollectionResponse>>(list);
+            return Ok(dtObject);
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Collections>> GetCollections(int id)
+        public async Task<ActionResult<CollectionResponse>> GetCollections(int id)
         {
             var collections = await _repository.GetByIdAsync(id);
 
@@ -46,13 +78,13 @@ namespace CollectorsApp.Controllers
             {
                 return NotFound();
             }
-
-            return collections;
+            var dto = _mapper.Map<CollectionResponse>(collections);
+            return dto;
         }
         
         [HttpGet("GetCollectionsByUserId/{id}")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<Collections>>> GetCollectionsByUserId(int id)
+        public async Task<ActionResult<IEnumerable<CollectionResponse>>> GetCollectionsByUserId(int id)
         {
             var data = await _repository.GetCollectionsByUserId(id);
             if(data ==null) 
@@ -63,8 +95,8 @@ namespace CollectorsApp.Controllers
                 if (!authorization.Succeeded)
                     return Unauthorized();
             }
-            
-            return Ok(data);
+            var dto = _mapper.Map<IEnumerable<CollectionResponse>>(data);
+            return Ok(dto);
         }
 
         [Authorize]
@@ -135,9 +167,11 @@ namespace CollectorsApp.Controllers
         [HttpGet("GetCollectionsByUserId/{userId}/{name}")]
         [Authorize]
         [Authorize(Policy = "ResourceOwner")]
-        public async Task<IEnumerable<Collections>> GetCollectionsByUserId(int userId, string name)
+        public async Task<ActionResult<IEnumerable<CollectionResponse>>> GetCollectionsByUserId(int userId, string name)
         {
-            return await _repository.GetCollectionsByUserId(userId, name);
+            var items = _repository.GetCollectionsByUserId(userId, name);
+            var dto = _mapper.Map<IEnumerable<CollectionResponse>>(items);
+            return Ok(dto);
         }
 
     }

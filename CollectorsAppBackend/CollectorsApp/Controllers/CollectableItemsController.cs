@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CollectorsApp.Models;
-using Microsoft.AspNetCore.Authorization;
-using CollectorsApp.Repository.Interfaces;
+﻿using AutoMapper;
 using CollectorsApp.Filters;
+using CollectorsApp.Models;
+using CollectorsApp.Models.DTO.CollectableItems;
+using CollectorsApp.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CollectorsApp.Controllers
 {
@@ -13,38 +16,71 @@ namespace CollectorsApp.Controllers
         private readonly ICollectableItemRepository _repository;
         private readonly IImagePathRepository _imagePathRepository;
         private readonly IAuthorizationService _authorizationService;
-        public CollectableItemsController(ICollectableItemRepository repository, IImagePathRepository imagePathRepository, IAuthorizationService authorizationService)
+        private readonly IMapper _mapper;
+        public CollectableItemsController(ICollectableItemRepository repository, IImagePathRepository imagePathRepository, IAuthorizationService authorizationService, IMapper mapper)
         {
             _repository = repository;
             _imagePathRepository = imagePathRepository;
             _authorizationService = authorizationService;
+            _mapper = mapper;
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CollectableItems>>> GetCollectableItems()
+        public async Task<ActionResult<IEnumerable<CollectableItemResponse>>> GetCollectableItems()
         {
-            return Ok(await _repository.GetAllAsync());
+            var list = await _repository.GetAllAsync();
+            var dto = _mapper.Map<IEnumerable<CollectableItemResponse>>(list);
+            return Ok(dto);
         }
 
         [Authorize]
         [HttpGet("query")]
-        public async Task<ActionResult<IEnumerable<CollectableItems>>> QueryCollection([FromQuery] CollectableItemsFilter filter)
+        public async Task<ActionResult<IEnumerable<CollectableItemResponse>>> QueryCollection([FromQuery] CollectableItemsFilter entity)
         {
-            return Ok(await _repository.QueryEntity(filter));
+            if (User.IsInRole("admin"))
+            {
+                var items = await _repository.QueryEntity(entity);
+                var dto = _mapper.Map<IEnumerable<CollectableItemResponse>>(items);
+                return Ok(dto);
+            }
+
+            if (Request.Query.ContainsKey("OwnerId"))
+            {
+                var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, entity, "EntityOwner");
+                if (!authorization.Succeeded)
+                    return Unauthorized(new { error = "User credentials do not match" });
+                
+                var items = await _repository.QueryEntity(entity);
+                var dto = _mapper.Map<IEnumerable<CollectableItemResponse>>(items);
+                return Ok(dto);
+            }
+
+            var callerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(callerId))
+                return Unauthorized();
+
+            entity.OwnerId = int.Parse(callerId);
+
+            var list = await _repository.QueryEntity(entity);
+            var dtObject = _mapper.Map<IEnumerable<CollectableItemResponse>>(list);
+            return Ok(dtObject);
         }
 
         [Authorize]
         [HttpGet("{page}/{userId}/{collectionId}/{numberOfItems}")]
-        [Authorize(Policy = "ResourceOwner")]
-        public async Task<ActionResult<IEnumerable<CollectableItems>>> GetSetAmmountItems(int page, int userId, int collectionId, int numberOfItems)
+//        [Authorize(Policy = "ResourceOwner")]
+        public async Task<ActionResult<IEnumerable<CollectableItemResponse>>> GetSetAmmountItems(int page, int userId, int collectionId, int numberOfItems)
         {
-            return Ok(await _repository.GetSetAmmountItems(page,userId,collectionId,numberOfItems));
+            //return Ok();
+            var items = await _repository.GetSetAmmountItems(page, userId, collectionId, numberOfItems);
+            var dto = _mapper.Map<IEnumerable<CollectableItemResponse>>(items);
+            return Ok(dto);
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<CollectableItems>> GetCollectableItems(int id)
+        public async Task<ActionResult<CollectableItemResponse>> GetCollectableItems(int id)
         {
             var collectableItems = await _repository.GetByIdAsync(id);
 
@@ -52,14 +88,16 @@ namespace CollectorsApp.Controllers
             {
                 return NotFound();
             }
+            var dto = _mapper.Map<CollectableItemResponse>(collectableItems);
 
-            return collectableItems;
+            return dto;
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutCollectableItems(int id, CollectableItems collectableItems)
+        public async Task<IActionResult> PutCollectableItems(int id, CollectableItemUpdateRequest collectableItems)
         {
+            var dto = _mapper.Map<CollectableItems>(collectableItems);
             if (id != collectableItems.Id)
             {
                 return BadRequest(new { error = "Item id does not match" });
@@ -67,7 +105,8 @@ namespace CollectorsApp.Controllers
             var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, collectableItems, "EntityOwner");
             if(!authorization.Succeeded)
                 return Unauthorized();
-            await _repository.UpdateAsync(collectableItems, id);
+
+            await _repository.UpdateAsync(dto, id);
             return NoContent();
         }
 
@@ -75,56 +114,64 @@ namespace CollectorsApp.Controllers
         [HttpGet]
         [Route("GetCollectableItemsByUserId/{userId}")]
         [Authorize(Policy = "ResourceOwner")]
-        public async Task<IEnumerable<CollectableItems>> GetCollectableItemsByUserIdController(int userId)
+        public async Task<ActionResult<IEnumerable<CollectableItemResponse>>> GetCollectableItemsByUserIdController(int userId)
         {
-            return await _repository.GetCollectableItemsByUserId(userId);
+            var items = await _repository.GetCollectableItemsByUserId(userId);
+            var dto = _mapper.Map<IEnumerable<CollectableItemResponse>>(items);
+            return Ok(dto);
         }
 
         [Authorize]
         [HttpGet]
         [Route("GetCollectableItemsByUserIdAndCollectionId/{userId}/{collectionId}")]
         [Authorize(Policy = "ResourceOwner")]
-        public async Task<IEnumerable<CollectableItems>> GetCollectableItemsByUserIdController(int userId,int collectionId)
+        public async Task<ActionResult<IEnumerable<CollectableItemResponse>>> GetCollectableItemsByUserIdController(int userId,int collectionId)
         {
-            return await _repository.GetCollectableItemsByUserIdAndCollectionId(userId, collectionId);
+            var items = await _repository.GetCollectableItemsByUserIdAndCollectionId(userId, collectionId);
+            var dto = _mapper.Map<IEnumerable<CollectableItemResponse>>(items);
+            return Ok(dto);
         }
 
         [HttpGet]
         [Authorize]
         [Route("GetCollectableItemsByUserIdAndItemId/{ItemId}/{userId}")]
         [Authorize(Policy = "ResourceOwner")]
-        public async Task<ActionResult<CollectableItems>> GetCollectableItemByUserIdController(int ItemId, int userId)
+        public async Task<ActionResult<CollectableItemResponse>> GetCollectableItemByUserIdController(int ItemId, int userId)
         {
             var item =  await _repository.GetCollectableItemByUserId(ItemId,userId);
+            
             if (item == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(item);
+                var dto = _mapper.Map<CollectableItemResponse>(item);
+                return Ok(dto);
             }
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<CollectableItems>> PostCollectableItems(CollectableItems collectableItems)
+        public async Task<ActionResult<CollectableItemResponse>> PostCollectableItems(CollectableItemCreateRequest collectableItems)
         {
-            var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, collectableItems, "EntityOwner");
+            var dto = _mapper.Map<CollectableItems>(collectableItems);
+            var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, dto, "EntityOwner");
             if (!authorization.Succeeded)
                 return Unauthorized();
-            await _repository.PostAsync(collectableItems);
+
+            await _repository.PostAsync(dto);
 
             if(collectableItems.PhotoFilePath != null)
             {
                 ImagePath path = new ImagePath();
-                path.ItemId = collectableItems.Id;
-                path.Path = collectableItems.PhotoFilePath;
-                path.OwnerId = collectableItems.OwnerId;
+                path.ItemId = dto.Id;
+                path.Path = dto.PhotoFilePath;
+                path.OwnerId = dto.OwnerId;
                 await _imagePathRepository.PostAsync(path);
             }
-
-            return CreatedAtAction("GetCollectableItems", new { id = collectableItems.Id }, collectableItems);
+            var responseDto = _mapper.Map<CollectableItemResponse>(dto);
+            return CreatedAtAction("GetCollectableItems", new { id = dto.Id }, responseDto);
         }
 
         [Authorize]

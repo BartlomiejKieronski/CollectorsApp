@@ -1,5 +1,7 @@
-﻿using CollectorsApp.Filters;
+﻿using AutoMapper;
+using CollectorsApp.Filters;
 using CollectorsApp.Models.APILogs;
+using CollectorsApp.Models.DTO.APILogs;
 using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,29 +13,38 @@ namespace CollectorsApp.Controllers
     public class APILogController : ControllerBase
     {
         private readonly IAPILogRepository _repository;
-        public APILogController(IAPILogRepository repository) 
+        private readonly IMapper _mapper;
+        public APILogController(IAPILogRepository repository, IMapper mapper) 
         {
             _repository = repository;
+            _mapper = mapper;
         }
         [Authorize(Roles = "admin")]
         [HttpGet]
         [Route("query")]
-        public async Task<ActionResult<IEnumerable<APILog>>> QueryComments([FromQuery] APILogFilter entity)
+        //[Authorize(Roles = "admin")]
+        public async Task<ActionResult<IEnumerable<APILogResponse>>> QueryComments([FromQuery] APILogFilter entity)
         {
-            return Ok(await _repository.QueryEntity(entity));
+            var items = await _repository.QueryEntity(entity);
+            var dto = _mapper.Map<IEnumerable<APILogResponse>>(items);
+            return Ok(dto);
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<APILog>>> GetAll()
+        public async Task<ActionResult<IEnumerable<APILogResponse>>> GetAll()
         {
-            return Ok(await _repository.GetAllAsync());
+            var items = await _repository.GetAllAsync();
+            var dto = _mapper.Map<IEnumerable<APILogResponse>>(items);
+            return Ok(dto);
         }
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<APILog>> GetAPILog(int id)
+        public async Task<ActionResult<APILogResponse>> GetAPILog(int id)
         {
-            return Ok(await _repository.GetByIdAsync(id));
+            var item = await _repository.GetByIdAsync(id);
+            var dto = _mapper.Map<APILogResponse>(item);
+            return Ok(dto);
         }
         [Authorize(Roles = "admin")]
         [HttpPost]

@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;   
+using CollectorsApp.Filters;
 using CollectorsApp.Models;
+using CollectorsApp.Models.DTO.ImagePaths;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using CollectorsApp.Filters;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// Manages image path resources and enforces ownership/authorization.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     
@@ -14,7 +20,12 @@ namespace CollectorsApp.Controllers
         private readonly IImagePathRepository _repository;
         private readonly ICollectableItemRepository _itemsRepository;
         private readonly IAuthorizationService _authorizationService;
-        public ImagePathsController(IImagePathRepository repository, ICollectableItemRepository itemsRepository, IAuthorizationService authorizationService)
+        private readonly IMapper _mapper;
+
+        /// <summary>
+        /// Creates a new <see cref="ImagePathsController"/>.
+        /// </summary>
+        public ImagePathsController(IImagePathRepository repository, ICollectableItemRepository itemsRepository, IAuthorizationService authorizationService, IMapper mapper)
         {
 
             _repository = repository;
@@ -24,14 +35,40 @@ namespace CollectorsApp.Controllers
 
         [HttpGet("query")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<ImagePath>>> QueryImagePaths([FromQuery] ImagePathFilter entity)
+        public async Task<ActionResult<IEnumerable<ImagePathResponse>>> QueryImagePaths([FromQuery] ImagePathFilter entity)
         {
-            return Ok(await _repository.QueryEntity(entity));
-        }
+            
+            if (User.IsInRole("admin"))
+            {
+                var items = await _repository.QueryEntity(entity);
+                var dto = _mapper.Map<IEnumerable<ImagePathResponse>>(items);
+                return Ok(dto);
+            }
 
+            if (Request.Query.ContainsKey("OwnerId"))
+            {
+                var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, entity, "EntityOwner");
+                if (!authorization.Succeeded)
+                    return Unauthorized(new { error = "User credentials do not match" });
+
+                var items = await _repository.QueryEntity(entity);
+                var dto = _mapper.Map<IEnumerable<ImagePathResponse>>(items);
+                return Ok(dto);
+            }
+
+            var callerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(callerId))
+                return Unauthorized();
+
+            entity.OwnerId = int.Parse(callerId);
+            var result = await _repository.QueryEntity(entity);
+            var mapped = _mapper.Map<IEnumerable<ImagePathResponse>>(result);
+            return Ok(mapped);
+            
+        }
         [HttpGet]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<ImagePath>>> GetImagePaths()
+        public async Task<ActionResult<IEnumerable<ImagePathResponse>>> GetImagePaths()
         {
             var data = await _repository.GetAllAsync();
             
@@ -45,13 +82,14 @@ namespace CollectorsApp.Controllers
                 if (!authorization.Succeeded)
                     return Unauthorized();
             }
-            return Ok(data);
+            var dto = _mapper.Map<IEnumerable<ImagePathResponse>>(data);
+            return Ok(dto);
         }
 
         // GET: api/ImagePaths/5
         [HttpGet("{id}")]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<ImagePath>> GetImagePath(int id)
+        public async Task<ActionResult<ImagePathResponse>> GetImagePath(int id)
         {
             var imagePath = await _repository.GetByIdAsync(id);
 
@@ -60,16 +98,19 @@ namespace CollectorsApp.Controllers
                 return NotFound();
             }
 
-            return imagePath;
+            var dto = _mapper.Map<ImagePathResponse>(imagePath);
+            return dto;
         }
         [HttpGet("GetImagePathsByItemId/{id}/{userId}")]
         [Authorize]
         [Authorize(Policy = "ResourceOwner")]
-        public async Task<ActionResult<IEnumerable<ImagePath>>> GetImagePathsByItemId(int id,int userId)
+        public async Task<ActionResult<IEnumerable<ImagePathResponse>>> GetImagePathsByItemId(int id,int userId)
         {
             var validation = await _itemsRepository.GetByIdAsync(id);
             if(validation!=null && validation.OwnerId == userId) { 
-                return Ok(await _repository.GetImagePathsByItemId(id));
+                var items = await _repository.GetImagePathsByItemId(id);
+                var dto = _mapper.Map<IEnumerable<ImagePathResponse>>(items);
+                return Ok(dto);
             }
             else{
                 return NoContent();
@@ -78,28 +119,31 @@ namespace CollectorsApp.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutImagePath(int id, ImagePath imagePath)
+        public async Task<IActionResult> PutImagePath(int id, ImagePathUpdateRequest imagePath)
         {
             if (id != imagePath.Id)
             {
                 return BadRequest(new { error = "Item id does not match" });
             }
-            var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, imagePath, "EntityOwner");
+            var dto = _mapper.Map<ImagePath>(imagePath);
+            var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, dto, "EntityOwner");
             if (!authorization.Succeeded)
                 return Unauthorized();
-            await _repository.UpdateAsync(imagePath,id);
+            await _repository.UpdateAsync(dto,id);
             return NoContent();
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<ImagePath>> PostImagePath(ImagePath imagePath)
+        public async Task<ActionResult<ImagePathResponse>> PostImagePath(ImagePathCreateRequest imagePath)
         {
-            var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, imagePath, "EntityOwner");
+            var dto = _mapper.Map<ImagePath>(imagePath);
+            var authorization = await _authorizationService.AuthorizeAsync(HttpContext.User, dto, "EntityOwner");
             if (!authorization.Succeeded)
                 return Unauthorized();
-            await _repository.PostAsync(imagePath);
-            return CreatedAtAction("GetImagePath", new { id = imagePath }, imagePath);
+            await _repository.PostAsync(dto);
+            var response = _mapper.Map<ImagePathResponse>(dto);
+            return CreatedAtAction("GetImagePath", new { id = dto.Id }, response);
         }
 
         // DELETE: api/ImagePaths/5

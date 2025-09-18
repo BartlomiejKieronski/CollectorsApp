@@ -3,31 +3,41 @@ using CollectorsApp.Models;
 using CollectorsApp.Repository.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using CollectorsApp.Services.User;
+using AutoMapper;
+using CollectorsApp.Models.DTO.Users;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// Manages user entities. Contains endpoints for CRUD and registration-related operations.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _repository;
         private readonly IUserService _userService;
-        public UsersController(IUserRepository repository, IUserService userService)
+        private readonly IMapper _mapper;
+
+        public UsersController(IUserRepository repository, IUserService userService, IMapper mapper)
         {
             _repository = repository;
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
         {
-            return Ok(await _repository.GetAllAsync());
+            var items = await _repository.GetAllAsync();
+            var dto = _mapper.Map<IEnumerable<UserResponse>>(items);
+            return Ok(dto);
         }
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<Users>> GetUsers(int id)
+        public async Task<ActionResult<UserResponse>> GetUsers(int id)
         {
             var users = await _repository.GetByIdAsync(id);
 
@@ -35,19 +45,22 @@ namespace CollectorsApp.Controllers
             {
                 return NotFound();
             }
-            return users;
+            var dto = _mapper.Map<UserResponse>(users);
+            return dto;
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutUsers(int id, Users users)
+        public async Task<IActionResult> PutUsers(int id, UserUpdateRequest users)
         {
-            if (id != users.Id)
+            var model = _mapper.Map<Users>(users);
+            // Ensure the id matches the route id when mapping from partial update
+            if (id != model.Id && model.Id != 0)
             {
                 return BadRequest(new { error = "Item id does not match" });
             }
 
-            await _repository.UpdateAsync(users,id);
+            await _repository.UpdateAsync(model,id);
             return NoContent();
         }
 

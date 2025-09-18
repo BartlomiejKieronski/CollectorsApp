@@ -1,4 +1,5 @@
 ﻿using CollectorsApp.Models;
+using CollectorsApp.Models.DTO.Auth;
 using CollectorsApp.Repository.Interfaces;
 using CollectorsApp.Services.Email;
 using CollectorsApp.Services.Encryption;
@@ -39,7 +40,7 @@ namespace CollectorsApp.Controllers
         public async Task<ActionResult> ResetPwd(PwdReset reset)
         {
             
-            var user = await _userRepository.GetUserByNameOrEmailAsync(new LoginInfo() { name = reset.Email });
+            var user = await _userRepository.GetUserByNameOrEmailAsync(new LoginRequest() { name = reset.Email });
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:JWT_KEY"])));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -104,7 +105,7 @@ namespace CollectorsApp.Controllers
         public async Task<ActionResult> ResetPassword(NewPassword password)
         {
             var email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
-            var user = await _userRepository.GetUserByNameOrEmailAsync(new LoginInfo() { name = email! });
+            var user = await _userRepository.GetUserByNameOrEmailAsync(new LoginRequest() { name = email! });
             var validationData = await _pwdRepository.GetPasswordResetModelByEmail(email!);
             
             try
@@ -131,12 +132,12 @@ namespace CollectorsApp.Controllers
         [HttpPost]
         [Authorize]
         [EnableRateLimiting("LoginPolicy")]
-        public async Task<IActionResult> IsPasswordCorrect(LoginInfo login)
+        public async Task<IActionResult> IsPasswordCorrect(LoginRequest login)
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { error = "Invalid model state" });
             
-            var data = await _userRepository.GetUserByNameOrEmailAsync(new LoginInfo { name = login.name });
+            var data = await _userRepository.GetUserByNameOrEmailAsync(new LoginRequest { name = login.name });
             bool isValid = await _dataHash.RecreateDataAsync(login.password, data.Salt!) == data.Password;
 
             if (isValid == true)
