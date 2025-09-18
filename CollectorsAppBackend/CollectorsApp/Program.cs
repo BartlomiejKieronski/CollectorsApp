@@ -119,7 +119,15 @@ builder.Services.AddAutoMapper(e =>
 builder.Services.AddDbContext<appDatabaseContext>(
     options => 
     { 
-        options.UseMySQL(conn);
+        options.UseMySQL(conn, mySqlOptions =>
+        {
+            mySqlOptions.CommandTimeout(60);
+
+            mySqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(5),
+                errorNumbersToAdd: null);
+        });
     });
 
 builder.Services.Configure<EmailSettings>(
