@@ -1,4 +1,6 @@
-﻿namespace CollectorsApp.Models.AuthResults
+﻿using CollectorsApp.Models.DTO.Auth;
+
+namespace CollectorsApp.Models.AuthResults
 {
     public class LoginResult
     {

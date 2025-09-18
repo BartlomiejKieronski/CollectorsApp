@@ -1,4 +1,4 @@
-﻿namespace CollectorsApp.Models
+﻿namespace CollectorsApp.Models.DTO.Auth
 {
     public class LoggedUserInfo
     {
