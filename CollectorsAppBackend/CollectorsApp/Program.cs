@@ -31,14 +31,27 @@ builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 builder.Logging.AddEventSourceLogger();
 
+// CORS policy allowing the local frontend origins
 builder.Services.AddCors(
-    options => options.AddPolicy(
+        options => options.AddPolicy(
         name: "CorsPolicy", policy =>
         {
-            policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials();
+            if (builder.Environment.IsDevelopment())
+            {
+
+                policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "http://127.0.0.1:3000", "https://127.0.0.1:3000")
+                    // Allow localhost/127.0.0.1 on any scheme during development
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            }
+            else
+            {
+                policy.WithOrigins(/*frontend url*/)
+                .WithMethods("GET", "PUT", "POST", "DELETE", "PATCH")
+                .AllowAnyHeader()
+                .AllowCredentials();
+            }
         }
     )
 );
