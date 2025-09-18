@@ -28,7 +28,6 @@ namespace CollectorsApp.Services.Encryption
             {
                 using var aes = Aes.Create();
 
-                //aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]));
                 var keyBase64 = _configuration["GoogleSecretStorage:Resolved:AES-KEY"]
                                  ?? await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]);
                 aes.Key = Convert.FromBase64String(keyBase64);
