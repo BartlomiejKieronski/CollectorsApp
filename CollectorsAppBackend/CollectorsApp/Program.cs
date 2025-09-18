@@ -209,7 +209,15 @@ builder.Services.AddResponseCompression(options =>
 
 var app = builder.Build();
 
-
+if(app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<appDatabaseContext>();
+        db.Database.Migrate();
+    }
+}
+// Global exception handling middleware
 app.UseProblemDetails();
 
 // Forwarded headers support (for reverse proxy scenarios)
