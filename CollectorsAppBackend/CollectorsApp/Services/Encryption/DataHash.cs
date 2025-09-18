@@ -17,7 +17,10 @@ namespace CollectorsApp.Services.Encryption
         {
             return await Task.Run(async () =>
             {
-                byte[] keyBytes = Encoding.UTF8.GetBytes(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:HMAC"]));
+                // Prefer resolved secret from configuration; fall back to runtime vault call
+                var hmacSecret = _configuration["GoogleSecretStorage:Resolved:HMAC"]
+                                  ?? await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:HMAC"]);
+                byte[] keyBytes = Encoding.UTF8.GetBytes(hmacSecret);
                 byte[] dataBytes = Encoding.UTF8.GetBytes(data);
 
                 using var hmac = new HMACSHA256(keyBytes);

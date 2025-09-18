@@ -1,5 +1,7 @@
 ﻿using CollectorsApp.Models;
+using CollectorsApp.Models.DTO.Auth;
 using CollectorsApp.Services.Encryption;
+
 namespace CollectorsApp.Services.Utility
 {
     public class UserAesDecode : IUserAesDecode

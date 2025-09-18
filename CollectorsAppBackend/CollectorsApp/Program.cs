@@ -26,6 +26,8 @@ using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Configure logging providers used by the app
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
@@ -56,17 +58,24 @@ builder.Services.AddCors(
     )
 );
 
+// Load secrets from Google Secret Manager into configuration
+builder.Configuration.AddGoogleSecretManager();
+
 builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 
+// Secret storage service (Google) registered as singleton
 builder.Services.AddSingleton<IGoogleSecretStorageVault, GoogleSecretStorageVault>();
 
-using var serviceProvider = builder.Services.BuildServiceProvider();
-var secretService = serviceProvider.GetRequiredService<IGoogleSecretStorageVault>();
-string conn = await secretService.GetSecretsAsync(builder.Configuration["GoogleSecretStorage:Secrets:DB-STRING"]);
-string jwtKey = await secretService.GetSecretsAsync(builder.Configuration["GoogleSecretStorage:Secrets:JWT_KEY"]);
+// Resolve secrets from configuration (populated by Google Secret Manager provider)
+string conn = builder.Configuration["GoogleSecretStorage:Resolved:DB-STRING"]
+    ?? builder.Configuration["GoogleSecretStorage:Secrets:DB-STRING"] // fallback if provider not configured
+    ?? throw new InvalidOperationException("Database connection string secret not found in configuration.");
+string jwtKey = builder.Configuration["GoogleSecretStorage:Resolved:JWT_KEY"]
+    ?? builder.Configuration["GoogleSecretStorage:Secrets:JWT_KEY"]
+    ?? throw new InvalidOperationException("JWT key secret not found in configuration.");
 
-//authentication
+// Authentication: configure JWT bearer token validation
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -84,7 +93,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddEndpointsApiExplorer();
 
-// Authorization handlers
+// Authorization policies and handlers
 builder.Services.AddAuthorization(options => { 
     
     options.AddPolicy("ResourceOwner",
@@ -92,7 +101,6 @@ builder.Services.AddAuthorization(options => {
         
     options.AddPolicy("EntityOwner",
         p => p.Requirements.Add(new EntityOwnerRequirement()));
-
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, ResourceOwnerHandler>();
@@ -107,6 +115,7 @@ builder.Services.AddAutoMapper(e =>
     e.AddProfile<MappingProfile>();
 });
 
+// Database context using MySQL; connection string sourced from secret storage
 builder.Services.AddDbContext<appDatabaseContext>(
     options => 
     { 
@@ -118,7 +127,7 @@ builder.Services.Configure<EmailSettings>(
 
 builder.Services.AddSwaggerGen();
 
-//repositories
+// Repositories (DI registrations for data access abstractions)
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICollectableItemRepository, CollectableItemRepository>();
 builder.Services.AddScoped<ICollectionRepository, CollectionRepository>();
@@ -131,7 +140,7 @@ builder.Services.AddScoped<IAPILogRepository, APILogRepository>();
 builder.Services.AddScoped<IUserPreferencesRepository,UserPreferencesRepository>();
 builder.Services.AddScoped<IUserConsentRepository, UserConsentRepository>();
 
-//services
+// App services
 builder.Services.AddTransient<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IDataHash, DataHash>();
 builder.Services.AddScoped<IAesEncryption, AesEncryption>();

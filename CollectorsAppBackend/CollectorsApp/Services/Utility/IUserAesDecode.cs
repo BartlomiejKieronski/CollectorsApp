@@ -1,4 +1,5 @@
 ﻿using CollectorsApp.Models;
+using CollectorsApp.Models.DTO.Auth;
 
 namespace CollectorsApp.Services.Utility
 {

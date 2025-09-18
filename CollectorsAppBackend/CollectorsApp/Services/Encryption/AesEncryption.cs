@@ -27,8 +27,11 @@ namespace CollectorsApp.Services.Encryption
             return await Task.Run(async () =>
             {
                 using var aes = Aes.Create();
-                
-                aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]));
+
+                //aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]));
+                var keyBase64 = _configuration["GoogleSecretStorage:Resolved:AES-KEY"]
+                                 ?? await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]);
+                aes.Key = Convert.FromBase64String(keyBase64);
                 aes.IV = GenerateIVBytes();
                 aes.Mode = CipherMode.CBC;
                 aes.Padding = PaddingMode.PKCS7;
@@ -54,7 +57,10 @@ namespace CollectorsApp.Services.Encryption
                 var cipherBytes = Convert.FromBase64String(data);
 
                 using var aes = Aes.Create();
-                aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]));
+                //aes.Key = Convert.FromBase64String(await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]));
+                var keyBase64 = _configuration["GoogleSecretStorage:Resolved:AES-KEY"]
+                                 ?? await _vault.GetSecretsAsync(_configuration["GoogleSecretStorage:Secrets:AES-KEY"]);
+                aes.Key = Convert.FromBase64String(keyBase64);
 
                 aes.IV = Convert.FromBase64String(IVKey);
                 aes.Mode = CipherMode.CBC;
