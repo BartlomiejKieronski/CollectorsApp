@@ -1,17 +1,15 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using CollectorsApp.Models.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CollectorsApp.Models
 {
     public class ImagePath : BaseModel
     {
-        [NotNull]
+        [Required]
+        [MaxLength(500)]
         public string Path { get; set; }
-        [NotNull]
+        [Required]
         public int ItemId { get; set; }
-        [AllowNull, DefaultValue(false)]
-        public bool IsRemoved { get; set; }
+        [Required]
+        public bool IsRemoved { get; set; } = false;
     }
 }

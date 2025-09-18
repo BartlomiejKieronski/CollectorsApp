@@ -1,13 +1,13 @@
-﻿using ServiceStack.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CollectorsApp.Models
 {
     public class UserConsent : BaseModel
     {
-        [NotNull]
+        [Required]
+        [MaxLength(100)]
         public string ConsentType { get; set; }
-        [NotNull]
-        public bool IsGranted { get; set; }
+        [Required]
+        public bool IsGranted { get; set; } = false;
     }
 }

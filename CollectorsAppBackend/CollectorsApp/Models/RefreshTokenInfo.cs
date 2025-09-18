@@ -1,23 +1,14 @@
-﻿using CollectorsApp.Models.Interfaces;
-using ServiceStack.DataAnnotations;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CollectorsApp.Models
 {
     public class RefreshTokenInfo : BaseModel
     {
-        [AllowNull]
-        public string RefreshToken { get; set; }
-        
-        [AllowNull, DataType(DataType.DateTime)]
+        public string? RefreshToken { get; set; }
+        [Required]
         public DateTime DateOfIssue { get; set; }
-        [AllowNull]
-        public string IssuerDeviceInfo { get; set; }
-        [NotNull]
+        public string? IssuerDeviceInfo { get; set; }
+        [Required]
         public bool IsValid { get; set; } = false;
-
     }
-
-
 }

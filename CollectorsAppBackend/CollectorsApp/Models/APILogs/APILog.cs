@@ -1,39 +1,32 @@
-﻿using ServiceStack.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CollectorsApp.Models.APILogs
 {
     public class APILog
     {
-        [NotNull, AutoIncrement]
+        [Key]
         public int Id { get; set; }
-        [AllowNull]
         public int? UserId { get; set; }
-        [AllowNull]
+        [MaxLength(100)]
         public string? Controller { get; set; }
-        [AllowNull]
+        [MaxLength(100)]
         public string? Action { get; set; }
-        [AllowNull]
         public int? StatusCode { get; set; }
-        [AllowNull]
         public bool? IsSuccess { get; set; }
-        [AllowNull]
+        [MaxLength(200)]
         public string? Title { get; set; }
-        [AllowNull]
         public string? Description { get; set; }
-        [AllowNull]
+        [MaxLength(2000)]
         public string? ErrorMessage { get; set; }
-        [AllowNull]
+        [MaxLength(500)]
         public string? RequestPath { get; set; }
-        [AllowNull]
+        [MaxLength(20)]
         public string? HttpMethod { get; set; }
-        [AllowNull]
+        [MaxLength(500)]
         public string? IpAddress { get; set; }
-        [AllowNull]
+        [MaxLength(64)]
         public string? IpIV { get; set; }
-        [NotNull]
-        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
-        [AllowNull]
+        public DateTime TimeStamp { get; set; }
         public int? DurationMs { get; set; }
     }
 }

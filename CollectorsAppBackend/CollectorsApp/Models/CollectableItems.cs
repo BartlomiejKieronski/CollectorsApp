@@ -1,29 +1,27 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
+using System.ComponentModel.DataAnnotations;
 
 namespace CollectorsApp.Models
 {
     public class CollectableItems : BaseModel
     {
-        [NotNull]
+        [Required]
+        [MaxLength(200)]
         public string ItemName { get; set; }
-        [AllowNull]
         public DateTime? ItemYear { get; set; }
-        [AllowNull]
+        [MaxLength(100)]
         public string? ItemNumismat { get; set; }
-        [AllowNull]
+        [MaxLength(100)]
         public string? ItemValue { get; set; }
-        [AllowNull]
+        [MaxLength(500)]
         public string? PhotoFilePath { get; set; }
-        [AllowNull]
         public DateTime? DateOfAquire { get; set; }
-        [NotNull]
-        public int CollectionId { get; set; } 
-        [AllowNull]
+        [Required]
+        public int CollectionId { get; set; }
+        [MaxLength(50)]
         public string? State { get; set; }
-        [AllowNull]
         public string? Description {  get; set; }
-        [AllowNull, DefaultValue(false)]
-        public bool IsRemoved { get; set; }
+        [Required]
+        public bool IsRemoved { get; set; } = false;
     }
 }

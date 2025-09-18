@@ -1,21 +1,21 @@
 ﻿using CollectorsApp.Models.Interfaces;
-using ServiceStack.DataAnnotations;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
 
 namespace CollectorsApp.Models
 {
     public class PasswordReset : IOwner
     {
-        [Key, AutoIncrement]
+        [Key]
         public int Id { get; set; }
-        [NotNull]
-        public string Email { get; set; }
-        [NotNull]
-        public string Token { get; set; }
-        [NotNull]
-        public int OwnerId { get; set; } 
 
+        [Required]
+        [EmailAddress]
+        [MaxLength(1000)]
+        public string Email { get; set; }
+        [Required]
+        [MaxLength(256)]
+        public string Token { get; set; }
+        [Required]
+        public int OwnerId { get; set; }
     }
 }

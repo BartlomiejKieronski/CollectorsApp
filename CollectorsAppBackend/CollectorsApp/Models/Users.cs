@@ -1,52 +1,47 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using ServiceStack.DataAnnotations;
+﻿using CollectorsApp.Models.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CollectorsApp.Models
 {
-    public class Users
-    {
-        [Key, NotNull, AutoIncrement]
-        public int Id { get; set; }
-        [NotNull]
-        public string Name { get; set; }
-        [AllowNull]
-        public string? HashedName { get; set; }
-        [AllowNull]
-        public string? NameIVKey { get; set; }
-
-        [NotNull, EmailAddress]
-        public string Email { get; set; }
-        [AllowNull]
-        public string? HashedEmail { get; set; }
-        [AllowNull]
-        public string? EmailIVKey { get; set; }
-
-        [AllowNull, RegularExpression("^.{6,32}$")]
-        public string Password { get; set; }
-        [AllowNull]
-        public string? Salt { get; set; }
-        [AllowNull, DefaultValue("user")]
-        public string? Role { get; set; }
-        [AllowNull, DefaultValue(true)]
-        public bool? Active { get; set; }
-        [AllowNull]
-        public DateTime AccountCreationDate { get; set; }
-        [AllowNull, DefaultValue(false)]
-        public bool IsSusspended { get; set; }
-        [AllowNull, DefaultValue(false)]
-        public bool IsBanned { get; set; }
-        [AllowNull]
-        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
-        [AllowNull]
-        public DateTime LastLogin { get; set; }
-        [AllowNull]
-        public DateTime LastLogout { get; set; }
-        [AllowNull]
-        public DateTime LastUpdated { get; set; }
-        [AllowNull]
-        public DateTime Deleted { get; set; }
-    }
+	public class Users : ILastUpdated
+	{
+		[Key]
+		public int Id { get; set; }
+		[Required]
+		[MaxLength(1000)]
+		public string Name { get; set; }
+		[MaxLength(1000)]
+		public string HashedName { get; set; }
+		[MaxLength(1000)]
+		public string NameIVKey { get; set; }
+		[Required]
+		[EmailAddress]
+		[MaxLength(1000)]
+		public string Email { get; set; }
+		[MaxLength(1000)]
+		public string HashedEmail { get; set; }
+		[MaxLength(1000)]
+		public string EmailIVKey { get; set; }
+		[MaxLength(1000)]
+		public string Password { get; set; }
+		[MaxLength(256)]
+		public string Salt { get; set; }
+		[MaxLength(32)]
+		[Required]
+		public string Role { get; set; } 
+		[Required]
+		public bool Active { get; set; } = true;
+		public DateTime? AccountCreationDate { get; set; }
+		[Required]
+		public bool IsSusspended { get; set; } = false;
+		[Required]
+		public bool IsBanned { get; set; } = false;
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public DateTime TimeStamp { get; set; } 
+		public DateTime? LastLogin { get; set; }
+		public DateTime? LastLogout { get; set; }
+		public DateTime? LastUpdated { get; set; } 
+		public DateTime? Deleted { get; set; }
+	}
 }

@@ -1,21 +1,20 @@
-﻿using ServiceStack.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CollectorsApp.Models.Analytics
 {
     public class AdminComment
     {
-        [NotNull,AutoIncrement]
+        [Key]
         public int Id { get; set; }
-        [NotNull]
+        [Required]
         public int AdminId { get; set; }
-        [NotNull]
+        [Required]
         public int EventLogId { get; set; }
-        [NotNull]
+        [Required]
+        [MaxLength(50)]
         public string TargetType { get; set; }
-        [NotNull]
+        [Required]
         public string CommentText { get; set; }
-        [AllowNull]
         public DateTime? TimeStamp { get; set; } = DateTime.UtcNow;
     }
 }
