@@ -1,5 +1,6 @@
 ﻿using CollectorsApp.Models;
 using CollectorsApp.Models.AuthResults;
+using CollectorsApp.Models.DTO.Auth;
 using CollectorsApp.Repository.Interfaces;
 using CollectorsApp.Services.Cookie;
 using CollectorsApp.Services.Encryption;
@@ -30,7 +31,7 @@ namespace CollectorsApp.Services.Authentication
             _logger = logger;
         }
 
-        public async Task<LoginResult> LoginAsync(LoginInfo loginInfo, string deviceId)
+        public async Task<LoginResult> LoginAsync(LoginRequest loginInfo, string deviceId)
         {
             
             var user = await _userRepository.GetUserByNameOrEmailAsync(loginInfo);
@@ -45,7 +46,7 @@ namespace CollectorsApp.Services.Authentication
 
             var response = _httpContextAccessor.HttpContext!.Response;
 
-            if (deviceId.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(deviceId))
             {
                 GenerateUniqueDeviceId device = new GenerateUniqueDeviceId();
                 var issuer = await device.DeviceId();
