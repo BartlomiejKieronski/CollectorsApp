@@ -10,6 +10,9 @@
         {
             return app.UseMiddleware<LoginUsernameExtractionMiddleware>();
         }
+        public static IApplicationBuilder UseProblemDetails(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<ProblemDetailsMiddleware>();
         }
     }
 }

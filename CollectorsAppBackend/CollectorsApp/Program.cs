@@ -124,6 +124,7 @@ builder.Services.AddLoginRateLimiter();
 var app = builder.Build();
 
 
+app.UseProblemDetails();
 app.UseForwardedHeaders();
 if (app.Environment.IsDevelopment())
 {
