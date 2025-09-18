@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class CRUDImplementation<T> : ICRUD<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly appDatabaseContext _context;
         protected readonly DbSet<T> _dbSet;
-        public CRUDImplementation(appDatabaseContext context)
+        public GenericRepository(appDatabaseContext context)
         {
             _context = context;
             _dbSet = context.Set<T>();

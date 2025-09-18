@@ -1,4 +1,4 @@
-﻿using CollectorsApp.Models;
+﻿using CollectorsApp.Models.DTO.Auth;
 using CollectorsApp.Repository.Interfaces;
 using System.Security.Claims;
 

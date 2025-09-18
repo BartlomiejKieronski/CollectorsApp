@@ -4,7 +4,8 @@ using CollectorsApp.Repository.Interfaces;
 
 namespace CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfaces
 {
-    public interface IAPILogRepository : IQueryRepository<APILog, APILogFilter>
+    public interface IAPILogRepository : IQueryRepository<APILog, APILogFilter>, IGenericRepository<APILog>
     {
+
     }
 }

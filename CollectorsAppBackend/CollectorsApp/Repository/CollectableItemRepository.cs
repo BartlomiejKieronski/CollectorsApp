@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Repository
 {
-    public class CollectableItemsRepository : QuerryRepository<CollectableItems, CollectableItemsFilter>, ICollectableItemsRepository
+    public class CollectableItemRepository : QueryRepository<CollectableItems, CollectableItemsFilter>, ICollectableItemRepository
     {
-        public CollectableItemsRepository(appDatabaseContext context) : base(context) {
+        public CollectableItemRepository(appDatabaseContext context) : base(context) {
             
         }
 

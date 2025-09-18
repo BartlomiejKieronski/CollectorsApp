@@ -1,6 +1,6 @@
 ﻿namespace CollectorsApp.Repository.Interfaces
 {
-    public interface ICRUD<T> where T : class
+    public interface IGenericRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
