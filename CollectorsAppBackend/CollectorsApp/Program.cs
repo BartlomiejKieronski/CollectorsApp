@@ -130,6 +130,7 @@ builder.Services.AddDbContext<appDatabaseContext>(
         });
     });
 
+// Bind email settings
 builder.Services.Configure<EmailSettings>(
     builder.Configuration.GetSection("EmailSettings"));
 
@@ -161,21 +162,103 @@ builder.Services.AddScoped<IUserService, UserService>();
 /// Rate limiting middleware for logging in
 builder.Services.AddLoginRateLimiter();
 
+
+//HTTPS enforcement
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(365);
+    options.ExcludedHosts.Add("localhost");
+    options.ExcludedHosts.Add("127.0.0.1");
+    options.ExcludedHosts.Add("[::1]");
+});
+
+//Enforce HTTPS redirection (308). With forwarded headers this respects the original scheme.
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = StatusCodes.Status308PermanentRedirect;
+});
+
+// Forwarded headers for reverse proxy 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
+        | ForwardedHeaders.XForwardedProto
+        | ForwardedHeaders.XForwardedHost;
+
+    options.RequireHeaderSymmetry = false;
+    options.ForwardLimit = null;
+
+    // Cloudflared originates from localhost; trust loopback in prod.
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+
+    if (!builder.Environment.IsDevelopment())
+    {
+        options.KnownProxies.Add(IPAddress.Loopback);
+        options.KnownProxies.Add(IPAddress.IPv6Loopback);
+    }
+});
+
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    //Mime types can be added as needed
+});
+
 var app = builder.Build();
 
 
 app.UseProblemDetails();
+
+// Forwarded headers support (for reverse proxy scenarios)
 app.UseForwardedHeaders();
+
+app.UseResponseCompression();
+
 if (app.Environment.IsDevelopment())
 {
+    // Swagger enabled in Development environment
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    // HSTS only in Production
+    app.UseHsts();
+}
 
+// Redirect HTTP -> HTTPS (after ForwardedHeaders so scheme is corrected)
+
+app.UseHttpsRedirection();
+
+app.Use(async (context, next) =>
+{
+    // Content Security Policy (adjust as needed), restrict sources to load resources from to self, help prevent XSS data injection attacks
+    context.Response.Headers["Content-Security-Policy"] =
+        "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none';";
+
+    // Prevent MIME type sniffing, 
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+
+    // Prevent clickjacking
+    context.Response.Headers["X-Frame-Options"] = "DENY";
+
+    await next();
+});
+
+
+app.UseRouting();
+
+// CORS must run before auth when it needs to handle preflight
 app.UseCors("CorsPolicy");
 
 // Request logging middleware for controllers
-app.UseControllerLoggingMiddleware();
+///TO FIX!!! INTERFIERS WITH CORS
+//app.UseControllerLoggingMiddleware(); 
+
+// Authentication/Authorization order matters: authenticate first, then authorize
 app.UseAuthentication();
 app.UseAuthorization();
 
