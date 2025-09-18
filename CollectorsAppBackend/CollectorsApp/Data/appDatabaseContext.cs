@@ -27,6 +27,16 @@ namespace CollectorsApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var property = entityType.FindProperty("TimeStamp");
+                if( property!=null && property.ClrType == typeof(DateTime))
+                {
+                    property.SetDefaultValueSql("CURRENT_TIMESTAMP");
+                    property.ValueGenerated = Microsoft.EntityFrameworkCore.Metadata.ValueGenerated.OnAdd;
+                }
+            }
+
             modelBuilder.Entity<ImagePath>()
                 .HasOne<CollectableItems>()
                 .WithMany()              
@@ -104,6 +114,29 @@ namespace CollectorsApp.Data
                 .HasMaxLength(32)
                 .HasDefaultValue("user");
         }
+
+        public override int SaveChanges()
+        {
+            UpdateTimestamps();
+            return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            UpdateTimestamps();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        private void UpdateTimestamps()
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.Entity is ILastUpdated &&
+                           (e.State == EntityState.Added || e.State == EntityState.Modified));
+
+            foreach (var entry in entries)
+            {
+                ((ILastUpdated)entry.Entity).LastUpdated = DateTime.UtcNow;
+            }
         }
     }
 }
