@@ -42,8 +42,8 @@ namespace CollectorsApp.Migrations
                     UserId = table.Column<int>(type: "int", nullable: true),
                     Controller = table.Column<string>(type: "longtext", nullable: true),
                     Action = table.Column<string>(type: "longtext", nullable: true),
-                    StatusCode = table.Column<int>(type: "int", nullable: false),
-                    IsSuccess = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    StatusCode = table.Column<int>(type: "int", nullable: true),
+                    IsSuccess = table.Column<bool>(type: "tinyint(1)", nullable: true),
                     Title = table.Column<string>(type: "longtext", nullable: true),
                     Description = table.Column<string>(type: "longtext", nullable: true),
                     ErrorMessage = table.Column<string>(type: "longtext", nullable: true),
@@ -78,7 +78,12 @@ namespace CollectorsApp.Migrations
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: true),
                     AccountCreationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsSusspended = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsBanned = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    IsBanned = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastLogin = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastLogout = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Deleted = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,8 +101,11 @@ namespace CollectorsApp.Migrations
                     ParentId = table.Column<int>(type: "int", nullable: false),
                     ParentName = table.Column<string>(type: "longtext", nullable: false),
                     Depth = table.Column<int>(type: "int", nullable: false),
+                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false),
-                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Deleted = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -140,10 +148,13 @@ namespace CollectorsApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     RefreshToken = table.Column<string>(type: "longtext", nullable: false),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
                     DateOfIssue = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IssuerDeviceInfo = table.Column<string>(type: "longtext", nullable: false),
-                    IsValid = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    IsValid = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Deleted = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -163,17 +174,19 @@ namespace CollectorsApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     ConsentType = table.Column<string>(type: "longtext", nullable: false),
                     IsGranted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Deleted = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserConsents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserConsents_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_UserConsents_Users_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -186,11 +199,14 @@ namespace CollectorsApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
                     Layout = table.Column<string>(type: "longtext", nullable: false),
                     Theme = table.Column<string>(type: "longtext", nullable: false),
-                    ItemsPerPage = table.Column<int>(type: "int", nullable: false),
-                    Pagination = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    ItemsPerPage = table.Column<int>(type: "int", nullable: true),
+                    Pagination = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Deleted = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -215,13 +231,15 @@ namespace CollectorsApp.Migrations
                     ItemNumismat = table.Column<string>(type: "longtext", nullable: true),
                     ItemValue = table.Column<string>(type: "longtext", nullable: true),
                     PhotoFilePath = table.Column<string>(type: "longtext", nullable: true),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
-                    InsertDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DateOfAquire = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     CollectionId = table.Column<int>(type: "int", nullable: false),
                     State = table.Column<string>(type: "longtext", nullable: true),
                     Description = table.Column<string>(type: "longtext", nullable: true),
-                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Deleted = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -249,8 +267,11 @@ namespace CollectorsApp.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Path = table.Column<string>(type: "longtext", nullable: false),
                     ItemId = table.Column<int>(type: "int", nullable: false),
+                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false),
-                    IsRemoved = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                    TimeStamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Deleted = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -306,9 +327,9 @@ namespace CollectorsApp.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserConsents_UserId",
+                name: "IX_UserConsents_OwnerId",
                 table: "UserConsents",
-                column: "UserId");
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPreferences_OwnerId",

@@ -3,6 +3,7 @@ using System;
 using CollectorsApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorsApp.Migrations
 {
     [DbContext(typeof(appDatabaseContext))]
-    partial class appDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250911090355_Updated_Field_Types_Lengths_Defaults")]
+    partial class Updated_Field_Types_Lengths_Defaults
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,34 +364,26 @@ namespace CollectorsApp.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("ItemsPerPage")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(20);
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LastUpdated")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Layout")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)")
-                        .HasDefaultValue("Classic");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Pagination")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(1)")
-                        .HasDefaultValue(true);
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Theme")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(32)
-                        .HasColumnType("varchar(32)")
-                        .HasDefaultValue("Dark");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("TimeStamp")
                         .HasColumnType("datetime(6)");

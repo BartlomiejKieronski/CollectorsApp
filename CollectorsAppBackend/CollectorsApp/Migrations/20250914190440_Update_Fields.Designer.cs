@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorsApp.Migrations
 {
     [DbContext(typeof(appDatabaseContext))]
-    [Migration("20250824155136_Initial")]
-    partial class Initial
+    [Migration("20250914190440_Update_Fields")]
+    partial class Update_Fields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,10 +29,12 @@ namespace CollectorsApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Action")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Controller")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
@@ -41,31 +43,39 @@ namespace CollectorsApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ErrorMessage")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(2000)
+                        .HasColumnType("varchar(2000)");
 
                     b.Property<string>("HttpMethod")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("IpAddress")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("IpIV")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
 
-                    b.Property<bool>("IsSuccess")
+                    b.Property<bool?>("IsSuccess")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("RequestPath")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
-                    b.Property<int>("StatusCode")
+                    b.Property<int?>("StatusCode")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Title")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
@@ -93,7 +103,8 @@ namespace CollectorsApp.Migrations
 
                     b.Property<string>("TargetType")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("TimeStamp")
                         .HasColumnType("datetime(6)");
@@ -115,36 +126,47 @@ namespace CollectorsApp.Migrations
                     b.Property<DateTime?>("DateOfAquire")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
-
-                    b.Property<DateTime>("InsertDate")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("ItemNumismat")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("ItemValue")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime?>("ItemYear")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdated")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhotoFilePath")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("State")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -161,15 +183,22 @@ namespace CollectorsApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("Depth")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
@@ -178,8 +207,11 @@ namespace CollectorsApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ParentName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -194,18 +226,28 @@ namespace CollectorsApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -216,7 +258,7 @@ namespace CollectorsApp.Migrations
                     b.ToTable("ImagePaths");
                 });
 
-            modelBuilder.Entity("CollectorsApp.Models.PasswordResetModel", b =>
+            modelBuilder.Entity("CollectorsApp.Models.PasswordReset", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -224,14 +266,16 @@ namespace CollectorsApp.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Token")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
@@ -249,19 +293,26 @@ namespace CollectorsApp.Migrations
                     b.Property<DateTime>("DateOfIssue")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsValid")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("IssuerDeviceInfo")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<string>("RefreshToken")
-                        .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -278,20 +329,27 @@ namespace CollectorsApp.Migrations
 
                     b.Property<string>("ConsentType")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsGranted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime>("Timestamp")
+                    b.Property<DateTime?>("LastUpdated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("UserConsents");
                 });
@@ -302,22 +360,41 @@ namespace CollectorsApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("ItemsPerPage")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(20);
+
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Layout")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)")
+                        .HasDefaultValue("Classic");
 
                     b.Property<int>("OwnerId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Pagination")
-                        .HasColumnType("tinyint(1)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Theme")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)")
+                        .HasDefaultValue("Dark");
+
+                    b.Property<DateTime?>("TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -332,24 +409,34 @@ namespace CollectorsApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("AccountCreationDate")
+                    b.Property<DateTime?>("AccountCreationDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool?>("Active")
+                    b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("EmailIVKey")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("HashedEmail")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("HashedName")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<bool>("IsBanned")
                         .HasColumnType("tinyint(1)");
@@ -357,22 +444,46 @@ namespace CollectorsApp.Migrations
                     b.Property<bool>("IsSusspended")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<DateTime?>("LastLogin")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastLogout")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("NameIVKey")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
 
                     b.Property<string>("Role")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(32)
+                        .HasColumnType("varchar(32)")
+                        .HasDefaultValue("user");
 
                     b.Property<string>("Salt")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("Id");
 
@@ -418,7 +529,7 @@ namespace CollectorsApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CollectorsApp.Models.PasswordResetModel", b =>
+            modelBuilder.Entity("CollectorsApp.Models.PasswordReset", b =>
                 {
                     b.HasOne("CollectorsApp.Models.Users", null)
                         .WithMany()
@@ -440,7 +551,7 @@ namespace CollectorsApp.Migrations
                 {
                     b.HasOne("CollectorsApp.Models.Users", null)
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
