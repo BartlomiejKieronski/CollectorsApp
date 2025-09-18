@@ -1,6 +1,7 @@
 ﻿using CollectorsApp.Models;
 using CollectorsApp.Models.Analytics;
 using CollectorsApp.Models.APILogs;
+using CollectorsApp.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CollectorsApp.Data
@@ -73,12 +74,36 @@ namespace CollectorsApp.Data
                 .WithMany()
                 .HasForeignKey(id => id.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
+            modelBuilder.Entity<UserPreferences>()
+                .Property(u => u.Theme)
+                .HasMaxLength(32)
+                .HasDefaultValue("Dark");
+
+            modelBuilder.Entity<UserPreferences>()
+                .Property(u => u.Layout)
+                .HasMaxLength(32)
+                .HasDefaultValue("Classic");
+
+            modelBuilder.Entity<UserPreferences>()
+                .Property(u => u.ItemsPerPage)
+                .HasDefaultValue(20);
+
+            modelBuilder.Entity<UserPreferences>()
+                .Property(u => u.Pagination)
+                .HasDefaultValue(true);
+
             modelBuilder.Entity<UserConsent>()
                 .HasOne<Users>()
                 .WithMany()
                 .HasForeignKey(id => id.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Users>()
+                .Property(u=>u.Role)
+                .HasMaxLength(32)
+                .HasDefaultValue("user");
+        }
         }
     }
 }
