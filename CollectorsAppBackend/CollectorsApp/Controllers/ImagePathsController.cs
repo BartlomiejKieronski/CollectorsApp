@@ -31,8 +31,12 @@ namespace CollectorsApp.Controllers
             _repository = repository;
             _itemsRepository = itemsRepository;
             _authorizationService = authorizationService;
+            _mapper = mapper;
         }
 
+        /// <summary>
+        /// Query image paths with optional owner scoping.
+        /// </summary>
         [HttpGet("query")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<ImagePathResponse>>> QueryImagePaths([FromQuery] ImagePathFilter entity)
@@ -86,6 +90,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Returns an image path by id (admin only).
+        /// </summary>
         // GET: api/ImagePaths/5
         [HttpGet("{id}")]
         [Authorize(Roles = "admin")]
@@ -101,6 +108,10 @@ namespace CollectorsApp.Controllers
             var dto = _mapper.Map<ImagePathResponse>(imagePath);
             return dto;
         }
+
+        /// <summary>
+        /// Returns image paths for a specific item (resource-owner restricted).
+        /// </summary>
         [HttpGet("GetImagePathsByItemId/{id}/{userId}")]
         [Authorize]
         [Authorize(Policy = "ResourceOwner")]
@@ -117,6 +128,9 @@ namespace CollectorsApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an image path (owner only).
+        /// </summary>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutImagePath(int id, ImagePathUpdateRequest imagePath)
@@ -133,6 +147,9 @@ namespace CollectorsApp.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Creates a new image path (owner only).
+        /// </summary>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<ImagePathResponse>> PostImagePath(ImagePathCreateRequest imagePath)
@@ -146,6 +163,9 @@ namespace CollectorsApp.Controllers
             return CreatedAtAction("GetImagePath", new { id = dto.Id }, response);
         }
 
+        /// <summary>
+        /// Deletes an image path (owner only).
+        /// </summary>
         // DELETE: api/ImagePaths/5
         [HttpDelete("{id}")]
         [Authorize]

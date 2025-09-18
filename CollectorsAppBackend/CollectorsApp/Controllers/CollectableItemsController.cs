@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// Manages collectable items and enforces owner-based authorization.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CollectableItemsController : ControllerBase
@@ -17,6 +20,9 @@ namespace CollectorsApp.Controllers
         private readonly IImagePathRepository _imagePathRepository;
         private readonly IAuthorizationService _authorizationService;
         private readonly IMapper _mapper;
+        /// <summary>
+        /// Creates a new <see cref="CollectableItemsController"/>.
+        /// </summary>
         public CollectableItemsController(ICollectableItemRepository repository, IImagePathRepository imagePathRepository, IAuthorizationService authorizationService, IMapper mapper)
         {
             _repository = repository;
@@ -25,6 +31,9 @@ namespace CollectorsApp.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Returns all items (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CollectableItemResponse>>> GetCollectableItems()
@@ -34,6 +43,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Queries items. Admin can query any owner; others default to caller.
+        /// </summary>
         [Authorize]
         [HttpGet("query")]
         public async Task<ActionResult<IEnumerable<CollectableItemResponse>>> QueryCollection([FromQuery] CollectableItemsFilter entity)
@@ -67,6 +79,9 @@ namespace CollectorsApp.Controllers
             return Ok(dtObject);
         }
 
+        /// <summary>
+        /// Returns a page of items for a user and collection (resource-owner enforced).
+        /// </summary>
         [Authorize]
         [HttpGet("{page}/{userId}/{collectionId}/{numberOfItems}")]
 //        [Authorize(Policy = "ResourceOwner")]
@@ -78,6 +93,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Gets item by id (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<CollectableItemResponse>> GetCollectableItems(int id)
@@ -93,6 +111,9 @@ namespace CollectorsApp.Controllers
             return dto;
         }
 
+        /// <summary>
+        /// Updates an item (owner only).
+        /// </summary>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutCollectableItems(int id, CollectableItemUpdateRequest collectableItems)
@@ -110,6 +131,9 @@ namespace CollectorsApp.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Returns items by user id (resource-owner enforced).
+        /// </summary>
         [Authorize]
         [HttpGet]
         [Route("GetCollectableItemsByUserId/{userId}")]
@@ -121,6 +145,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Returns items by user id and collection id (resource-owner enforced).
+        /// </summary>
         [Authorize]
         [HttpGet]
         [Route("GetCollectableItemsByUserIdAndCollectionId/{userId}/{collectionId}")]
@@ -132,6 +159,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Returns item by item id and user id (resource-owner enforced).
+        /// </summary>
         [HttpGet]
         [Authorize]
         [Route("GetCollectableItemsByUserIdAndItemId/{ItemId}/{userId}")]
@@ -151,6 +181,9 @@ namespace CollectorsApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a new item and optionally persists its primary photo path.
+        /// </summary>
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<CollectableItemResponse>> PostCollectableItems(CollectableItemCreateRequest collectableItems)
@@ -174,6 +207,9 @@ namespace CollectorsApp.Controllers
             return CreatedAtAction("GetCollectableItems", new { id = dto.Id }, responseDto);
         }
 
+        /// <summary>
+        /// Deletes an item (owner only).
+        /// </summary>
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCollectableItems(int id)
@@ -188,6 +224,9 @@ namespace CollectorsApp.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Returns item count for a collection and user (resource-owner enforced).
+        /// </summary>
         [HttpGet("getData")]
         [Authorize(Policy = "ResourceOwner")]
         public async Task<IActionResult> GetData([FromQuery] int collection, [FromQuery] int userId)

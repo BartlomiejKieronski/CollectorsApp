@@ -19,6 +19,11 @@ namespace CollectorsApp.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Creates a new <see cref="UsersController"/>.
+        /// </summary>
+        /// <param name="repository">Repository for direct user persistence operations.</param>
+        /// <param name="userService">Domain service for user registration and higher-level logic.</param>
         public UsersController(IUserRepository repository, IUserService userService, IMapper mapper)
         {
             _repository = repository;
@@ -26,6 +31,9 @@ namespace CollectorsApp.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Returns all users (admin only).
+        /// </summary>
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<UserResponse>>> GetUsers()
@@ -35,6 +43,10 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Gets a single user by identifier.
+        /// </summary>
+        /// <param name="id">User identifier.</param>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<UserResponse>> GetUsers(int id)
@@ -49,6 +61,11 @@ namespace CollectorsApp.Controllers
             return dto;
         }
 
+        /// <summary>
+        /// Updates an existing user.
+        /// </summary>
+        /// <param name="id">Route id; must match entity id.</param>
+        /// <param name="users">User payload.</param>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutUsers(int id, UserUpdateRequest users)
@@ -64,6 +81,10 @@ namespace CollectorsApp.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Registers a new user via the domain service.
+        /// </summary>
+        /// <param name="users">Registration payload.</param>
         [HttpPost]
         public async Task<ActionResult> PostUsers(Users users)
         {
@@ -77,6 +98,10 @@ namespace CollectorsApp.Controllers
             return Ok(new { Message = result });
         }
 
+        /// <summary>
+        /// Deletes a user (admin only).
+        /// </summary>
+        /// <param name="id">User identifier.</param>
         [HttpDelete("{id}")]
         [Authorize(Roles ="admin")]
         public async Task<IActionResult> DeleteUsers(int id)

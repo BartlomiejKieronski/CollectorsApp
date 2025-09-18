@@ -14,6 +14,9 @@ using System.Text;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// Handles password reset flow: request reset link, apply new password, and credential checks.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PasswordResetController : ControllerBase
@@ -24,6 +27,10 @@ namespace CollectorsApp.Controllers
         private readonly IDataHash _dataHash;
         private readonly IConfiguration _configuration;
         private readonly IGoogleSecretStorageVault _vault;
+
+        /// <summary>
+        /// Creates a new <see cref="PasswordResetController"/>.
+        /// </summary>
         public PasswordResetController(IUserRepository userRepository, IPwdResetRepository pwdRepository, IEmailSenderService emailSender, IDataHash dataHash, IConfiguration configuration,IGoogleSecretStorageVault vault)
         {
             _userRepository = userRepository;
@@ -34,6 +41,9 @@ namespace CollectorsApp.Controllers
             _vault = vault;
         }
 
+        /// <summary>
+        /// Initiates password reset and sends an email with a short-lived JWT token.
+        /// </summary>
         [AllowAnonymous]
         [Route("PwdReset")]
         [HttpPost]
@@ -99,6 +109,10 @@ namespace CollectorsApp.Controllers
                 return NotFound(problemDetails);
             }
         }
+
+        /// <summary>
+        /// Completes the password reset by validating token and updating credentials.
+        /// </summary>
         [AllowAnonymous]
         [Route("PasswordReset")]
         [HttpPost]
@@ -127,6 +141,10 @@ namespace CollectorsApp.Controllers
             return BadRequest(new { error = "Validation unsuccessful" });
 
         }
+
+        /// <summary>
+        /// Validates a user's password for the provided login (rate limited).
+        /// </summary>
         [AllowAnonymous]
         [Route("IsPasswordCorrect")]
         [HttpPost]

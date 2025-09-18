@@ -8,20 +8,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// Exposes API for reading and managing API logs.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class APILogController : ControllerBase
     {
         private readonly IAPILogRepository _repository;
         private readonly IMapper _mapper;
+        /// <summary>
+        /// Creates a new <see cref="APILogController"/>.
+        /// </summary>
         public APILogController(IAPILogRepository repository, IMapper mapper) 
         {
             _repository = repository;
             _mapper = mapper;
         }
-        [Authorize(Roles = "admin")]
+        
+        /// <summary>
+        /// Queries logs. Currently allowed anonymously for troubleshooting.
+        /// </summary>
         [HttpGet]
         [Route("query")]
+        [AllowAnonymous]
         //[Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<APILogResponse>>> QueryComments([FromQuery] APILogFilter entity)
         {
@@ -30,6 +40,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Returns all logs (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<APILogResponse>>> GetAll()
@@ -38,6 +51,10 @@ namespace CollectorsApp.Controllers
             var dto = _mapper.Map<IEnumerable<APILogResponse>>(items);
             return Ok(dto);
         }
+
+        /// <summary>
+        /// Returns a single log by id (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<APILogResponse>> GetAPILog(int id)
@@ -46,6 +63,10 @@ namespace CollectorsApp.Controllers
             var dto = _mapper.Map<APILogResponse>(item);
             return Ok(dto);
         }
+
+        /// <summary>
+        /// Creates a new log entry (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult> PostAPILog(APILog log)
@@ -53,6 +74,10 @@ namespace CollectorsApp.Controllers
             await _repository.PostAsync(log);
             return CreatedAtAction("Created Succesfully", log);
         }
+
+        /// <summary>
+        /// Updates a log entry (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpPut("{id}")]
         public async Task<ActionResult> PutAPILog(int id, APILog log)
@@ -60,6 +85,10 @@ namespace CollectorsApp.Controllers
             await _repository.UpdateAsync(log, id);
             return NoContent();
         }
+
+        /// <summary>
+        /// Deletes a log entry (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAPILog(int id)

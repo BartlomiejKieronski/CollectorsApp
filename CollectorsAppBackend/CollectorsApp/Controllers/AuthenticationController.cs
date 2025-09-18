@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.RateLimiting;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// Handles authentication flows: login, refresh (reauthenticate), logout, and registration.
+    /// </summary>
     [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
@@ -19,6 +22,9 @@ namespace CollectorsApp.Controllers
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Creates a new <see cref="AuthenticationController"/>.
+        /// </summary>
         public AuthenticationController(IAuthService authService, IUserRepository userRepository, IUserService userService, IMapper mapper)
         {
             _authService = authService;
@@ -26,6 +32,9 @@ namespace CollectorsApp.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Performs user login and sets auth cookies. Rate limited via LoginPolicy.
+        /// </summary>
         [AllowAnonymous]
         [HttpPost]
         [EnableRateLimiting("LoginPolicy")]
@@ -54,6 +63,9 @@ namespace CollectorsApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Re-authenticates using refresh token and device cookie.
+        /// </summary>
         [AllowAnonymous]
         [Route("Reauthenticate")]
         [HttpPost]
@@ -80,6 +92,9 @@ namespace CollectorsApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Logs out the user: invalidates refresh token and clears cookies.
+        /// </summary>
         [AllowAnonymous]
         [Route("Logout/{id}")]
         [HttpGet]
@@ -101,6 +116,10 @@ namespace CollectorsApp.Controllers
                 return BadRequest(new { error = "Something went wrong" });
             }
         }
+
+        /// <summary>
+        /// Registers a new user using the domain service.
+        /// </summary>
         [AllowAnonymous]
         [Route("Register")]
         [HttpPost]

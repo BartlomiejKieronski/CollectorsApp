@@ -10,6 +10,9 @@ using System.Security.Claims;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// Handles user consent CRUD and queries with ownership checks.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class UserConsentController : ControllerBase
@@ -18,6 +21,9 @@ namespace CollectorsApp.Controllers
         private readonly IAuthorizationService _authorizationService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Creates a new <see cref="UserConsentController"/>.
+        /// </summary>
         public UserConsentController(IUserConsentRepository repository, IAuthorizationService authorizationService, IMapper mapper)
         {
             _repository = repository;
@@ -26,6 +32,9 @@ namespace CollectorsApp.Controllers
 
         }
         
+        /// <summary>
+        /// Returns all consent entries (admin only).
+        /// </summary>
         [HttpGet]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<IEnumerable<UserConsentResponse>>> GetAll()
@@ -35,6 +44,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Queries user consent with optional owner scoping.
+        /// </summary>
         [HttpGet("query")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<UserConsentResponse>>> Query([FromQuery] UserConsentFilter entity)
@@ -67,6 +79,9 @@ namespace CollectorsApp.Controllers
             return Ok(mapped);
         }
 
+        /// <summary>
+        /// Gets a consent entry by id.
+        /// </summary>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<UserConsentResponse>> GetById(int id)
@@ -75,6 +90,10 @@ namespace CollectorsApp.Controllers
             var dto = _mapper.Map<UserConsentResponse>(item);
             return Ok(dto);
         }
+
+        /// <summary>
+        /// Creates a new consent entry.
+        /// </summary>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<UserConsentResponse>> Post(UserConsentCreateOrUpdateRequest entity)
@@ -84,6 +103,10 @@ namespace CollectorsApp.Controllers
             var response = _mapper.Map<UserConsentResponse>(model);
             return CreatedAtAction(nameof(GetById), new { id = model.Id }, response);
         }
+
+        /// <summary>
+        /// Updates a consent entry.
+        /// </summary>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> Put(int id, UserConsentCreateOrUpdateRequest entity)
@@ -92,6 +115,10 @@ namespace CollectorsApp.Controllers
             await _repository.UpdateAsync(model, id);
             return NoContent();
         }
+
+        /// <summary>
+        /// Deletes a consent entry by id.
+        /// </summary>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ActionResult> Delete(int id)

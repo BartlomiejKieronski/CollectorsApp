@@ -10,6 +10,9 @@ using System.Security.Claims;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// Handles collection CRUD, queries, and owner-scoped access control.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CollectionsController : ControllerBase
@@ -19,6 +22,9 @@ namespace CollectorsApp.Controllers
         private readonly IAuthorizationService _authorizationService;
         private readonly IGoogleSecretStorageVault _vault;
         private readonly IMapper _mapper;
+        /// <summary>
+        /// Creates a new <see cref="CollectionsController"/>.
+        /// </summary>
         public CollectionsController(ICollectionRepository repository, IAuthorizationService authorizationService, IGoogleSecretStorageVault vault, IMapper mapper)
         {
             _repository = repository;
@@ -27,6 +33,9 @@ namespace CollectorsApp.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Returns all collections (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CollectionResponse>>> GetCollections()
@@ -36,6 +45,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Query collections with optional owner scoping.
+        /// </summary>
         [Authorize]
         [HttpGet("query")]
 
@@ -68,6 +80,9 @@ namespace CollectorsApp.Controllers
             return Ok(dtObject);
         }
 
+        /// <summary>
+        /// Returns a single collection by id (admin only).
+        /// </summary>
         [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public async Task<ActionResult<CollectionResponse>> GetCollections(int id)
@@ -82,6 +97,9 @@ namespace CollectorsApp.Controllers
             return dto;
         }
         
+        /// <summary>
+        /// Returns collections for the provided user (owner-only access per item).
+        /// </summary>
         [HttpGet("GetCollectionsByUserId/{id}")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<CollectionResponse>>> GetCollectionsByUserId(int id)
@@ -99,6 +117,9 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Updates a collection (owner only).
+        /// </summary>
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCollections(int id, Collections collections)
@@ -117,6 +138,9 @@ namespace CollectorsApp.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Creates a new collection (owner only). Ensures name uniqueness per user.
+        /// </summary>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<Collections>> PostCollections(Collections collections)
@@ -145,6 +169,9 @@ namespace CollectorsApp.Controllers
 
         }
         
+        /// <summary>
+        /// Deletes a collection (owner only).
+        /// </summary>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteCollections(int id)
@@ -164,6 +191,9 @@ namespace CollectorsApp.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Returns collections by userId and collection name (resource-owner policy enforced).
+        /// </summary>
         [HttpGet("GetCollectionsByUserId/{userId}/{name}")]
         [Authorize]
         [Authorize(Policy = "ResourceOwner")]

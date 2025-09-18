@@ -9,6 +9,9 @@ using System.Security.Claims;
 
 namespace CollectorsApp.Controllers
 {
+    /// <summary>
+    /// CRUD and query endpoints for user preferences. Enforces ownership via authorization service.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class UserPreferencesController : ControllerBase
@@ -17,6 +20,12 @@ namespace CollectorsApp.Controllers
         private readonly IAuthorizationService _authorizationService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Creates a new <see cref="UserPreferencesController"/>.
+        /// </summary>
+        /// <param name="repository">Repository for persistence.</param>
+        /// <param name="authorizationService">Service used to check resource ownership.</param>
+        /// <param name="mapper">AutoMapper instance.</param>
         public UserPreferencesController(IUserPreferencesRepository repository, IAuthorizationService authorizationService, IMapper mapper)
         {
             _repository = repository;
@@ -24,6 +33,9 @@ namespace CollectorsApp.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Returns all preferences (authorized users only).
+        /// </summary>
         [HttpGet]
         [Authorize(Roles ="admin")]
         public async Task<ActionResult<IEnumerable<UserPreferencesResponse>>> GetAll()
@@ -33,6 +45,12 @@ namespace CollectorsApp.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Queries preferences according to the provided filter.
+        /// - Admins can query any owner.
+        /// - If OwnerId provided, enforce EntityOwner policy.
+        /// - Otherwise, default OwnerId to caller.
+        /// </summary>
         [Authorize]
         [HttpGet("query")]
         public async Task<ActionResult<IEnumerable<UserPreferencesResponse>>> Query([FromQuery] UserPreferencesFilter entity)
@@ -65,6 +83,9 @@ namespace CollectorsApp.Controllers
             return Ok(mapped);
         }
 
+        /// <summary>
+        /// Returns a single preference item by id.
+        /// </summary>
         [HttpGet("{id}")]
         [Authorize] 
         public async Task<ActionResult<UserPreferencesResponse>> GetById(int id)
@@ -73,6 +94,10 @@ namespace CollectorsApp.Controllers
             var dto = _mapper.Map<UserPreferencesResponse>(item);
             return Ok(dto);
         }
+
+        /// <summary>
+        /// Creates a new preference entry.
+        /// </summary>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<UserPreferencesResponse>> Post(UserPreferences entity)
@@ -81,6 +106,10 @@ namespace CollectorsApp.Controllers
             var dto = _mapper.Map<UserPreferencesResponse>(entity);
             return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
         }
+
+        /// <summary>
+        /// Updates an existing preference entry.
+        /// </summary>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> Put(int id, UserPreferencesUpdateRequest entity)
@@ -89,6 +118,10 @@ namespace CollectorsApp.Controllers
             await _repository.UpdateAsync(model, id);
             return NoContent();
         }
+
+        /// <summary>
+        /// Deletes a preference entry by id.
+        /// </summary>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ActionResult> Delete(int id)
