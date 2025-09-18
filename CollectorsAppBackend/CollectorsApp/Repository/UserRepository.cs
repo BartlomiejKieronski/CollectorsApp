@@ -3,6 +3,7 @@ using CollectorsApp.Models;
 using Microsoft.EntityFrameworkCore;
 using CollectorsApp.Repository.Interfaces;
 using CollectorsApp.Services.Encryption;
+using CollectorsApp.Models.DTO.Auth;
 
 namespace CollectorsApp.Repository
 {
@@ -32,10 +33,10 @@ namespace CollectorsApp.Repository
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            return "Created successfully";
+            return dbCheck.Id.ToString();
         }
 
-        public async Task<Users> GetUserByNameOrEmailAsync(LoginInfo user)
+        public async Task<Users> GetUserByNameOrEmailAsync(LoginRequest user)
         {
             var hashedData = await _dataHash.GenerateHmacAsync(user.name);
             var data = await _context.Users.AsNoTracking().Where(i => i.HashedName == hashedData || i.HashedEmail == hashedData).FirstOrDefaultAsync();
