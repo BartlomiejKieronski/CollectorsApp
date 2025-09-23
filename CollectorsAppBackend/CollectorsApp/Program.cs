@@ -23,9 +23,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Net;
+using CollectorsApp.Middleware.RateLimiters;
+using Microsoft.AspNetCore.RateLimiting; 
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Configure logging providers used by the app
 builder.Logging.ClearProviders();
@@ -95,10 +96,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 // Authorization policies and handlers
 builder.Services.AddAuthorization(options => { 
-    
     options.AddPolicy("ResourceOwner",
         p => p.Requirements.Add(new ResourceOwnerRequirement()));
-        
     options.AddPolicy("EntityOwner",
         p => p.Requirements.Add(new EntityOwnerRequirement()));
 });
@@ -122,7 +121,6 @@ builder.Services.AddDbContext<appDatabaseContext>(
         options.UseMySQL(conn, mySqlOptions =>
         {
             mySqlOptions.CommandTimeout(60);
-
             mySqlOptions.EnableRetryOnFailure(
                 maxRetryCount: 5,
                 maxRetryDelay: TimeSpan.FromSeconds(5),
@@ -159,11 +157,12 @@ builder.Services.AddScoped<ICookieService, CookieService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-/// Rate limiting middleware for logging in
+
+// Rate limiting registrations
 builder.Services.AddLoginRateLimiter();
+builder.Services.AddCrudRateLimiters(); // Policies only; automatic assignment occurs after MapControllers.
 
-
-//HTTPS enforcement
+// HSTS enforcement
 builder.Services.AddHsts(options =>
 {
     options.Preload = true;
@@ -186,14 +185,12 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor
         | ForwardedHeaders.XForwardedProto
         | ForwardedHeaders.XForwardedHost;
-
     options.RequireHeaderSymmetry = false;
     options.ForwardLimit = null;
 
     // Cloudflared originates from localhost; trust loopback in prod.
     options.KnownNetworks.Clear();
     options.KnownProxies.Clear();
-
     if (!builder.Environment.IsDevelopment())
     {
         options.KnownProxies.Add(IPAddress.Loopback);
@@ -211,6 +208,7 @@ var app = builder.Build();
 
 if(app.Environment.IsDevelopment())
 {
+    // Apply any pending migrations, create DB if not exists if development
     using (var scope = app.Services.CreateScope())
     {
         var db = scope.ServiceProvider.GetRequiredService<appDatabaseContext>();
@@ -264,7 +262,7 @@ app.UseCors("CorsPolicy");
 
 // Request logging middleware for controllers
 ///TO FIX!!! INTERFIERS WITH CORS
-//app.UseControllerLoggingMiddleware(); 
+///app.UseControllerLoggingMiddleware(); 
 
 // Authentication/Authorization order matters: authenticate first, then authorize
 app.UseAuthentication();
@@ -275,6 +273,32 @@ app.UseLoginUsernameExtraction();
 
 app.UseRateLimiter();
 
-app.MapControllers();
+// Map controllers and automatically apply default rate limiting policies for write operations
+var controllerEndpoints = app.MapControllers();
+controllerEndpoints.Add(endpointBuilder =>
+{
+    // Skip if endpoint explicitly defines its own rate limiting or disables it
+    if (endpointBuilder.Metadata.OfType<EnableRateLimitingAttribute>().Any() ||
+        endpointBuilder.Metadata.OfType<DisableRateLimitingAttribute>().Any())
+    {
+        return;
+    }
+
+    var httpMeta = endpointBuilder.Metadata.OfType<HttpMethodMetadata>().FirstOrDefault();
+    if (httpMeta == null) return;
+
+    var methods = httpMeta.HttpMethods;
+
+    string? policy = null;
+    if (methods.Contains("POST")) policy = "PostPolicy";
+    else if (methods.Contains("PUT")) policy = "PutPolicy";
+    else if (methods.Contains("PATCH")) policy = "PatchPolicy";
+    else if (methods.Contains("DELETE")) policy = "DeletePolicy";
+
+    if (policy != null)
+    {
+        endpointBuilder.Metadata.Add(new EnableRateLimitingAttribute(policy));
+    }
+});
 
 app.Run();

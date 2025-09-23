@@ -1,9 +1,14 @@
 ﻿using System.Threading.RateLimiting;
 
-namespace CollectorsApp.Middleware
+namespace CollectorsApp.Middleware.RateLimiters
 {
     public static class LoginRateLimitingExtention
     {
+        /// <summary>
+        /// Middleware to limit login attempts to 10 every 5 minutes per user+IP combination.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddLoginRateLimiter(this IServiceCollection services)
         {
             services.AddRateLimiter(options =>
