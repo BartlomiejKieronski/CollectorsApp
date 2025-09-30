@@ -199,7 +199,7 @@ namespace CollectorsApp.Controllers
         [Authorize(Policy = "ResourceOwner")]
         public async Task<ActionResult<IEnumerable<CollectionResponse>>> GetCollectionsByUserId(int userId, string name)
         {
-            var items = _repository.GetCollectionsByUserId(userId, name);
+            var items =await _repository.GetCollectionsByUserId(userId, name);
             var dto = _mapper.Map<IEnumerable<CollectionResponse>>(items);
             return Ok(dto);
         }
