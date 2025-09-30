@@ -3,6 +3,7 @@ using System;
 using CollectorsApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollectorsApp.Migrations
 {
     [DbContext(typeof(appDatabaseContext))]
-    partial class appDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250924103944_Update_APILog_fields")]
+    partial class Update_APILog_fields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +65,6 @@ namespace CollectorsApp.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<string>("RequestPathIV")
-                        .HasColumnType("longtext");
-
                     b.Property<int?>("StatusCode")
                         .HasColumnType("int");
 
@@ -81,9 +81,6 @@ namespace CollectorsApp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("UserIdHash")
                         .HasColumnType("longtext");
 
                     b.Property<int?>("consentId")

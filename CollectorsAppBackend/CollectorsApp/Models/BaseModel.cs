@@ -9,7 +9,7 @@ namespace CollectorsApp.Models
         public int Id { get; set; }
         [Required]
         public int OwnerId { get; set; }
-        public DateTime? TimeStamp { get; set; }
+        public DateTime TimeStamp { get; set; }
         public DateTime? LastUpdated { get; set; }
         public DateTime? Deleted { get; set; }
     }

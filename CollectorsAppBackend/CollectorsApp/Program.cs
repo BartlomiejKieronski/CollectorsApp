@@ -41,9 +41,8 @@ builder.Services.AddCors(
         {
             if (builder.Environment.IsDevelopment())
             {
-
+                // Allow localhost/127.0.0.1 on any scheme during development
                 policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "http://127.0.0.1:3000", "https://127.0.0.1:3000")
-                    // Allow localhost/127.0.0.1 on any scheme during development
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials();
@@ -261,8 +260,7 @@ app.UseRouting();
 app.UseCors("CorsPolicy");
 
 // Request logging middleware for controllers
-///TO FIX!!! INTERFIERS WITH CORS
-///app.UseControllerLoggingMiddleware(); 
+app.UseControllerAnalyticsMiddleware();
 
 // Authentication/Authorization order matters: authenticate first, then authorize
 app.UseAuthentication();

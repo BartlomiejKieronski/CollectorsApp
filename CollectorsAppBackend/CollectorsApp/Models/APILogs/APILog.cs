@@ -6,7 +6,9 @@ namespace CollectorsApp.Models.APILogs
     {
         [Key]
         public int Id { get; set; }
-        public int? UserId { get; set; }
+        public string? UserId { get; set; }
+        public string? UserIDIV { get; set; }
+        public string? UserIdHash { get; set; }
         [MaxLength(100)]
         public string? Controller { get; set; }
         [MaxLength(100)]
@@ -20,6 +22,7 @@ namespace CollectorsApp.Models.APILogs
         public string? ErrorMessage { get; set; }
         [MaxLength(500)]
         public string? RequestPath { get; set; }
+        public string? RequestPathIV { get; set; }
         [MaxLength(20)]
         public string? HttpMethod { get; set; }
         [MaxLength(500)]
@@ -28,5 +31,6 @@ namespace CollectorsApp.Models.APILogs
         public string? IpIV { get; set; }
         public DateTime TimeStamp { get; set; }
         public int? DurationMs { get; set; }
+        public int? consentId { get; set; }
     }
 }
