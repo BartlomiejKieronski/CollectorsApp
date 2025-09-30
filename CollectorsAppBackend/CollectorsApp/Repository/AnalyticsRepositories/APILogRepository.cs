@@ -5,6 +5,9 @@ using CollectorsApp.Repository.AnalyticsRepositories.AnalyticsRepositoryInterfac
 
 namespace CollectorsApp.Repository.AnalyticsRepositories
 {
+    /// <summary>
+    /// Concrete repository for managing <see cref="APILog"/> entities.
+    /// </summary>
     public class APILogRepository : QueryRepository<APILog, APILogFilter>, IAPILogRepository
     {
         public APILogRepository(appDatabaseContext context) : base(context)

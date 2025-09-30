@@ -13,12 +13,20 @@ namespace CollectorsApp.Services.Security.Configuration
     public class GoogleSecretManagerConfigurationProvider : ConfigurationProvider
     {
         private readonly IConfiguration _baseConfiguration;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GoogleSecretManagerConfigurationProvider"/> class.
+        /// </summary>
+        /// <param name="baseConfiguration">The base configuration used to initialize the provider. This configuration is typically used  to retrieve
+        /// settings required for accessing Google Secret Manager.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="baseConfiguration"/> is <see langword="null"/>.</exception>
         public GoogleSecretManagerConfigurationProvider(IConfiguration baseConfiguration)
         {
             _baseConfiguration = baseConfiguration ?? throw new ArgumentNullException(nameof(baseConfiguration));
         }
 
+        /// <summary>
+        /// Loads secrets from Google Secret Manager based on the mappings defined in the base configuration.
+        /// </summary>
         public override void Load()
         {
             var projectId = _baseConfiguration["GoogleSecretStorage:ProjectId"];            

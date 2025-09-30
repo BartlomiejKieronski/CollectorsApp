@@ -4,6 +4,13 @@ using System.Text;
 
 namespace CollectorsApp.Services.Encryption
 {
+    /// <summary>
+    /// Provides functionality for AES encryption and decryption, including key management and secure handling of
+    /// initialization vectors (IVs).
+    /// </summary>
+    /// <remarks>This class supports AES encryption in CBC mode with PKCS7 padding. It integrates with
+    /// application configuration and a secret storage vault to securely retrieve encryption keys. Use this class to
+    /// encrypt and decrypt data securely, ensuring that the AES key and IV are managed properly.</remarks>
     public class AesEncryption : IAesEncryption
     {
         private readonly IConfiguration _configuration;

@@ -4,8 +4,17 @@ using System.Security.Claims;
 
 namespace CollectorsApp.Policies
 {
+    /// <summary>
+    /// Enforces that the current user is the owner of the entity or has an Admin role.
+    /// </summary>
     public class EntityOwnerHandler : AuthorizationHandler<EntityOwnerRequirement, IOwner>
     {
+        /// <summary>
+        /// Checks if the current user is the owner of the entity or has an Admin role.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="requirement"></param>
+        /// <param name="owner"></param>
         protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context,
         EntityOwnerRequirement requirement,

@@ -11,6 +11,13 @@ using System.Transactions;
 
 namespace CollectorsApp.Services.Authentication
 {
+    /// <summary>
+    /// Provides authentication services, including user login, logout, and reauthentication.
+    /// </summary>
+    /// <remarks>The <see cref="AuthService"/> class is responsible for managing authentication-related
+    /// operations,  such as validating user credentials, generating and managing tokens, and handling cookies for 
+    /// authentication and session management. It relies on various services and repositories to perform  these
+    /// operations, including token generation, hashing, and HTTP context access.</remarks>
     public class AuthService : IAuthService
     {
         private readonly IAuthorizationRepository _repository;
@@ -19,18 +26,34 @@ namespace CollectorsApp.Services.Authentication
         private readonly IDataHash _dataHash;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserRepository _userRepository;
-        private readonly ILogger<AuthService> _logger;
-        public AuthService(IAuthorizationRepository repo, ITokenService tokenSvc, ICookieService cookieSvc, IDataHash dataHash, IHttpContextAccessor httpContextAccessor,IUserRepository userRepository, ILogger<AuthService> logger)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthService"/> class.
+        /// Provides authentication operations such as login, logout, and reauthentication,
+        /// using the specified repositories and services.
+        /// </summary>
+        /// <param name="repo">Authorization repository for storing and retrieving refresh tokens.</param>
+        /// <param name="tokenSvc">Service for generating and validating JWT and refresh tokens.</param>
+        /// <param name="cookieSvc">Service for managing authentication, refresh, and device cookies.</param>
+        /// <param name="dataHash">Service for hashing and verifying user credentials.</param>
+        /// <param name="httpContextAccessor">Provides access to the current HTTP context (for reading/writing cookies).</param>
+        /// <param name="userRepository">Repository for retrieving user account information.</param>
+        public AuthService(IAuthorizationRepository repo, ITokenService tokenSvc, ICookieService cookieSvc, IDataHash dataHash, IHttpContextAccessor httpContextAccessor,IUserRepository userRepository)
         {
             _repository = repo;
             _tokenService = tokenSvc;
             _cookieService = cookieSvc;
             _dataHash = dataHash;
             _httpContextAccessor = httpContextAccessor;
-            _userRepository = userRepository;
-            _logger = logger;
+            _userRepository = userRepository; 
         }
 
+        /// <summary>
+        /// Login a user with provided credentials and device ID. If no device ID is provided, a new one is generated.
+        /// </summary>
+        /// <param name="loginInfo">Class instance LoginRequest</param>
+        /// <param name="deviceId">Device ID</param>
+        /// <returns>LoginResult class instance</returns>
         public async Task<LoginResult> LoginAsync(LoginRequest loginInfo, string deviceId)
         {
             
@@ -93,6 +116,12 @@ namespace CollectorsApp.Services.Authentication
             return LoginResult.SuccessResult(loggedUser);
         }
 
+        /// <summary>
+        /// Logout user by invalidating the refresh token and clearing cookies.
+        /// </summary>
+        /// <param name="userId">UserID</param>
+        /// <param name="refreshToken">Refresh Token string</param>
+        /// <param name="deviceInfo">DeviceID string</param>
         public async Task LogoutAsync(int userId, string refreshToken, string deviceInfo)
         {
             var response = _httpContextAccessor.HttpContext!.Response;
@@ -105,15 +134,19 @@ namespace CollectorsApp.Services.Authentication
             await _repository.UpdateRefreshTokenAsync(token);
         }
 
+        /// <summary>
+        /// Reauthenticates a user using a refresh token and device information.
+        /// </summary>
+        /// <param name="refreshToken">Refresh Token string</param>
+        /// <param name="deviceInfo">Device ID string</param>
+        /// <returns></returns>
         public async Task<ReauthResult> ReauthenticateAsync(string refreshToken, string deviceInfo)
         {
-            _logger.LogInformation(refreshToken, deviceInfo);
             if (string.IsNullOrEmpty(deviceInfo) || string.IsNullOrEmpty(refreshToken))
                 return ReauthResult.Fail("Unauthorized");
 
             var token = await _repository.GetRefreshTokenAsync(refreshToken, deviceInfo);
             
-
             if(token == null)
                 return ReauthResult.Fail("Invalid RefreshToken");
 
@@ -138,6 +171,7 @@ namespace CollectorsApp.Services.Authentication
             rTokenInfo.DateOfIssue = DateTime.UtcNow;
             rTokenInfo.IssuerDeviceInfo = deviceInfo;
             rTokenInfo.IsValid = true;
+            
             var response = _httpContextAccessor.HttpContext!.Response;
 
             await _cookieService.AppendRefreshTokenCookie(response, rTokenInfo.RefreshToken);

@@ -1,13 +1,25 @@
 ﻿namespace CollectorsApp.Middleware
 {
+    /// <summary>
+    /// Middleware to handle exceptions and return Problem Details responses according to RFC 7807.
+    /// </summary>
     public class ProblemDetailsMiddleware
     {
         private readonly RequestDelegate _next;
+        /// <summary>
+        /// Creates a new <see cref="ProblemDetailsMiddleware"/>.
+        /// </summary>
+        /// <param name="next">RequestDelegate to continiue app pipline</param>
         public ProblemDetailsMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
+        /// <summary>
+        /// Middleware to handle exceptions and return Problem Details responses acording to RFC - 7807 - Problem Details standard.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task InvokeAsync(HttpContext context)
         {
             try

@@ -2,6 +2,9 @@
 
 namespace CollectorsApp.Middleware.RateLimiters
 {
+    /// <summary>
+    /// Middleware extension to add rate limiting for login attempts.
+    /// </summary>
     public static class LoginRateLimitingExtention
     {
         /// <summary>

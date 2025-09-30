@@ -14,8 +14,12 @@ using CollectorsApp.Models.DTO.Users;
 
 namespace CollectorsApp.Mappings
 {
+    /// <summary>
+    /// Mapping profile for AutoMapper to define object-object mappings.
+    /// </summary>
     public class MappingProfile : Profile
     {
+
         public MappingProfile()
         {
             // Add your mappings here

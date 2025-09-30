@@ -1,13 +1,18 @@
-﻿using CollectorsApp.Services.Utility;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace CollectorsApp.Policies
 {
+    /// <summary>
+    /// Enforces that the user is either the owner of the resource being accessed or has an Admin role.
+    /// </summary>
     public class ResourceOwnerHandler : AuthorizationHandler<ResourceOwnerRequirement>
     {
+        /// <summary>
+        /// Checks if the current user is the owner of the resource being accessed or has an Admin role.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="requirement"></param>
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ResourceOwnerRequirement requirement)
         {
             

@@ -2,13 +2,25 @@
 
 namespace CollectorsApp.Middleware
 {
+    /// <summary>
+    /// Middleware to extract the username from login requests for rate limiting purposes.
+    /// </summary>
     public sealed class LoginUsernameExtractionMiddleware
     {
         private readonly RequestDelegate _next;
+        /// <summary>
+        /// Constructor for the middleware.
+        /// </summary>
+        /// <param name="next">RequestDelegate param to continie app pipeline</param>
         public LoginUsernameExtractionMiddleware(RequestDelegate next)
         {
             _next = next;
         }
+        /// <summary>
+        /// Middleware to extract the username from the login request body and store it in HttpContext.Items for later use (e.g., rate limiting).
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task InvokeAsync(HttpContext context)
         {
             if (context.Request.Path == "/api/Authentication"

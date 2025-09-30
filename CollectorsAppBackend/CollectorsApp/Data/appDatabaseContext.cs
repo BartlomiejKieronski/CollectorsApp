@@ -23,10 +23,15 @@ namespace CollectorsApp.Data
         public DbSet<APILog> APILogs { get; set; }
         public DbSet<UserConsent> UserConsents { get; set; }
 
+        /// <summary>
+        /// Defines the model and relationships between entities in the database.
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            //Populate TimeStamp default value for all entities with DateTime TimeStamp property on adding a new record
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 var property = entityType.FindProperty("TimeStamp");
@@ -115,18 +120,30 @@ namespace CollectorsApp.Data
                 .HasDefaultValue("user");
         }
 
+        /// <summary>
+        /// Persist changes to the database, updating LastUpdated timestamps for entities implementing ILastUpdated.
+        /// </summary>
+        /// <returns></returns>
         public override int SaveChanges()
         {
             UpdateTimestamps();
             return base.SaveChanges();
         }
 
+        /// <summary>
+        /// Persist changes to the database asynchronously, updating LastUpdated timestamps for entities implementing ILastUpdated.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             UpdateTimestamps();
             return base.SaveChangesAsync(cancellationToken);
         }
 
+        /// <summary>
+        /// Alters LastUpdated property to current UTC time for all added or modified entities implementing ILastUpdated.
+        /// </summary>
         private void UpdateTimestamps()
         {
             var entries = ChangeTracker.Entries()
